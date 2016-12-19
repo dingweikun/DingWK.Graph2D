@@ -51,6 +51,9 @@
     <Compile Include="Graphic\Geom\EmptyGeom.cs" />
     <Compile Include="Graphic\Geom\IGeom.cs" />
     <Compile Include="Graphic\Geom\Rectangle.cs" />
+    <Compile Include="Graphic\Graphic.cs" />
+    <Compile Include="Graphic\GraphicInfo.cs" />
+    <Compile Include="Graphic\IGraphic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
