@@ -33,6 +33,5 @@ namespace Graphic2D.Kernel.Graphic
         /// </summary>
         double Angle { get; set; }
 
-
     }
 }

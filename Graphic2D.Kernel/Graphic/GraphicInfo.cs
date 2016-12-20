@@ -9,12 +9,15 @@ namespace Graphic2D.Kernel.Graphic
     /// </summary>
     public struct GraphicInfo : IGraphic
     {
-        #region internal field
+        #region Internal fields
+
         private Brush _fill;
         private Pen _stroke;
         private Point _origin;
         private double _angle;
+
         #endregion
+
 
         #region IGraphic interface members
 
@@ -50,7 +53,7 @@ namespace Graphic2D.Kernel.Graphic
 
         /// <summary>
         /// IGraphic 对象的局部坐标系的旋转角度，单位为度。
-        /// The local coordinate system  rotation angle of IGraphic instance， which is in degrees.
+        /// The local coordinate system rotation angle of IGraphic instance， which is in degrees.
         /// </summary>
         public double Angle
         {

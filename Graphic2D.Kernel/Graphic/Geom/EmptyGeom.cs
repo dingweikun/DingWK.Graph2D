@@ -4,7 +4,7 @@ namespace Graphic2D.Kernel.Graphic.Geom
 {
     /// <summary>
     /// 特殊的空几何形状，不绘制任何图形。
-    /// A special struct that specifies an empty geometry and draws nothing.
+    /// A special structure that specifies an empty geometry and draws nothing.
     /// </summary>
     public struct EmptyGeom : IGeom
     {

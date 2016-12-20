@@ -14,16 +14,18 @@ namespace Graphic2D.Kernel.Graphic
     public class Graphic<T> : IGraphic
         where T : IGeom
     {
-        #region internal feild
+        #region Internal field
+
         private GraphicInfo _graphicInfo;
+
         #endregion
 
 
-        #region properties
+        #region Properties
 
         /// <summary>
         /// 访问或设置一个 GraphicInfo 结构，该结构指定了图形对象的轮廓画笔、填充画刷、局部坐标系原点位置和旋转角度。
-        /// Gets and sets a GraphicInfo struct that specifies the stroke pen, fill brush, 
+        /// Gets and sets a GraphicInfo structure that specifies the stroke pen, fill brush, 
         /// local coordinate origin and rotation angle. 
         /// </summary>
         public GraphicInfo GraphicInfo
@@ -86,7 +88,7 @@ namespace Graphic2D.Kernel.Graphic
         #endregion
 
 
-        #region constructors
+        #region Constructors
 
         /// <summary>
         /// 初始化一个图形对象实例。Initializes a new graphic instance.

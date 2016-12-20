@@ -9,7 +9,7 @@ namespace Graphic2D.Kernel.Graphic.Geom
     /// </summary>
     public struct Rectangle : IGeom
     {
-        #region Field
+        #region Internal field
 
         private Rect _rect;
 
@@ -19,7 +19,7 @@ namespace Graphic2D.Kernel.Graphic.Geom
         #region Properties
 
         /// <summary>
-        /// 获取或设置一个 Rect 结构，该结构表示了矩形的宽度、高度和左上角位置。
+        /// 获取或设置一个 Rect 结构，该结构指定了矩形的宽度、高度和左上角位置。
         /// Gets and sets the Rect structure that specifies the width, 
         /// height and location of the rectangle geometry.
         /// </summary>
@@ -122,7 +122,7 @@ namespace Graphic2D.Kernel.Graphic.Geom
         #endregion
 
 
-        #region IGeom members 
+        #region IGeom interface members 
 
         /// <summary>
         /// 默认的圆角矩形几何，位于 (0,0)，宽度和长度为 100，圆角半径为 0。
@@ -139,6 +139,7 @@ namespace Graphic2D.Kernel.Graphic.Geom
         {
             dc.DrawRoundedRectangle(fill, stroke, Rect, RadiusX, RadiusX);
         }
+
         #endregion
     }
 }
