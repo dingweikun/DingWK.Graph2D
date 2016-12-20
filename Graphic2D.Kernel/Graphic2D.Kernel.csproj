@@ -48,6 +48,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GraphicVisuals\GraphicVisual.cs" />
     <Compile Include="GraphicVisuals\IGraphicVisual.cs" />
     <Compile Include="Graphic\Geom\EmptyGeom.cs" />
     <Compile Include="Graphic\Geom\IGeom.cs" />
