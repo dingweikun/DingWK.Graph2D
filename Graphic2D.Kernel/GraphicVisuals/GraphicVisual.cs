@@ -164,13 +164,13 @@ namespace Graphic2D.Kernel.GraphicVisuals
             UpdateTransform();
         }
 
-        public virtual void Move(double dx, double dy)
+        public virtual void Translate(double dx, double dy)
         {
             Origin += new Vector(dx, dy);
             UpdateTransform();
         }
 
-        public virtual void Scale(double rx, double ry, double cx, double cy)
+        public virtual void Scale(double rx, double ry, double cx, double cy, bool IsLocalCenter = false)
         {
             throw new NotImplementedException();
         }
