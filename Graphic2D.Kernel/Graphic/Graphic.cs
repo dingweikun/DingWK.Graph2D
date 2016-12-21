@@ -1,4 +1,4 @@
-﻿using Graphic2D.Kernel.Graphic.Geom;
+﻿using Graphic2D.Kernel.Geom;
 using System.Windows;
 using System.Windows.Media;
 

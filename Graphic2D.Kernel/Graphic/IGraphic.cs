@@ -23,7 +23,7 @@ namespace Graphic2D.Kernel.Graphic
 
         /// <summary>
         /// IGraphic 对象的局部坐标系的原点位置。
-        /// The local coordinate system origin of IGraphic instance.
+        /// The local coordinate system origin of IGraphic instance
         /// </summary>
         Point Origin { get; set; }
 

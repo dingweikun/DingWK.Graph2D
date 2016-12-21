@@ -50,9 +50,9 @@
   <ItemGroup>
     <Compile Include="GraphicVisuals\GraphicVisual.cs" />
     <Compile Include="GraphicVisuals\IGraphicVisual.cs" />
-    <Compile Include="Graphic\Geom\EmptyGeom.cs" />
-    <Compile Include="Graphic\Geom\IGeom.cs" />
-    <Compile Include="Graphic\Geom\Rectangle.cs" />
+    <Compile Include="Geom\EmptyGeom.cs" />
+    <Compile Include="Geom\IGeom.cs" />
+    <Compile Include="Geom\Rectangle.cs" />
     <Compile Include="Graphic\Graphic.cs" />
     <Compile Include="Graphic\GraphicInfo.cs" />
     <Compile Include="Graphic\IGraphic.cs" />
