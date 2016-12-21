@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GraphicVisuals\GraphicVisual.cs" />
+    <Compile Include="GraphicVisuals\GraphicVisualGroup.cs" />
     <Compile Include="GraphicVisuals\IGraphicVisual.cs" />
     <Compile Include="Geom\EmptyGeom.cs" />
     <Compile Include="Geom\IGeom.cs" />
