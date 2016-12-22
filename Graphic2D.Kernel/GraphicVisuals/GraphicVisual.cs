@@ -26,16 +26,6 @@ namespace Graphic2D.Kernel.GraphicVisuals
         #region Constructors
 
         /// <summary>
-        /// 内部构造函数，只用于派生类 GraphicVisualGroup 初始化时使用。
-        /// A protected constructor which is only used by the derived class GraphicVisualGroup for initialization.
-        /// </summary>
-        protected GraphicVisual()
-        {
-            _graphic = new Graphic<IGeom>(new EmptyGeom());
-            UpdateTransform();
-        }
-
-        /// <summary>
         /// 初始化一个可视化图形的实例。
         /// Initializes a GraphicVisual instance.
         /// </summary>

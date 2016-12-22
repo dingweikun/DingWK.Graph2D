@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Graphic2D.Kernel.Geom;
+using Graphic2D.Kernel.Graphic;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Windows.Media;
@@ -7,6 +9,23 @@ namespace Graphic2D.Kernel.GraphicVisuals
 {
     public class GraphicVisualGroup : GraphicVisual, ICollection<IGraphicVisual>, INotifyCollectionChanged
     {
+
+        #region Constructor
+
+        /// <summary>
+        /// 初始化一个图形组的实例。
+        /// Initializes a GraphicVisualGroup instance.
+        /// </summary>
+        public GraphicVisualGroup()
+            : base(new Graphic<IGeom>(new EmptyGeom()))
+        {
+        }
+
+        #endregion
+
+
+        #region Indexer
+
         /// <summary>
         /// 图形组内部子图的索引器。
         /// 
@@ -24,8 +43,10 @@ namespace Graphic2D.Kernel.GraphicVisuals
             }
         }
 
+        #endregion
 
-        #region override members
+
+        #region Override members
 
         /// <summary>
         /// 更新所有子图形填充样式
@@ -50,7 +71,7 @@ namespace Graphic2D.Kernel.GraphicVisuals
         }
 
         #endregion
-        
+
 
         #region INotifyCollectionChanged interface implementation
 
@@ -64,7 +85,7 @@ namespace Graphic2D.Kernel.GraphicVisuals
         }
 
         #endregion
-        
+
 
         #region ICollection<IGraphicVisual> interface members
 
@@ -142,8 +163,8 @@ namespace Graphic2D.Kernel.GraphicVisuals
 
         #endregion
 
-        
-        #region 组操作
+
+        #region Methods
 
         public void GroupIn(GraphicVisual visual)
         {
@@ -195,7 +216,6 @@ namespace Graphic2D.Kernel.GraphicVisuals
                 Children.Insert(index + 1, visual);
                 GraphicVisualGroupChildrenChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
             }
-
         }
 
         public void MoveToFirst(GraphicVisual visual)

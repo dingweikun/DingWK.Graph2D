@@ -48,6 +48,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\GraphicVisualPage\PageRoutedEventArgs.cs" />
+    <Compile Include="Controls\GraphicVisualPage\GraphicVisualPage.cs" />
     <Compile Include="GraphicVisuals\GraphicVisual.cs" />
     <Compile Include="GraphicVisuals\GraphicVisualGroup.cs" />
     <Compile Include="GraphicVisuals\IGraphicVisual.cs" />
