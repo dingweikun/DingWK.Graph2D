@@ -36,7 +36,7 @@ namespace Graphic2D.Kernel.GraphicVisuals
         }
 
         /// <summary>
-        /// 初始化一个可视化图形的实例。I
+        /// 初始化一个可视化图形的实例。
         /// Initializes a GraphicVisual instance.
         /// </summary>
         public GraphicVisual(Graphic<IGeom> graphic)
@@ -204,7 +204,6 @@ namespace Graphic2D.Kernel.GraphicVisuals
             Transform trans = new RotateTransform(angle, cpot.X, cpot.Y);
             Origin = trans.Transform(Origin);
             Angle += angle;
-            UpdateTransform();
         }
         
         /// <summary>
@@ -251,7 +250,6 @@ namespace Graphic2D.Kernel.GraphicVisuals
         public virtual void Translate(double dx, double dy)
         {
             Origin += new Vector(dx, dy);
-            UpdateTransform();
         }
 
         #endregion
