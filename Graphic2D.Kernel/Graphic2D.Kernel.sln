@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graphic2D.Kernel", "Graphic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dev", "..\dev\dev.csproj", "{9393B00D-1254-4E21-AFE1-B8CCE91C198C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "..\Test\Test.csproj", "{183B8A66-CDD6-408F-AD57-BCA52DF5EF52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9393B00D-1254-4E21-AFE1-B8CCE91C198C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9393B00D-1254-4E21-AFE1-B8CCE91C198C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9393B00D-1254-4E21-AFE1-B8CCE91C198C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{183B8A66-CDD6-408F-AD57-BCA52DF5EF52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{183B8A66-CDD6-408F-AD57-BCA52DF5EF52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{183B8A66-CDD6-408F-AD57-BCA52DF5EF52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{183B8A66-CDD6-408F-AD57-BCA52DF5EF52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
