@@ -1,19 +1,27 @@
 ﻿using Graphic2D.Kernel.GraphicVisuals;
 using System;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace Graphic2D.Kernel.Controls
 {
     /// <summary>
-    /// 提供图形显示支持的基础界面元素。
-    /// A basic UI element which provides graphic rendering support.
+    /// 基础界面元素，提供图形对象在WPF中显示的支持。
+    /// A basic UI element which provides graphic rendering support in WPF.
     /// </summary>
     public class GraphicVisualPage : FrameworkElement
     {
+
         #region Properties
 
-        #region PageOffsetX 属性
+        /// <summary>
+        /// 
+        /// </summary>
+        public PageOperatorAdorner OperAdorner { get; private set; }
+
+
+        #region PageOffsetX
         /// <summary>
         /// 
         /// </summary>
@@ -32,32 +40,33 @@ namespace Graphic2D.Kernel.Controls
                 typeof(GraphicVisualPage),
                 new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender)
                 {
-                    CoerceValueCallback = delegate (DependencyObject d, object baseValue)
+                    CoerceValueCallback = (d, baseValue) =>
                     {
-                        // 强制保留 2 位小数
-                        //
+                        // 保留 2 位小数
+                        // Round up to 2 decimal paleces.
                         return Math.Round((double)baseValue, 2);
                     },
-                    PropertyChangedCallback = delegate (DependencyObject d, DependencyPropertyChangedEventArgs e)
+
+                    PropertyChangedCallback = (d, e) =>
                     {
                         GraphicVisualPage page = d as GraphicVisualPage;
 
                         // 更新页面内图形的显示位置
-                        //
+                        // Update graphic objects' position in the page.
                         page.SetGraphicHostTranform();
 
-                        // 激发事件
-                        //
+                        // 激发 PageOffsetChangedEvent 事件
+                        // Raise PageOffsetChangedEvent.
                         page.RaiseEvent(new PageRoutedEventArgs(PageOffsetChangedEvent, page));
                     }
                 });
 
         #endregion
 
-        #region PageOffsetY 属性
-        //
-        // CLR属性包装
-        //
+        #region PageOffsetY
+        /// <summary>
+        /// 
+        /// </summary>
         public double PageOffsetY
         {
             get { return (double)GetValue(PageOffsetYProperty); }
@@ -73,28 +82,32 @@ namespace Graphic2D.Kernel.Controls
                 typeof(GraphicVisualPage),
                 new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender)
                 {
-                    CoerceValueCallback = delegate (DependencyObject d, object baseValue)
+                    CoerceValueCallback = (d, baseValue) =>
                     {
-                        // 强制保留 2 位小数
+                        // 保留 2 位小数
+                        // Round up to 2 decimal paleces.
                         return Math.Round((double)baseValue, 2);
                     },
-                    PropertyChangedCallback = delegate (DependencyObject d, DependencyPropertyChangedEventArgs e)
+
+                    PropertyChangedCallback = (d, e) =>
                     {
                         GraphicVisualPage page = d as GraphicVisualPage;
 
                         // 更新页面内图形的显示位置
+                        // Update graphic objects' position in the page.
                         page.SetGraphicHostTranform();
 
                         // 激发 PageOffsetChangedEvent 事件
+                        // Raise PageOffsetChangedEvent.
                         page.RaiseEvent(new PageRoutedEventArgs(PageOffsetChangedEvent, page));
                     }
                 });
         #endregion
 
-        #region PageScale 属性
-        //
-        // CLR属性包装
-        //
+        #region PageScale
+        /// <summary>
+        /// 
+        /// </summary>
         public double PageScale
         {
             get { return (double)GetValue(PageScaleProperty); }
@@ -114,11 +127,12 @@ namespace Graphic2D.Kernel.Controls
                     PropertyChangedCallback = PageScaleChangedCallback
                 });
         //
-        // 回调函数
+        // Property Changed Callback
         //
         private static void PageScaleChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             // 页面比例缩放时，同时调整页面偏移量，保证画面中心位置不变
+            //
             double delt = (double)e.NewValue / (double)e.OldValue;
             GraphicVisualPage page = d as GraphicVisualPage;
             double offsetX = page.PageOffsetX * delt + page.ActualWidth / 2 * (1 - delt);
@@ -127,24 +141,26 @@ namespace Graphic2D.Kernel.Controls
             page.PageOffsetY = offsetY;
 
             // 激发 PageScaleChangedEvent 事件
+            // Raise PageScaleChangedEvent
             page.RaiseEvent(new PageRoutedEventArgs(PageScaleChangedEvent, page));
         }
         //
-        // 强制函数
+        // Coerce Value Callback
         //
         private static object CoercePageScaleValueCallback(DependencyObject d, object baseValue)
         {
             // 强制页面缩放比例范围 [0.01, 10], 保留2位小数。
+            //
             double scale = Math.Round((double)baseValue, 2);
             return scale < 0.01 ? 0.01 : (scale > 10 ? 10 : scale);
         }
 
         #endregion
 
-        #region PageSize 属性
-        //
-        // CLR属性包装
-        //
+        #region PageSize
+        /// <summary>
+        /// 
+        /// </summary>
         public Size PageSize
         {
             get { return (Size)GetValue(PageSizeProperty); }
@@ -161,7 +177,7 @@ namespace Graphic2D.Kernel.Controls
                 new FrameworkPropertyMetadata(new Size(1000, 800), FrameworkPropertyMetadataOptions.AffectsRender)
                 {
                     // 回调函数，激发 PageSizeChangedEvent 路由事件
-                    PropertyChangedCallback = delegate (DependencyObject d, DependencyPropertyChangedEventArgs e)
+                    PropertyChangedCallback = (d, e) =>
                     {
                         var page = d as GraphicVisualPage;
                         page.RaiseEvent(new PageRoutedEventArgs(PageSizeChangedEvent, page));
@@ -169,10 +185,10 @@ namespace Graphic2D.Kernel.Controls
                 });
         #endregion
 
-        #region PageBackColor 属性
-        //
-        // CLR属性包装
-        //
+        #region PageBackColor
+        /// <summary>
+        /// 
+        /// </summary>
         public SolidColorBrush PageBackColor
         {
             get { return (SolidColorBrush)GetValue(PageBackColorProperty); }
@@ -189,10 +205,10 @@ namespace Graphic2D.Kernel.Controls
                 new FrameworkPropertyMetadata(Brushes.White, FrameworkPropertyMetadataOptions.AffectsRender));
         #endregion
 
-        #region PageBorderWidth 属性
-        //
-        // CLR属性包装
-        //
+        #region PageBorderWidth
+        /// <summary>
+        /// 
+        /// </summary>
         public double PageBorderWidth
         {
             get { return (double)GetValue(PageBorderWidthProperty); }
@@ -209,10 +225,10 @@ namespace Graphic2D.Kernel.Controls
                 new FrameworkPropertyMetadata(5.0, FrameworkPropertyMetadataOptions.AffectsRender));
         #endregion
 
-        #region GridSize 属性
-        //
-        // CLR属性包装
-        //
+        #region GridSize 
+        /// <summary>
+        /// 
+        /// </summary>
         public double GridSize
         {
             get { return (double)GetValue(GridSizeProperty); }
@@ -229,10 +245,10 @@ namespace Graphic2D.Kernel.Controls
                 new FrameworkPropertyMetadata(50.0, FrameworkPropertyMetadataOptions.AffectsRender));
         #endregion
 
-        #region GridColor 属性
-        //
-        // CLR属性包装
-        //
+        #region GridColor 
+        /// <summary>
+        /// 
+        /// </summary>
         public SolidColorBrush GridColor
         {
             get { return (SolidColorBrush)GetValue(GridColorProperty); }
@@ -249,10 +265,10 @@ namespace Graphic2D.Kernel.Controls
                 new FrameworkPropertyMetadata(Brushes.Gray, FrameworkPropertyMetadataOptions.AffectsRender));
         #endregion
 
-        #region ShowGrid 属性
-        //
-        // CLR属性包装
-        //
+        #region ShowGrid 
+        /// <summary>
+        /// 
+        /// </summary>
         public bool ShowGrid
         {
             get { return (bool)GetValue(ShowGridProperty); }
@@ -269,10 +285,10 @@ namespace Graphic2D.Kernel.Controls
                 new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender));
         #endregion
 
-        #region Background 属性
-        //
-        // CLR属性包装
-        //
+        #region Background 
+        /// <summary>
+        /// 
+        /// </summary>
         public Brush Background
         {
             get { return (Brush)GetValue(BackgroundProperty); }
@@ -289,10 +305,10 @@ namespace Graphic2D.Kernel.Controls
                 new FrameworkPropertyMetadata(Brushes.Transparent, FrameworkPropertyMetadataOptions.AffectsRender));
         #endregion
 
-        #region GraphicHost 属性
-        //
-        // CLR属性包装
-        //
+        #region GraphicHost 
+        /// <summary>
+        /// 
+        /// </summary>
         public GraphicVisualGroup GraphicHost
         {
             get { return (GraphicVisualGroup)GetValue(GraphicHostProperty); }
@@ -311,7 +327,7 @@ namespace Graphic2D.Kernel.Controls
                     PropertyChangedCallback = GraphicHostChangedCallback
                 });
         //
-        // 回调函数
+        // Property Changed Callback
         //
         private static void GraphicHostChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -332,16 +348,16 @@ namespace Graphic2D.Kernel.Controls
         #region Routed events
 
         #region PagePageOffsetChanged 事件
-        //
-        // CLR 事件包装
-        //
+        /// <summary>
+        /// 
+        /// </summary>
         public event RoutedEventHandler PageOffsetChanged
         {
             add { this.AddHandler(PageOffsetChangedEvent, value); }
             remove { this.RemoveHandler(PageOffsetChangedEvent, value); }
         }
         //
-        // 路由事件定义
+        // Routed event definition
         //
         public static readonly RoutedEvent PageOffsetChangedEvent =
             EventManager.RegisterRoutedEvent(
@@ -352,16 +368,16 @@ namespace Graphic2D.Kernel.Controls
         #endregion
 
         #region PageScaleChanged 事件
-        //
-        // CLR 事件包装
-        //
+        /// <summary>
+        /// 
+        /// </summary>
         public event RoutedEventHandler PageScaleChanged
         {
             add { this.AddHandler(PageScaleChangedEvent, value); }
             remove { this.RemoveHandler(PageScaleChangedEvent, value); }
         }
         //
-        // 路由事件定义
+        // Routed event definition
         //
         public static readonly RoutedEvent PageScaleChangedEvent =
             EventManager.RegisterRoutedEvent(
@@ -372,16 +388,16 @@ namespace Graphic2D.Kernel.Controls
         #endregion
 
         #region PageSizeChanged 事件
-        //
-        // CLR 事件包装
-        //
+        /// <summary>
+        /// 
+        /// </summary>
         public event RoutedEventHandler PageSizeChanged
         {
             add { this.AddHandler(PageSizeChangedEvent, value); }
             remove { this.RemoveHandler(PageSizeChangedEvent, value); }
         }
         //
-        // 路由事件定义
+        // Routed event definition
         //
         public static readonly RoutedEvent PageSizeChangedEvent =
             EventManager.RegisterRoutedEvent(
@@ -392,16 +408,16 @@ namespace Graphic2D.Kernel.Controls
         #endregion
 
         #region PageRenderSizeChanged 事件
-        //
-        // CLR 事件包装
-        //
+        /// <summary>
+        /// 
+        /// </summary>
         public event RoutedEventHandler PageRenderSizeChanged
         {
             add { this.AddHandler(PageRenderSizeChangedEvent, value); }
             remove { this.RemoveHandler(PageRenderSizeChangedEvent, value); }
         }
         //
-        // 路由事件定义
+        // Routed event definition
         //
         public static readonly RoutedEvent PageRenderSizeChangedEvent =
             EventManager.RegisterRoutedEvent(
@@ -414,7 +430,7 @@ namespace Graphic2D.Kernel.Controls
         #endregion
 
 
-        #region Members related to graphic rendering support  
+        #region Members related to graphic rendering support in WPF  
 
         private readonly VisualCollection _children;
 
@@ -426,6 +442,32 @@ namespace Graphic2D.Kernel.Controls
 
         #endregion
 
+
+        #region Constructor
+
+        public GraphicVisualPage()
+        {
+            // 初始化可视化对象集合
+            _children = new VisualCollection(this);
+
+            Loaded += (sender, e) =>
+            {
+                AdornerLayer ad = AdornerLayer.GetAdornerLayer(this);
+
+                if (ad != null)
+                {
+                    OperAdorner = new PageOperatorAdorner(this);
+                    ad.Add(OperAdorner);
+                    OperAdorner._canvas.Children.Add(new ResizeRotateOperator());
+
+                    OperAdorner.DataContext = this.GraphicHost[1];
+                }
+
+            };
+
+        }
+
+        #endregion
 
 
         private void SetGraphicHostTranform()

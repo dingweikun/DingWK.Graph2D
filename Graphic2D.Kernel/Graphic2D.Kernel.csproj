@@ -50,6 +50,10 @@
   <ItemGroup>
     <Compile Include="Controls\GraphicVisualPage\PageRoutedEventArgs.cs" />
     <Compile Include="Controls\GraphicVisualPage\GraphicVisualPage.cs" />
+    <Compile Include="Controls\PageAdorner\PageOperatorAdorner.cs" />
+    <Compile Include="Controls\PageOperators\ResizeRotateOperator.cs" />
+    <Compile Include="Controls\PageOperators\PageOperator.cs" />
+    <Compile Include="Converters\PageOffsetToScrollBarValue.cs" />
     <Compile Include="GraphicVisuals\GraphicVisual.cs" />
     <Compile Include="GraphicVisuals\GraphicVisualGroup.cs" />
     <Compile Include="GraphicVisuals\IGraphicVisual.cs" />
@@ -82,7 +86,9 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Controls\PageRulers\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
