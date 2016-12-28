@@ -1,0 +1,165 @@
+﻿using System;
+using System.Windows;
+using System.Windows.Media;
+
+namespace Graphic2D.Kernel.Controls
+{
+    public abstract class  PageRuler : FrameworkElement
+    {
+        protected double Start { get; set; }
+        protected double StartValue => (Start - OrignPosition) / ZoomScale;
+        protected double MinorTickCount { get; set; }
+        protected double MinorTickSpacingValue { get; set; }
+        protected double MinorTickSpacing => MinorTickSpacingValue * ZoomScale;
+        
+
+        #region OrignPosition 属性
+        /// <summary>
+        /// 标尺0刻度位置
+        /// </summary>
+        public double OrignPosition
+        {
+            get { return (double)GetValue(OrignPositionProperty); }
+            set { SetValue(OrignPositionProperty, value); }
+        }
+        //
+        // 依赖属性定义
+        //
+        public static readonly DependencyProperty OrignPositionProperty =
+            DependencyProperty.Register(
+                nameof(OrignPosition),
+                typeof(double),
+                typeof(PageRuler),
+                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender));
+        #endregion
+
+
+        #region ScaleColor 属性
+        /// <summary>
+        /// 标尺刻度颜色
+        /// </summary>
+        public Brush TickColor
+        {
+            get { return (Brush)GetValue(TickColorProperty); }
+            set { SetValue(TickColorProperty, value); }
+        }
+        //
+        // 依赖属性定义
+        //
+        public static readonly DependencyProperty TickColorProperty =
+            DependencyProperty.Register(
+                nameof(TickColor),
+                typeof(Brush),
+                typeof(PageRuler),
+                new FrameworkPropertyMetadata(Brushes.DimGray, FrameworkPropertyMetadataOptions.AffectsRender));
+        #endregion
+
+
+        #region TickTextColor 属性
+        /// <summary>
+        /// 标尺刻度文字颜色
+        /// </summary>
+        public Brush TickTextColor
+        {
+            get { return (Brush)GetValue(TickTextColorProperty); }
+            set { SetValue(TickTextColorProperty, value); }
+        }
+        //
+        // 依赖属性定义
+        //
+        public static readonly DependencyProperty TickTextColorProperty =
+            DependencyProperty.Register(
+                nameof(TickTextColor),
+                typeof(Brush),
+                typeof(PageRuler),
+                new FrameworkPropertyMetadata(Brushes.Black, FrameworkPropertyMetadataOptions.AffectsRender));
+        #endregion
+
+
+        #region ZoomScale 属性
+        /// <summary>
+        /// 标尺缩放比例
+        /// </summary>
+        public double ZoomScale
+        {
+            get { return (double)GetValue(ZoomScaleProperty); }
+            set { SetValue(ZoomScaleProperty, value); }
+        }
+        //
+        // 依赖属性定义
+        //
+        public static readonly DependencyProperty ZoomScaleProperty =
+            DependencyProperty.Register(
+                nameof(ZoomScale),
+                typeof(double),
+                typeof(PageRuler),
+                new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.AffectsRender));
+        #endregion
+
+
+        #region DesignTickSpacing
+        /// <summary>
+        /// 标尺大刻度设计间距，该值为标尺大刻度的设计期望间距，实际间距是根据该值计算获得。
+        /// </summary>
+        public double DesignTickSpacing
+        {
+            get { return (double)GetValue(DesignTickSpacingProperty); }
+            set { SetValue(DesignTickSpacingProperty, value); }
+        }
+        //
+        // 依赖属性定义
+        //
+        public static readonly DependencyProperty DesignTickSpacingProperty =
+            DependencyProperty.Register(
+                nameof(DesignTickSpacing),
+                typeof(double), 
+                typeof(PageRuler),
+                new FrameworkPropertyMetadata(50.0, FrameworkPropertyMetadataOptions.AffectsRender));
+        #endregion
+        
+
+        protected PageRuler()
+        {
+            ClipToBounds = true;
+            SnapsToDevicePixels = true;
+        }
+
+
+        protected override void OnRender(DrawingContext drawingContext)
+        {
+            base.OnRender(drawingContext);
+
+            //
+            // 计算标尺动态刻度 小刻度 div 大刻度 step
+            //
+
+            double designStepValue = DesignTickSpacing / ZoomScale;
+
+            double radix = designStepValue < 1 ? 0.1 : 10;
+
+            double factor = 1;
+            while (designStepValue < 1 || designStepValue >= 10)
+            {
+                designStepValue /= radix;
+                factor *= radix;
+            }
+
+            double round = Math.Round(designStepValue);
+
+            double stepValue = factor * (round > 5 ? 10 : (round > 2 ? 5 : round));
+
+            MinorTickCount = round != 2 ? 5 : 2;
+
+            MinorTickSpacingValue = stepValue / MinorTickCount;
+
+            //
+            // 计算标尺刻度绘制起始位置
+            //
+            Start = OrignPosition <= 0 ?
+                OrignPosition - (int)(OrignPosition / (stepValue * ZoomScale)) * stepValue * ZoomScale :
+                OrignPosition - (int)(OrignPosition / (stepValue * ZoomScale) + 1) * stepValue * ZoomScale;
+
+        }
+
+    }
+}
