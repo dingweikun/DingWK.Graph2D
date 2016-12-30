@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\GraphicVisualCanvas.cs" />
+    <Compile Include="Controls\GraphicVisualPage\GraphicVisualPageModel.cs" />
     <Compile Include="Controls\GraphicVisualPage\PageRoutedEventArgs.cs" />
     <Compile Include="Controls\GraphicVisualPage\GraphicVisualPage.cs" />
     <Compile Include="Controls\PageAdorner\PageOperatorAdorner.cs" />
