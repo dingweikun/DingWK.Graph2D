@@ -10,7 +10,7 @@ namespace Graphic2D.Kernel.Controls
     {
         public override void Update(double scale)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

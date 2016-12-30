@@ -130,34 +130,34 @@ namespace Graphic2D.Kernel.Controls
             base.OnRender(drawingContext);
 
             //
-            // 计算标尺动态刻度 小刻度 div 大刻度 step
+            // 计算标尺动态刻度 小刻度 MinorTickSpacing 大刻度 TickSpacing
             //
 
-            double designStepValue = DesignTickSpacing / ZoomScale;
+            double designTickSpacingValue = DesignTickSpacing / ZoomScale;
 
-            double radix = designStepValue < 1 ? 0.1 : 10;
+            double radix = designTickSpacingValue < 1 ? 0.1 : 10;
 
             double factor = 1;
-            while (designStepValue < 1 || designStepValue >= 10)
+            while (designTickSpacingValue < 1 || designTickSpacingValue >= 10)
             {
-                designStepValue /= radix;
+                designTickSpacingValue /= radix;
                 factor *= radix;
             }
 
-            double round = Math.Round(designStepValue);
+            double round = Math.Round(designTickSpacingValue);
 
-            double stepValue = factor * (round > 5 ? 10 : (round > 2 ? 5 : round));
+            double tickSpacingValue = factor * (round > 5 ? 10 : (round > 2 ? 5 : round));
 
             MinorTickCount = round != 2 ? 5 : 2;
 
-            MinorTickSpacingValue = stepValue / MinorTickCount;
+            MinorTickSpacingValue = tickSpacingValue / MinorTickCount;
 
             //
             // 计算标尺刻度绘制起始位置
             //
             Start = OrignPosition <= 0 ?
-                OrignPosition - (int)(OrignPosition / (stepValue * ZoomScale)) * stepValue * ZoomScale :
-                OrignPosition - (int)(OrignPosition / (stepValue * ZoomScale) + 1) * stepValue * ZoomScale;
+                OrignPosition - (int)(OrignPosition / (tickSpacingValue * ZoomScale)) * tickSpacingValue * ZoomScale :
+                OrignPosition - (int)(OrignPosition / (tickSpacingValue * ZoomScale) + 1) * tickSpacingValue * ZoomScale;
 
         }
 

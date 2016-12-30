@@ -460,7 +460,7 @@ namespace Graphic2D.Kernel.Controls
                     ad.Add(OperAdorner);
                     OperAdorner._canvas.Children.Add(new ResizeRotateOperator());
 
-                    OperAdorner.DataContext = this.GraphicHost[1];
+                    //OperAdorner.DataContext = this.GraphicHost[1];
                 }
 
             };
@@ -472,7 +472,7 @@ namespace Graphic2D.Kernel.Controls
 
         private void SetGraphicHostTranform()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
     }

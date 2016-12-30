@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <g2d:HorPageRuler TickColor="Purple" TickTextColor="Purple"/>
-        <g2d:VerPageRuler TickColor="Purple" TickTextColor="Purple"/>
+        <!--<g2d:HorPageRuler TickColor="Purple" TickTextColor="Purple"/>
+        <g2d:VerPageRuler TickColor="Purple" TickTextColor="Purple"/>-->
+        <g2d:GraphicVisualCanvas/>
     </Grid>
 </Window>
