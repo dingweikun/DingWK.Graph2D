@@ -1,4 +1,4 @@
-﻿using Graphic2D.Kernel.GraphicVisuals;
+﻿using Graphic2D.Kernel.Visuals;
 using System;
 using System.Windows;
 using System.Windows.Documents;
@@ -14,12 +14,6 @@ namespace Graphic2D.Kernel.Controls
     {
 
         #region Properties
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public PageOperatorAdorner OperAdorner { get; private set; }
-
 
         #region PageOffsetX
         /// <summary>
@@ -53,7 +47,8 @@ namespace Graphic2D.Kernel.Controls
 
                         // 更新页面内图形的显示位置
                         // Update graphic objects' position in the page.
-                        page.SetGraphicHostTranform();
+                        page.SetVisualHostTranform();
+                        page.SetGridVisualTranform();
 
                         // 激发 PageOffsetChangedEvent 事件
                         // Raise PageOffsetChangedEvent.
@@ -95,13 +90,15 @@ namespace Graphic2D.Kernel.Controls
 
                         // 更新页面内图形的显示位置
                         // Update graphic objects' position in the page.
-                        page.SetGraphicHostTranform();
+                        page.SetVisualHostTranform();
+                        page.SetGridVisualTranform();
 
                         // 激发 PageOffsetChangedEvent 事件
                         // Raise PageOffsetChangedEvent.
                         page.RaiseEvent(new PageRoutedEventArgs(PageOffsetChangedEvent, page));
                     }
                 });
+
         #endregion
 
         #region PageScale
@@ -305,31 +302,31 @@ namespace Graphic2D.Kernel.Controls
                 new FrameworkPropertyMetadata(Brushes.Transparent, FrameworkPropertyMetadataOptions.AffectsRender));
         #endregion
 
-        #region GraphicHost 
+        #region VisualHost 
         /// <summary>
         /// 
         /// </summary>
-        public GraphicVisualGroup GraphicHost
+        public GroupVisual VisualHost
         {
-            get { return (GraphicVisualGroup)GetValue(GraphicHostProperty); }
-            set { SetValue(GraphicHostProperty, value); }
+            get { return (GroupVisual)GetValue(VisualHostProperty); }
+            set { SetValue(VisualHostProperty, value); }
         }
         //
         // Dependency property definition
         //
-        public static readonly DependencyProperty GraphicHostProperty =
+        public static readonly DependencyProperty VisualHostProperty =
             DependencyProperty.Register(
-                nameof(GraphicHost),
-                typeof(GraphicVisualGroup),
+                nameof(VisualHost),
+                typeof(GroupVisual),
                 typeof(GraphicVisualPage),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.None)
                 {
-                    PropertyChangedCallback = GraphicHostChangedCallback
+                    PropertyChangedCallback = VisualHostChangedCallback
                 });
         //
         // Property Changed Callback
         //
-        private static void GraphicHostChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void VisualHostChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             GraphicVisualPage page = d as GraphicVisualPage;
             if (e.OldValue != null)
@@ -337,7 +334,7 @@ namespace Graphic2D.Kernel.Controls
             if (e.NewValue != null)
             {
                 page.Children.Add((Visual)e.NewValue);
-                page.SetGraphicHostTranform();
+                page.SetVisualHostTranform();
             }
         }
         #endregion
@@ -347,7 +344,7 @@ namespace Graphic2D.Kernel.Controls
 
         #region Routed events
 
-        #region PagePageOffsetChanged 事件
+        #region PageOffsetChanged 事件
         /// <summary>
         /// 
         /// </summary>
@@ -432,6 +429,10 @@ namespace Graphic2D.Kernel.Controls
 
         #region Members related to graphic rendering support in WPF  
 
+        private readonly DrawingVisual _gridVisual;
+
+        public DrawingVisual GridVisual => _gridVisual;
+
         private readonly VisualCollection _children;
 
         public VisualCollection Children => _children;
@@ -447,32 +448,258 @@ namespace Graphic2D.Kernel.Controls
 
         public GraphicVisualPage()
         {
-            // 初始化可视化对象集合
+            _gridVisual = new DrawingVisual();
+
             _children = new VisualCollection(this);
-
-            Loaded += (sender, e) =>
-            {
-                AdornerLayer ad = AdornerLayer.GetAdornerLayer(this);
-
-                if (ad != null)
-                {
-                    OperAdorner = new PageOperatorAdorner(this);
-                    ad.Add(OperAdorner);
-                    OperAdorner._canvas.Children.Add(new ResizeRotateOperator());
-
-                    //OperAdorner.DataContext = this.GraphicHost[1];
-                }
-
-            };
-
+            _children.Add(_gridVisual);
+            
+            Loaded += (sender, e) => UpdateGridVisual();
         }
 
         #endregion
 
-
-        private void SetGraphicHostTranform()
+        private void UpdateGridVisual()
         {
-            //throw new NotImplementedException();
+            if (GridVisual != null)
+            {
+                DrawingContext dc = GridVisual.RenderOpen();
+
+                Matrix mtx = PresentationSource.FromVisual(GridVisual).CompositionTarget.TransformToDevice;
+                double dpiFactor = 1 / mtx.M11;
+
+                Brush minorColor = GridColor.CloneCurrentValue();
+                minorColor.Opacity = 0.5;
+                Pen minorPen = new Pen(minorColor, 1 * dpiFactor);
+                Pen majorPen = new Pen(GridColor.CloneCurrentValue(), 1 * dpiFactor);
+
+                if (majorPen.CanFreeze) majorPen.Freeze();
+                if (minorPen.CanFreeze) minorPen.Freeze();
+
+                double xlen = PageSize.Width * PageScale;
+                double ylen = PageSize.Height * PageScale;
+
+                LineGeometry lgx = new LineGeometry(new Point(0, 0), new Point(0, ylen));
+                LineGeometry lgy = new LineGeometry(new Point(0, 0), new Point(xlen, 0));
+                if (lgx.CanFreeze) lgx.Freeze();
+                if (lgy.CanFreeze) lgy.Freeze();
+
+
+                for (double x = 0; x < PageSize.Width; x += GridSize)
+                {
+                    GuidelineSet gridGuidelines = new GuidelineSet();
+                    gridGuidelines.GuidelinesX.Add(x * PageScale - dpiFactor / 2);
+
+                    dc.PushGuidelineSet(gridGuidelines);
+                    dc.PushTransform(new TranslateTransform(x * PageScale, 0));
+                    dc.DrawGeometry(null, (x / GridSize) % 5 == 0 ? majorPen : minorPen, lgx);
+                    dc.Pop();
+                    dc.Pop();
+                }
+                
+                for (double y = 0; y < PageSize.Height; y += GridSize)
+                {
+                    GuidelineSet gridGuidelines = new GuidelineSet();
+                    gridGuidelines.GuidelinesY.Add(y * PageScale - dpiFactor / 2);
+
+                    dc.PushGuidelineSet(gridGuidelines);
+                    dc.PushTransform(new TranslateTransform(0, y * PageScale));
+                    dc.DrawGeometry(null, (y / GridSize) % 5 == 0 ? majorPen : minorPen, lgy);
+                    dc.Pop();
+                    dc.Pop();
+                }
+
+                dc.Close();
+            }
+        }
+
+        private void SetGridVisualTranform()
+        {
+            if (GridVisual != null)
+            {
+                GridVisual.Transform = new TranslateTransform(PageOffsetX, PageOffsetY);
+            }
+        }
+
+        private void SetVisualHostTranform()
+        {
+            if (VisualHost != null)
+            {
+                TransformGroup trans = new TransformGroup();
+                trans.Children.Add(new ScaleTransform(PageScale, PageScale));
+                trans.Children.Add(new TranslateTransform(PageOffsetX, PageOffsetY));
+
+                VisualHost.Transform = trans;
+            }
+        }
+
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            base.OnRenderSizeChanged(sizeInfo);
+            if (IsLoaded)
+            {
+                // 页面窗口大小改变时，调整页面偏移量，保证画面中心位置不变
+
+                if (sizeInfo.WidthChanged)
+                    PageOffsetX += (RenderSize.Width - sizeInfo.PreviousSize.Width) / 2;
+                if (sizeInfo.HeightChanged)
+                    PageOffsetY += (RenderSize.Height - sizeInfo.PreviousSize.Height) / 2;
+
+                // 激发 PageRenderSizeChangedEvent 路由事件
+                RaiseEvent(new PageRoutedEventArgs(PageRenderSizeChangedEvent, this));
+            }
+        }
+
+        protected override void OnRender(DrawingContext drawingContext)
+        {
+            base.OnRender(drawingContext);
+            drawingContext.DrawRectangle(Background, null, new Rect(RenderSize));
+
+            Matrix mtx = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
+            double dpiFactor = 1 / mtx.M11;
+
+            Pen scaledPen = new Pen(GridColor, 1 * dpiFactor);
+            double halfPenWidth = scaledPen.Thickness / 2;
+
+            // 网格画刷
+            //DrawingBrush gridBrush = ShowGrid ? GetGridBrush(scaledPen) : null;
+            DrawingBrush gridBrush = ShowGrid ? GetGridBrush(dpiFactor) : null;
+            gridBrush = null;
+
+            // 页面边缘
+            Rect border = new Rect(PageOffsetX, PageOffsetY, PageSize.Width * PageScale, PageSize.Height * PageScale);
+
+            // 建立参考线，保证页面边缘对齐像素
+            GuidelineSet borderGuidelines = new GuidelineSet();
+            borderGuidelines.GuidelinesX.Add(border.Left - halfPenWidth);
+            borderGuidelines.GuidelinesX.Add(border.Right - halfPenWidth);
+            borderGuidelines.GuidelinesY.Add(border.Top - halfPenWidth);
+            borderGuidelines.GuidelinesY.Add(border.Bottom - halfPenWidth);
+
+            drawingContext.PushGuidelineSet(borderGuidelines);
+            scaledPen.DashStyle = DashStyles.Solid;
+            drawingContext.DrawRectangle(PageBackColor, scaledPen.CloneCurrentValue(), border);
+            //scaledPen.DashStyle = DashStyles.Dot;
+
+            drawingContext.DrawRectangle(gridBrush, null, border);
+            drawingContext.Pop();
+        }
+
+        private DrawingBrush GetGridBrush(Pen pen)
+        {
+            double dpiFactor = pen.Thickness;
+
+            double num = 5;
+            double sub = GridSize * PageScale;
+            double len = sub * num;
+
+            Brush majorColor = GridColor.CloneCurrentValue();
+            Brush minorColor = GridColor.CloneCurrentValue();
+            minorColor.Opacity = 0.5;
+
+            Pen majorPen = new Pen(majorColor, 1 * dpiFactor) { DashStyle = DashStyles.Solid };
+            Pen minorPen = new Pen(minorColor, 1 * dpiFactor) { DashStyle = DashStyles.Solid };
+
+            if (majorPen.CanFreeze) majorPen.Freeze();
+            if (minorPen.CanFreeze) minorPen.Freeze();
+
+            GuidelineSet gridGuidelines = new GuidelineSet();
+
+            GeometryGroup majorGeometryGroup = new GeometryGroup();
+            majorGeometryGroup.Children.Add(new LineGeometry(new Point(0, 0), new Point(0, len)));
+            majorGeometryGroup.Children.Add(new LineGeometry(new Point(0, 0), new Point(len, 0)));
+            gridGuidelines.GuidelinesX.Add(dpiFactor / 2);
+            gridGuidelines.GuidelinesY.Add(dpiFactor / 2);
+
+            GeometryGroup minorGeometryGroup = new GeometryGroup();
+            for (int i = 1; i < num; i++)
+            {
+                double pos = i * sub;
+                minorGeometryGroup.Children.Add(new LineGeometry(new Point(pos, 0), new Point(pos, len)));
+                minorGeometryGroup.Children.Add(new LineGeometry(new Point(0, pos), new Point(len, pos)));
+                gridGuidelines.GuidelinesX.Add(pos + dpiFactor / 2);
+                gridGuidelines.GuidelinesY.Add(pos + dpiFactor / 2);
+            }
+
+            DrawingGroup drawingGroup = new DrawingGroup();
+            drawingGroup.Children.Add(new GeometryDrawing(null, majorPen, majorGeometryGroup));
+            drawingGroup.Children.Add(new GeometryDrawing(null, minorPen, minorGeometryGroup));
+            drawingGroup.GuidelineSet = gridGuidelines;
+
+            DrawingBrush gridBrush = new DrawingBrush(drawingGroup);
+            gridBrush.Stretch = Stretch.None;
+            gridBrush.TileMode = TileMode.Tile;
+            gridBrush.ViewportUnits = BrushMappingMode.Absolute;
+            gridBrush.Viewport = new Rect(0, 0, len, len);
+
+            return gridBrush;
+        }
+
+        private DrawingBrush GetGridBrush(double dpiFactor)
+        {
+            Pen majorPen = new Pen(GridColor, 1 * dpiFactor) { DashStyle = DashStyles.Solid };
+            Pen minorPen = new Pen(GridColor, 1 * dpiFactor) { DashStyle = DashStyles.Dot };
+
+            if (majorPen.CanFreeze) majorPen.Freeze();
+            if (minorPen.CanFreeze) minorPen.Freeze();
+
+            GeometryGroup majorGeometryGroup = new GeometryGroup();
+            GeometryGroup minorGeometryGroup = new GeometryGroup();
+
+            GuidelineSet gridGuidelines = new GuidelineSet();
+
+            double xlen = PageSize.Width * PageScale;
+            double ylen = PageSize.Height * PageScale;
+
+            //LineGeometry lgx = new LineGeometry(new Point(0, 0), new Point(0, ylen));
+            //LineGeometry lgy = new LineGeometry(new Point(0, 0), new Point(xlen, 0));
+
+            for (double x = 0; x < PageSize.Width; x += GridSize)
+            {
+                gridGuidelines.GuidelinesX.Add(x * PageScale - dpiFactor / 2);
+                LineGeometry lgx = new LineGeometry(new Point(x * PageScale, 0), new Point(x * PageScale, ylen));
+                lgx.Freeze();
+                //lgx.Transform = new TranslateTransform(x * PageScale, 0);
+
+                if ((x / GridSize) % 5 == 0)
+                {
+                    majorGeometryGroup.Children.Add(lgx);
+                }
+                else
+                {
+                    minorGeometryGroup.Children.Add(lgx);
+                }
+            }
+
+
+            for (double y = 0; y < PageSize.Height; y += GridSize)
+            {
+                gridGuidelines.GuidelinesY.Add(y * PageScale - dpiFactor / 2);
+                LineGeometry lgy = new LineGeometry(new Point(0, y * PageScale), new Point(xlen, y * PageScale));
+                lgy.Freeze();
+                //lgy.Transform = new TranslateTransform(0, y * PageScale);
+                if ((y / GridSize) % 5 == 0)
+                {
+                    majorGeometryGroup.Children.Add(lgy);
+                }
+                else
+                {
+                    minorGeometryGroup.Children.Add(lgy);
+                }
+            }
+
+            majorGeometryGroup.Freeze();
+            minorGeometryGroup.Freeze();
+
+            DrawingGroup drawingGroup = new DrawingGroup();
+            drawingGroup.Children.Add(new GeometryDrawing(null, majorPen, majorGeometryGroup));
+            drawingGroup.Children.Add(new GeometryDrawing(null, minorPen, minorGeometryGroup));
+            drawingGroup.GuidelineSet = gridGuidelines;
+            drawingGroup.Freeze();
+
+            DrawingBrush brush = new DrawingBrush(drawingGroup);
+            brush.Freeze();
+
+            return brush;
         }
 
     }
