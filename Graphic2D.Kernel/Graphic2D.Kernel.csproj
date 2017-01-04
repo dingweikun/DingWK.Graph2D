@@ -50,27 +50,14 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\GraphicVisualCanvas.cs" />
-    <Compile Include="Controls\GraphicVisualPage\GraphicVisualPageModel.cs" />
-    <Compile Include="Controls\GraphicVisualPage\PageRoutedEventArgs.cs" />
-    <Compile Include="Controls\GraphicVisualPage\GraphicVisualPage.cs" />
-    <Compile Include="Controls\PageAdorner\PageOperatorAdorner.cs" />
-    <Compile Include="Controls\PageOperators\CustomControl.cs" />
-    <Compile Include="Controls\PageOperators\ResizeRotateOperator.cs" />
-    <Compile Include="Controls\PageOperators\PageOperator.cs" />
-    <Compile Include="Controls\PageRulers\HorPageRuler.cs" />
-    <Compile Include="Controls\PageRulers\PageRuler.cs" />
-    <Compile Include="Controls\PageRulers\VerPageRuler.cs" />
-    <Compile Include="Converters\PageOffsetToScrollBarValue.cs" />
-    <Compile Include="GraphicVisuals\GraphicVisual.cs" />
-    <Compile Include="GraphicVisuals\GraphicVisualGroup.cs" />
-    <Compile Include="GraphicVisuals\IGraphicVisual.cs" />
+    <Compile Include="Visuals\GeomVisual.cs" />
+    <Compile Include="Visuals\GroupVisual.cs" />
+    <Compile Include="Visuals\GraphicVisual.cs" />
+    <Compile Include="Visuals\IVisualInfo.cs" />
     <Compile Include="Geom\EmptyGeom.cs" />
     <Compile Include="Geom\IGeom.cs" />
     <Compile Include="Geom\Rectangle.cs" />
-    <Compile Include="Graphic\Graphic.cs" />
-    <Compile Include="Graphic\GraphicInfo.cs" />
-    <Compile Include="Graphic\IGraphic.cs" />
+    <Compile Include="Visuals\VisualInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -93,16 +80,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Themes\GraphicVisualCanvas.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
