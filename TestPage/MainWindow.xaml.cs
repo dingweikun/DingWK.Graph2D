@@ -24,5 +24,10 @@ namespace TestPage
         {
             InitializeComponent();
         }
+
+        private void Page_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("www");
+        }
     }
 }

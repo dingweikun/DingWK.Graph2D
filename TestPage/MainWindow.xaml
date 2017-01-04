@@ -7,8 +7,21 @@
         xmlns:g2d="clr-namespace:Graphic2D.Kernel.Controls;assembly=Graphic2D.Kernel"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <StackPanel>
-        <Slider Value="{Binding ElementName=Page, Path=PageScale,Mode=TwoWay}"/>
-        <g2d:GraphicVisualPage x:Name="Page" GridSize="5"/>
-    </StackPanel>
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Border ClipToBounds="True">
+            <g2d:GraphicVisualPage x:Name="Page" GridSize="2" PageSize="400,200" ShowGrid="False"
+                                   MouseDown="Page_MouseDown"/>
+        </Border>
+        <StackPanel Grid.Row="1">
+
+            <Slider Value="{Binding ElementName=Page, Path=PageScale,Mode=TwoWay}" />
+            <CheckBox IsChecked="{Binding ElementName=Page,Path=ShowGrid}">显示网格</CheckBox>
+        </StackPanel>
+
+    </Grid>
 </Window>
