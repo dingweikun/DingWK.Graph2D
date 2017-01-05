@@ -14,7 +14,6 @@ namespace Graphic2D.Kernel.Controls
     /// </summary>
     public class GraphicVisualPage : FrameworkElement
     {
-
         #region Properties
 
         #region PageOffsetX
@@ -244,6 +243,12 @@ namespace Graphic2D.Kernel.Controls
                 typeof(GraphicVisualPage),
                 new FrameworkPropertyMetadata(50.0, FrameworkPropertyMetadataOptions.AffectsRender)
                 {
+                    CoerceValueCallback = (d, baseValue)=>
+                    {
+                        double size = Math.Round((double)baseValue, 0);
+                        return size < 1 ? 1 : (size > 50 ? 50 : size);
+                    },
+
                     PropertyChangedCallback = (d, e) =>
                     {
                         // 更新网格 Update grid
@@ -256,9 +261,9 @@ namespace Graphic2D.Kernel.Controls
         /// <summary>
         /// 
         /// </summary>
-        public SolidColorBrush GridColor
+        public Color GridColor
         {
-            get { return (SolidColorBrush)GetValue(GridColorProperty); }
+            get { return (Color)GetValue(GridColorProperty); }
             set { SetValue(GridColorProperty, value); }
         }
         //
@@ -267,9 +272,9 @@ namespace Graphic2D.Kernel.Controls
         public static readonly DependencyProperty GridColorProperty =
             DependencyProperty.Register(
                 nameof(GridColor),
-                typeof(SolidColorBrush),
+                typeof(Color),
                 typeof(GraphicVisualPage),
-                new FrameworkPropertyMetadata(Brushes.Gray, FrameworkPropertyMetadataOptions.AffectsRender)
+                new FrameworkPropertyMetadata(Colors.Gray, FrameworkPropertyMetadataOptions.AffectsRender)
                 {
                     PropertyChangedCallback = (d, e) =>
                     {
@@ -482,11 +487,12 @@ namespace Graphic2D.Kernel.Controls
 
         #endregion
 
+
         private void UpdateGridVisual()
         {
             if (GridVisual != null && IsLoaded)
-            {
-                DrawingContext dc = GridVisual.RenderOpen();
+            { 
+               DrawingContext dc = GridVisual.RenderOpen();
 
                 Matrix mtx = PresentationSource.FromVisual(GridVisual).CompositionTarget.TransformToDevice;
                 double dpiFactor = 1 / mtx.M11;
@@ -495,15 +501,15 @@ namespace Graphic2D.Kernel.Controls
                 double xlen = PageSize.Width * PageScale;
                 double ylen = PageSize.Height * PageScale;
 
-                Brush minorColor = GridColor.CloneCurrentValue();
-                minorColor.Opacity = 0.5;
-                Pen minorPen = new Pen(minorColor, 1 * dpiFactor);
-                Pen majorPen = new Pen(GridColor.CloneCurrentValue(), 1 * dpiFactor);
+                Brush brush = new SolidColorBrush(GridColor);
+                Pen majorPen = new Pen(brush.CloneCurrentValue(), 1 * dpiFactor);
+                brush.Opacity = 0.5;
+                Pen minorPen = new Pen(brush.CloneCurrentValue(), 1 * dpiFactor);
 
                 if (majorPen.CanFreeze) majorPen.Freeze();
                 if (minorPen.CanFreeze) minorPen.Freeze();
 
-                double border = 8 * PageScale;
+                double border = 10 * PageScale;
 
                 GuidelineSet guidelineSet = new GuidelineSet();
                 guidelineSet.GuidelinesX.Add(0 - delt);
@@ -520,8 +526,6 @@ namespace Graphic2D.Kernel.Controls
                 dc.DrawRectangle(PageBackColor, majorPen, new Rect(-border, -border, xlen + border * 2.0, ylen + border * 2.0));
                 dc.DrawRectangle(null, minorPen, new Rect(0, 0, xlen, ylen));
                 dc.Pop();
-
-
 
                 if (ShowGrid)
                 {
@@ -601,6 +605,18 @@ namespace Graphic2D.Kernel.Controls
                 // 激发 PageRenderSizeChangedEvent 路由事件
                 RaiseEvent(new PageRoutedEventArgs(PageRenderSizeChangedEvent, this));
             }
+        }
+
+
+
+        public void SetViewPortCenter(Point point)
+        {
+
+        }
+
+        public void SetViewPortFullPage()
+        {
+
         }
 
     }

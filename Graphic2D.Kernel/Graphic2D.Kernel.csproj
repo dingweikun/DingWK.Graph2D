@@ -53,6 +53,10 @@
     <Compile Include="Controls\GraphicVisualCanvas.cs" />
     <Compile Include="Controls\GraphicVisualPage\GraphicVisualPage.cs" />
     <Compile Include="Controls\GraphicVisualPage\PageRoutedEventArgs.cs" />
+    <Compile Include="Controls\PageRulers\HorPageRuler.cs" />
+    <Compile Include="Controls\PageRulers\PageRuler.cs" />
+    <Compile Include="Controls\PageRulers\VerPageRuler.cs" />
+    <Compile Include="Converters\PageOffsetToScrollBarValue.cs" />
     <Compile Include="Visuals\GeomVisual.cs" />
     <Compile Include="Visuals\GroupVisual.cs" />
     <Compile Include="Visuals\GraphicVisual.cs" />
@@ -83,6 +87,13 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
