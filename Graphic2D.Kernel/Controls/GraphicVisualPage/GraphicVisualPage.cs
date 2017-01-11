@@ -243,7 +243,7 @@ namespace Graphic2D.Kernel.Controls
                 typeof(GraphicVisualPage),
                 new FrameworkPropertyMetadata(50.0, FrameworkPropertyMetadataOptions.AffectsRender)
                 {
-                    CoerceValueCallback = (d, baseValue)=>
+                    CoerceValueCallback = (d, baseValue) =>
                     {
                         double size = Math.Round((double)baseValue, 0);
                         return size < 1 ? 1 : (size > 50 ? 50 : size);
@@ -491,8 +491,8 @@ namespace Graphic2D.Kernel.Controls
         private void UpdateGridVisual()
         {
             if (GridVisual != null && IsLoaded)
-            { 
-               DrawingContext dc = GridVisual.RenderOpen();
+            {
+                DrawingContext dc = GridVisual.RenderOpen();
 
                 Matrix mtx = PresentationSource.FromVisual(GridVisual).CompositionTarget.TransformToDevice;
                 double dpiFactor = 1 / mtx.M11;
@@ -596,7 +596,6 @@ namespace Graphic2D.Kernel.Controls
             if (IsLoaded)
             {
                 // 页面窗口大小改变时，调整页面偏移量，保证画面中心位置不变
-
                 if (sizeInfo.WidthChanged)
                     PageOffsetX += (RenderSize.Width - sizeInfo.PreviousSize.Width) / 2;
                 if (sizeInfo.HeightChanged)
@@ -606,8 +605,6 @@ namespace Graphic2D.Kernel.Controls
                 RaiseEvent(new PageRoutedEventArgs(PageRenderSizeChangedEvent, this));
             }
         }
-
-
 
         public void SetViewPortCenter(Point point)
         {

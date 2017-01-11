@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Windows;
 using System.Windows.Media;
 
 namespace Graphic2D.Kernel.Visuals
@@ -11,13 +10,13 @@ namespace Graphic2D.Kernel.Visuals
 
         #region Constructors
 
-        GroupVisual(VisualInfo graphicInfo)
+        public GroupVisual(VisualInfo graphicInfo)
             : base(graphicInfo)
         {
             UpdateGraphicInfo();
         }
 
-        GroupVisual()
+        public GroupVisual()
             : this(VisualInfo.Default)
         {
         }

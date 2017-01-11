@@ -33,7 +33,7 @@
                             <ctrls:HorPageRuler x:Name="PART_HorPageRuler" Grid.Row="0" Grid.Column="1"
                                                 OrignPosition="{Binding ElementName=PART_Page,Path=PageOffsetX}"
                                                 ZoomScale="{Binding ElementName=PART_Page,Path=PageScale}"/>
-                            
+
                             <ctrls:VerPageRuler x:Name="PART_VerPageRuler" Grid.Row="1" Grid.Column="0"
                                                 OrignPosition="{Binding ElementName=PART_Page,Path=PageOffsetY}"
                                                 ZoomScale="{Binding ElementName=PART_Page,Path=PageScale}"/>
@@ -46,11 +46,11 @@
                             <ScrollBar x:Name="PART_VerScrollBar" Orientation="Vertical" 
                                        Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
                                        Value="{Binding ElementName=PART_Page, Path=PageOffsetY, Mode=TwoWay, Converter={StaticResource OffsetToScrollValueConverter}}"/>
-                            
-                            
+
+
                             <Border Grid.Row="1" Grid.Column="1" >
                                 <AdornerDecorator x:Name="PART_AdornerDecorator" ClipToBounds="True">
-                                    <ctrls:GraphicVisualPage x:Name="PART_Page" />
+                                    <ctrls:GraphicVisualPage x:Name="PART_Page" VisualHost="{Binding}"/>
                                 </AdornerDecorator>
                             </Border>
 
@@ -61,4 +61,126 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+
+
+    <Style TargetType="{x:Type ctrls:TransformOperator}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrls:TransformOperator}">
+
+                    <!--Thumb Style-->
+                    <ControlTemplate.Resources>
+
+                        <Style x:Key="MoveThumbStyle" TargetType="{x:Type Thumb}">
+                            <!--<Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>-->
+                            <Setter Property="SnapsToDevicePixels" Value="true"/>
+                            <Setter Property="Cursor" Value="SizeAll"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Thumb}">
+                                        <Rectangle Fill="Transparent" SnapsToDevicePixels="True" Margin="-1"
+                                                   Stroke="DimGray" StrokeThickness="1"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+
+                        <Style x:Key="RotateThumbStyle" TargetType="{x:Type Thumb}" >
+                            <Setter Property="SnapsToDevicePixels" Value="true" />
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Thumb}">
+                                        <Ellipse Fill="White" SnapsToDevicePixels="True"
+                             Stroke="DimGray" StrokeThickness="1"
+                             Width="10" Height="10" Margin="-2"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+
+                        <Style x:Key="ResizeThumbStyle" TargetType="{x:Type Thumb}">
+                            <!--<Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>-->
+                            <Setter Property="SnapsToDevicePixels" Value="true"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Thumb}">
+                                        <Rectangle Fill="White" SnapsToDevicePixels="True"
+                                                   Stroke="DimGray" StrokeThickness="1"
+                                                   Width="7" Height="7" Margin="-4"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ControlTemplate.Resources>
+
+                    <!--TransformOperator Template-->
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid Background="Aquamarine">
+                            
+                            <Thumb  x:Name="PART_MoveThumb" Style="{StaticResource MoveThumbStyle}"/>
+
+                            <Line StrokeThickness="1" X1="0" Y1="0" X2="0" Y2="25"
+                                  HorizontalAlignment="Center" VerticalAlignment="Top"
+                                  Margin="0,-24,0,0" Stroke="DimGray"/>
+
+                            <Thumb x:Name="PART_RotateThumb" Style="{StaticResource RotateThumbStyle}"
+                                   Margin="-1,-25,0,0"
+                                   HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+                            <Thumb x:Name="PART_LTThumb" 
+                                   Style="{StaticResource ResizeThumbStyle}"
+                                   Cursor="SizeNWSE"
+                                   HorizontalAlignment="Left"                         
+                                   VerticalAlignment="Top" />
+                            <Thumb x:Name="PART_CTThumb" 
+                                   Style="{StaticResource ResizeThumbStyle}"
+                                   Cursor="SizeNS"
+                                   HorizontalAlignment="Center"             
+                                   VerticalAlignment="Top" />
+                            <Thumb x:Name="PART_RTThumb" 
+                                   Style="{StaticResource ResizeThumbStyle}"
+                                   Cursor="SizeNESW"
+                                   HorizontalAlignment="Right"                
+                                   VerticalAlignment="Top" />
+
+                            <Thumb x:Name="PART_LCThumb" 
+                                   Style="{StaticResource ResizeThumbStyle}"
+                                   Cursor="SizeWE"
+                                   HorizontalAlignment="Left"                         
+                                   VerticalAlignment="Center" />
+                            <Thumb x:Name="PART_RCThumb" 
+                                   Style="{StaticResource ResizeThumbStyle}"
+                                   Cursor="SizeWE"
+                                   HorizontalAlignment="Right"             
+                                   VerticalAlignment="Center" />
+
+                            <Thumb x:Name="PART_LBThumb" 
+                                   Style="{StaticResource ResizeThumbStyle}"
+                                   Cursor="SizeNESW"
+                                   HorizontalAlignment="Left"                
+                                   VerticalAlignment="Bottom" />
+                            <Thumb x:Name="PART_CBThumb" 
+                                   Style="{StaticResource ResizeThumbStyle}"
+                                   Cursor="SizeNS"
+                                   HorizontalAlignment="Center"                
+                                   VerticalAlignment="Bottom" />
+                            <Thumb x:Name="PART_RBThumb" 
+                                   Style="{StaticResource ResizeThumbStyle}"
+                                   Cursor="SizeNWSE"
+                                   HorizontalAlignment="Right"                
+                                   VerticalAlignment="Bottom" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
+
 </ResourceDictionary>

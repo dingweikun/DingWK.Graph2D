@@ -1,6 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace Graphic2D.Kernel.Controls
 {
@@ -9,19 +12,26 @@ namespace Graphic2D.Kernel.Controls
     [TemplatePart(Name = "PART_VerScrollBar", Type = typeof(ScrollBar))]
     public class GraphicVisualCanvas : Control
     {
+
+        private PageAdorner _pageAdorner;
+        public PageAdorner PageAdorner => _pageAdorner;
+
+
+
         static GraphicVisualCanvas()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(GraphicVisualCanvas), new FrameworkPropertyMetadata(typeof(GraphicVisualCanvas)));
         }
 
-        
+
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
             GraphicVisualPage page = GetTemplateChild("PART_Page") as GraphicVisualPage;
+            AdornerDecorator addr = GetTemplateChild("PART_AdornerDecorator") as AdornerDecorator;
 
-            if (page != null)
+            if (page != null && addr != null)
             {
                 page.PageSizeChanged += (sender, e) =>
                 {
@@ -46,9 +56,17 @@ namespace Graphic2D.Kernel.Controls
                 //    SetScrollBars(e as PageRoutedEventArgs);
                 //    e.Handled = true;
                 //};
+
+
+                _pageAdorner = new PageAdorner(page);
+                _pageAdorner.Canvas.Children.Add(new Rectangle() { Width=200,Height=100, Fill=Brushes.Yellow});
+                //_pageAdorner.LayoutTransform = new TranslateTransform(100, 200);
+                addr.AdornerLayer.Add(_pageAdorner);
+
+
+
             }
         }
-
 
 
         private void SetScrollBars(PageRoutedEventArgs args)
@@ -71,5 +89,7 @@ namespace Graphic2D.Kernel.Controls
             vScroll.LargeChange = args.RenderSize.Height;
             vScroll.ViewportSize = args.RenderSize.Height;
         }
+
+
     }
 }
