@@ -50,7 +50,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Controls\GraphicVisualCanvas.cs" />
     <Compile Include="Controls\GraphicVisualPage\GraphicVisualPage.cs" />
     <Compile Include="Controls\GraphicVisualPage\PageRoutedEventArgs.cs" />
@@ -60,10 +59,12 @@
     <Compile Include="Controls\PageRulers\PageRuler.cs" />
     <Compile Include="Controls\PageRulers\VerPageRuler.cs" />
     <Compile Include="Controls\PageOperators\TransformOperator.cs" />
+    <Compile Include="Controls\VisualPage\VisualPage.cs" />
     <Compile Include="Converters\PageOffsetToScrollBarValue.cs" />
     <Compile Include="Visuals\GeomVisual.cs" />
     <Compile Include="Visuals\GroupVisual.cs" />
     <Compile Include="Visuals\GraphicVisual.cs" />
+    <Compile Include="Visuals\IBoundVisual.cs" />
     <Compile Include="Visuals\IVisualInfo.cs" />
     <Compile Include="Geom\EmptyGeom.cs" />
     <Compile Include="Geom\IGeom.cs" />

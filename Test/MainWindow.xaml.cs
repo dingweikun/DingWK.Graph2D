@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 
 using Graphic2D.Kernel.Geom;
+using Graphic2D.Kernel.Controls;
+
 namespace Test
 {
     /// <summary>
@@ -21,6 +23,9 @@ namespace Test
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        IBoundVisual b;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -30,7 +35,14 @@ namespace Test
             // 单一图形
             Rectangle rect = new Rectangle(new Rect(100, 100, 200, 100), 20, 40);
             GeomVisual<Rectangle> g1 = new GeomVisual<Rectangle>(rect);
+            g1.Angle = 45;
             host.GroupIn(g1);
+
+
+            Rect r1 = g1.ContentBounds;
+            Rect r2 = g1.DescendantBounds;
+
+            r1.Transform(g1.Transform.Value);
 
             // 组合图形
             GroupVisual group = new GroupVisual();
@@ -46,6 +58,22 @@ namespace Test
             group.Angle = 45;
 
             canvas.DataContext = host;
+
+             r1 = group.ContentBounds;
+             r2 = group.DescendantBounds;
+
+
+            b = g1;
+
+            Loaded += MainWindow_Loaded;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            TransformOperator ops = new TransformOperator();
+            canvas.PageAdorner.Canvas.Children.Add(ops);
+            ops.BoundVisual = b;
         }
     }
 }

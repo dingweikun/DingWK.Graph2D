@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Graphic2D.Kernel.Visuals;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace Graphic2D.Kernel.Controls
 {
@@ -23,6 +25,74 @@ namespace Graphic2D.Kernel.Controls
     {
 
         private Thumb[] _thumbs;
+
+
+
+
+        #region BoundVisual
+        /// <summary>
+        /// 
+        /// </summary>
+        public IBoundVisual BoundVisual
+        {
+            get { return (IBoundVisual)GetValue(BoundVisualProperty); }
+            set { SetValue(BoundVisualProperty, value); }
+        }
+        //
+        // Dependency property definition
+        //
+        private static readonly DependencyProperty BoundVisualProperty =
+            DependencyProperty.Register(
+                nameof(BoundVisual),
+                typeof(IBoundVisual),
+                typeof(TransformOperator),
+                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender)
+                {
+                    PropertyChangedCallback = (d, e) =>
+                     {
+                         var ops = d as TransformOperator;
+                         if (ops != null)
+                         {
+                             ops.SetTransformOperator();
+
+                         }
+
+                     }
+                });
+
+        private void SetTransformOperator()
+        {
+            if (BoundVisual != null)
+            {
+                Rect rect = BoundVisual.Bound;
+
+                Width = rect.Width * Scale;
+                Height = rect.Height * Scale;
+
+                Point pos = rect.Location;
+                BoundVisual.BoundTransform.Transform(pos);
+                //pos.X *= Scale;
+                //pos.Y *= Scale;
+
+                var tr = BoundVisual.BoundTransform.CloneCurrentValue() as TransformGroup;
+                tr.Children.Add(new TranslateTransform(
+                    pos.X * Scale - pos.X,
+                    pos.Y * Scale - pos.Y
+                    ));
+
+                this.RenderTransform = tr;
+            }
+
+        }
+        #endregion
+
+
+
+
+        internal override void OnScalePropertyChanged()
+        {
+            SetTransformOperator();
+        }
 
 
         static TransformOperator()
@@ -94,7 +164,7 @@ namespace Graphic2D.Kernel.Controls
                     if (vb.Y < 0) dd = -dd;
 
                     this.RenderAngle += dd;
-                    
+
 
                 }
                 else
@@ -109,5 +179,6 @@ namespace Graphic2D.Kernel.Controls
             //throw new NotImplementedException();
             e.Handled = true;
         }
+
     }
 }

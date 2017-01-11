@@ -7,6 +7,44 @@ namespace Graphic2D.Kernel.Controls
 {
     public abstract class PageOperator : Control
     {
+
+
+
+        #region Scale
+        /// <summary>
+        /// 
+        /// </summary>
+        public double Scale
+        {
+            get { return (double)GetValue(ScaleProperty); }
+            set { SetValue(ScaleProperty, value); }
+        }
+        //
+        // Dependency property definition
+        //
+        private static readonly DependencyProperty ScaleProperty =
+            DependencyProperty.Register(
+                nameof(Scale),
+                typeof(double),
+                typeof(PageOperator),
+                new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.AffectsRender)
+                {
+                    CoerceValueCallback = (d, value) =>
+                    {
+                        return ((double)value) > 0 ? value : 1.0;
+                    },
+
+                    PropertyChangedCallback = (d, e) =>
+                    {
+                       (d as PageOperator).OnScalePropertyChanged();
+                    }
+                });
+
+        internal abstract void OnScalePropertyChanged();
+        #endregion
+
+
+
         #region RenderX
 
         public double RenderX

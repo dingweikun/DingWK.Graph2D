@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Graphic2D.Kernel.Visuals
@@ -42,6 +44,13 @@ namespace Graphic2D.Kernel.Visuals
                 GraphicVisualGroupChildrenChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, Children[index]));
             }
         }
+
+        #endregion
+
+
+        #region IBound interface member
+
+        public override Rect Bound => DescendantBounds;
 
         #endregion
 

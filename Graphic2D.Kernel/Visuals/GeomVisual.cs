@@ -50,6 +50,13 @@ namespace Graphic2D.Kernel.Visuals
         #endregion
 
 
+        #region IBound interface member
+
+        public override Rect Bound => ContentBounds;
+
+        #endregion
+
+
         #region Methods
 
         internal void UpdateVisual()

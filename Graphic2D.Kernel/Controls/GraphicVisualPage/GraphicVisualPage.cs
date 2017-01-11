@@ -478,7 +478,6 @@ namespace Graphic2D.Kernel.Controls
         public GraphicVisualPage()
         {
             _gridVisual = new DrawingVisual();
-
             _children = new VisualCollection(this);
             _children.Add(_gridVisual);
 
@@ -513,13 +512,13 @@ namespace Graphic2D.Kernel.Controls
 
                 GuidelineSet guidelineSet = new GuidelineSet();
                 guidelineSet.GuidelinesX.Add(0 - delt);
-                guidelineSet.GuidelinesX.Add(-border - delt);
-                //guidelineSet.GuidelinesX.Add(xlen - delt);
+                //guidelineSet.GuidelinesX.Add(-border - delt);
+                guidelineSet.GuidelinesX.Add(xlen - delt);
                 //guidelineSet.GuidelinesX.Add(xlen + border * 2.0 - delt);
 
                 guidelineSet.GuidelinesY.Add(0 - delt);
-                guidelineSet.GuidelinesY.Add(-border - delt);
-                //guidelineSet.GuidelinesY.Add(ylen - delt);
+                //guidelineSet.GuidelinesY.Add(-border - delt);
+                guidelineSet.GuidelinesY.Add(ylen - delt);
                 //guidelineSet.GuidelinesY.Add(ylen + border * 2.0 - delt);
 
                 dc.PushGuidelineSet(guidelineSet);

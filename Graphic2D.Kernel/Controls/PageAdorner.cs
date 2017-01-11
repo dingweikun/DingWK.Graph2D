@@ -9,18 +9,9 @@ namespace Graphic2D.Kernel.Controls
     {
         #region Members related to graphic rendering support in WPF  
 
-        //private readonly VisualCollection _children;
+        private readonly Canvas _canvas = new Canvas();
 
-        //public VisualCollection Children => _children;
-
-        //protected override Visual GetVisualChild(int index) => Children[index];
-
-        //protected override int VisualChildrenCount => Children.Count;
-
-
-        private readonly Grid _canvas = new Grid();
-
-        public Grid Canvas => _canvas;
+        public Canvas Canvas => _canvas;
 
         protected override Visual GetVisualChild(int index) => index == 0 ? Canvas : null;
 
@@ -31,25 +22,44 @@ namespace Graphic2D.Kernel.Controls
 
         public PageAdorner(UIElement adornedElement)
             : base(adornedElement)
-        {
+        {            
             this.AddVisualChild(_canvas);
-            this.AddLogicalChild(_canvas);
+
+            
+
+
+
+
         }
 
 
-        protected override void OnRender(DrawingContext drawingContext)
+        protected override Size ArrangeOverride(Size finalSize)
         {
-            base.OnRender(drawingContext);
+            Size size = base.ArrangeOverride(finalSize);
+            if (_canvas != null)
+            {
+                var page = (AdornedElement as GraphicVisualPage);
+                _canvas.RenderTransform = new TranslateTransform(page.PageOffsetX, page.PageOffsetY);
+                _canvas.Arrange(new Rect(0, 0, finalSize.Width, finalSize.Height));
 
-            drawingContext.DrawRectangle(
-                new SolidColorBrush(Colors.LightBlue) { Opacity = 0.3 },
-                null,
-                new Rect(0, 0, ActualWidth, ActualHeight));
-            drawingContext.DrawRectangle(
-                null,
-                new Pen(Brushes.Red,2),
-                new Rect(0, 0, 200, 400));
-
+                //UpdateOperators();
+            }
+            return size;
         }
+
+        //protected override void OnRender(DrawingContext drawingContext)
+        //{
+        //    base.OnRender(drawingContext);
+
+        //    drawingContext.DrawRectangle(
+        //        new SolidColorBrush(Colors.LightBlue) { Opacity = 0.3 },
+        //        null,
+        //        new Rect(0, 0, ActualWidth, ActualHeight));
+        //    drawingContext.DrawRectangle(
+        //        null,
+        //        new Pen(Brushes.Red, 2),
+        //        new Rect(0, 0, 200, 400));
+
+        //}
     }
 }

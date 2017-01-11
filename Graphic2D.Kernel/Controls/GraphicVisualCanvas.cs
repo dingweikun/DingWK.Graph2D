@@ -29,9 +29,7 @@ namespace Graphic2D.Kernel.Controls
             base.OnApplyTemplate();
 
             GraphicVisualPage page = GetTemplateChild("PART_Page") as GraphicVisualPage;
-            AdornerDecorator addr = GetTemplateChild("PART_AdornerDecorator") as AdornerDecorator;
-
-            if (page != null && addr != null)
+            if (page != null)
             {
                 page.PageSizeChanged += (sender, e) =>
                 {
@@ -57,15 +55,20 @@ namespace Graphic2D.Kernel.Controls
                 //    e.Handled = true;
                 //};
 
+            }
 
+            AdornerDecorator addr = GetTemplateChild("PART_AdornerDecorator") as AdornerDecorator;
+            if (addr != null)
+            {
                 _pageAdorner = new PageAdorner(page);
-                _pageAdorner.Canvas.Children.Add(new Rectangle() { Width=200,Height=100, Fill=Brushes.Yellow});
-                //_pageAdorner.LayoutTransform = new TranslateTransform(100, 200);
+                _pageAdorner.Canvas.Background = Brushes.LightGreen.Clone();
+                _pageAdorner.Canvas.Background.Opacity = 0.3;
                 addr.AdornerLayer.Add(_pageAdorner);
 
 
-
             }
+
+
         }
 
 
