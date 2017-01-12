@@ -49,11 +49,12 @@ namespace Graphic2D.Kernel.Controls
                     e.Handled = true;
                 };
 
-                //page.PageOffsetChanged += (sender, e) =>
-                //{
-                //    SetScrollBars(e as PageRoutedEventArgs);
-                //    e.Handled = true;
-                //};
+                page.PageOffsetChanged += (sender, e) =>
+                {
+                    // 强制刷新
+                    PageAdorner.InvalidateVisual();
+                    e.Handled = true;
+                };
 
             }
 

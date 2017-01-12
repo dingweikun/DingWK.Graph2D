@@ -1,10 +1,7 @@
 ﻿using Graphic2D.Kernel.Visuals;
 using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Media;
-using System.Windows.Media.Effects;
 
 namespace Graphic2D.Kernel.Controls
 {
@@ -16,33 +13,36 @@ namespace Graphic2D.Kernel.Controls
     {
         #region Properties
 
-        #region PageOffsetX
+        #region PageOffset
         /// <summary>
         /// 
         /// </summary>
-        public double PageOffsetX
+        public Point PageOffset
         {
-            get { return (double)GetValue(PageOffsetXProperty); }
-            set { SetValue(PageOffsetXProperty, value); }
+            get { return (Point)GetValue(PageOffsetProperty); }
+            set { SetValue(PageOffsetProperty, value); }
         }
         //
         // Dependency property definition
         //
-        public static readonly DependencyProperty PageOffsetXProperty =
+        private static readonly DependencyProperty PageOffsetProperty =
             DependencyProperty.Register(
-                nameof(PageOffsetX),
-                typeof(double),
+                nameof(PageOffset),
+                typeof(Point),
                 typeof(GraphicVisualPage),
-                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender)
+                new FrameworkPropertyMetadata(new Point(), FrameworkPropertyMetadataOptions.AffectsRender)
                 {
-                    CoerceValueCallback = (d, baseValue) =>
+                    CoerceValueCallback = delegate (DependencyObject d, object baseValue)
                     {
-                        // 保留 2 位小数
+                        // 强制保留 2 位小数
                         // Round up to 2 decimal paleces.
-                        return Math.Round((double)baseValue, 2);
+                        Point offset = (Point)baseValue;
+                        Math.Round(offset.X, 2);
+                        Math.Round(offset.Y, 2);
+                        return offset;
                     },
 
-                    PropertyChangedCallback = (d, e) =>
+                    PropertyChangedCallback = delegate (DependencyObject d, DependencyPropertyChangedEventArgs e)
                     {
                         GraphicVisualPage page = d as GraphicVisualPage;
 
@@ -59,53 +59,6 @@ namespace Graphic2D.Kernel.Controls
                         page.RaiseEvent(new PageRoutedEventArgs(PageOffsetChangedEvent, page));
                     }
                 });
-
-        #endregion
-
-        #region PageOffsetY
-        /// <summary>
-        /// 
-        /// </summary>
-        public double PageOffsetY
-        {
-            get { return (double)GetValue(PageOffsetYProperty); }
-            set { SetValue(PageOffsetYProperty, value); }
-        }
-        //
-        // Dependency property definition
-        //
-        public static readonly DependencyProperty PageOffsetYProperty =
-            DependencyProperty.Register(
-                nameof(PageOffsetY),
-                typeof(double),
-                typeof(GraphicVisualPage),
-                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender)
-                {
-                    CoerceValueCallback = (d, baseValue) =>
-                    {
-                        // 保留 2 位小数
-                        // Round up to 2 decimal paleces.
-                        return Math.Round((double)baseValue, 2);
-                    },
-
-                    PropertyChangedCallback = (d, e) =>
-                    {
-                        GraphicVisualPage page = d as GraphicVisualPage;
-
-                        // 更新页面内图形的显示位置
-                        // Update graphic objects' position in the page.
-                        page.SetVisualHostTranform();
-
-                        // 更新网格的显示位置
-                        // Update grid's position in the page.
-                        page.SetGridVisualTranform();
-
-                        // 激发 PageOffsetChangedEvent 事件
-                        // Raise PageOffsetChangedEvent.
-                        page.RaiseEvent(new PageRoutedEventArgs(PageOffsetChangedEvent, page));
-                    }
-                });
-
         #endregion
 
         #region PageScale
@@ -139,10 +92,9 @@ namespace Graphic2D.Kernel.Controls
             //
             double delt = (double)e.NewValue / (double)e.OldValue;
             GraphicVisualPage page = d as GraphicVisualPage;
-            double offsetX = page.PageOffsetX * delt + page.ActualWidth / 2 * (1 - delt);
-            double offsetY = page.PageOffsetY * delt + page.ActualHeight / 2 * (1 - delt);
-            page.PageOffsetX = offsetX;
-            page.PageOffsetY = offsetY;
+            double offsetX = page.PageOffset.X * delt + page.ActualWidth / 2 * (1 - delt);
+            double offsetY = page.PageOffset.Y * delt + page.ActualHeight / 2 * (1 - delt);
+            page.PageOffset = new Point(offsetX, offsetY);
 
             // 更新网格 Update grid
             page.UpdateGridVisual();
@@ -328,7 +280,13 @@ namespace Graphic2D.Kernel.Controls
                 nameof(Background),
                 typeof(Brush),
                 typeof(GraphicVisualPage),
-                new FrameworkPropertyMetadata(Brushes.Transparent, FrameworkPropertyMetadataOptions.AffectsRender));
+                new FrameworkPropertyMetadata(Brushes.Transparent.CloneCurrentValue(), FrameworkPropertyMetadataOptions.AffectsRender)
+                {
+                    CoerceValueCallback=(d,value)=>
+                    {
+                        return value != null ? value : Brushes.Transparent.CloneCurrentValue();
+                    }
+                });
         #endregion
 
         #region VisualHost 
@@ -567,7 +525,7 @@ namespace Graphic2D.Kernel.Controls
         {
             if (GridVisual != null)
             {
-                GridVisual.Transform = new TranslateTransform(PageOffsetX, PageOffsetY);
+                GridVisual.Transform = new TranslateTransform(PageOffset.X, PageOffset.Y);
             }
         }
 
@@ -577,7 +535,7 @@ namespace Graphic2D.Kernel.Controls
             {
                 TransformGroup trans = new TransformGroup();
                 trans.Children.Add(new ScaleTransform(PageScale, PageScale));
-                trans.Children.Add(new TranslateTransform(PageOffsetX, PageOffsetY));
+                trans.Children.Add(new TranslateTransform(PageOffset.X, PageOffset.Y));
 
                 VisualHost.Transform = trans;
             }
@@ -595,10 +553,9 @@ namespace Graphic2D.Kernel.Controls
             if (IsLoaded)
             {
                 // 页面窗口大小改变时，调整页面偏移量，保证画面中心位置不变
-                if (sizeInfo.WidthChanged)
-                    PageOffsetX += (RenderSize.Width - sizeInfo.PreviousSize.Width) / 2;
-                if (sizeInfo.HeightChanged)
-                    PageOffsetY += (RenderSize.Height - sizeInfo.PreviousSize.Height) / 2;
+                PageOffset = new Point(
+                    PageOffset.X + (RenderSize.Width - sizeInfo.PreviousSize.Width) / 2,
+                    PageOffset.Y + (RenderSize.Height - sizeInfo.PreviousSize.Height) / 2);
 
                 // 激发 PageRenderSizeChangedEvent 路由事件
                 RaiseEvent(new PageRoutedEventArgs(PageRenderSizeChangedEvent, this));

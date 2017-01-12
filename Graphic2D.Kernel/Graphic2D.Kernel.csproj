@@ -60,7 +60,7 @@
     <Compile Include="Controls\PageRulers\VerPageRuler.cs" />
     <Compile Include="Controls\PageOperators\TransformOperator.cs" />
     <Compile Include="Controls\VisualPage\VisualPage.cs" />
-    <Compile Include="Converters\PageOffsetToScrollBarValue.cs" />
+    <Compile Include="Converters\ScrollBarValuesToPageOffset.cs" />
     <Compile Include="Visuals\GeomVisual.cs" />
     <Compile Include="Visuals\GroupVisual.cs" />
     <Compile Include="Visuals\GraphicVisual.cs" />

@@ -1,7 +1,6 @@
 ﻿using Graphic2D.Kernel.Geom;
-using System.Windows.Media;
-using System;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Graphic2D.Kernel.Visuals
 {

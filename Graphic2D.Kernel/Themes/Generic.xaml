@@ -11,7 +11,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ctrls:GraphicVisualCanvas}">
                     <ControlTemplate.Resources>
-                        <cnvrt:PageOffsetToScrollBarValue x:Key="OffsetToScrollValueConverter"/>
+                        <cnvrt:ScrollBarValuesToPageOffset x:Key="ScollValueToOffset"/>
                     </ControlTemplate.Resources>
 
                     <Border Background="{TemplateBinding Background}"
@@ -38,19 +38,22 @@
                                                 OrignPosition="{Binding ElementName=PART_Page,Path=PageOffsetY}"
                                                 ZoomScale="{Binding ElementName=PART_Page,Path=PageScale}"/>
 
-
                             <ScrollBar x:Name="PART_HorScrollBar" Orientation="Horizontal" 
-                                       Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-                                       Value="{Binding ElementName=PART_Page, Path=PageOffsetX, Mode=TwoWay, Converter={StaticResource OffsetToScrollValueConverter}}"/>
+                                       Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
 
                             <ScrollBar x:Name="PART_VerScrollBar" Orientation="Vertical" 
-                                       Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
-                                       Value="{Binding ElementName=PART_Page, Path=PageOffsetY, Mode=TwoWay, Converter={StaticResource OffsetToScrollValueConverter}}"/>
-
+                                       Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"/>
 
                             <Border Grid.Row="1" Grid.Column="1" >
                                 <AdornerDecorator x:Name="PART_AdornerDecorator" ClipToBounds="True">
-                                    <ctrls:GraphicVisualPage x:Name="PART_Page" VisualHost="{Binding}"/>
+                                    <ctrls:GraphicVisualPage x:Name="PART_Page" VisualHost="{Binding}">
+                                        <ctrls:GraphicVisualPage.PageOffset>
+                                            <MultiBinding Converter="{StaticResource ScollValueToOffset}" Mode="TwoWay">
+                                                <Binding Path="Value" ElementName="PART_HorScrollBar"/>
+                                                <Binding Path="Value" ElementName="PART_VerScrollBar"/>
+                                            </MultiBinding>
+                                        </ctrls:GraphicVisualPage.PageOffset>
+                                    </ctrls:GraphicVisualPage>
                                 </AdornerDecorator>
                             </Border>
 
@@ -120,7 +123,7 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid Background="Aquamarine">
-                            
+
                             <Thumb  x:Name="PART_MoveThumb" Style="{StaticResource MoveThumbStyle}"/>
 
                             <Line StrokeThickness="1" X1="0" Y1="0" X2="0" Y2="25"
