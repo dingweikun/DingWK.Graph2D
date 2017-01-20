@@ -11,7 +11,7 @@
         <Canvas.RenderTransform>
             <TranslateTransform X="100" Y="50"/>
         </Canvas.RenderTransform>
-        <g2d:TransformOperator Width="200" Height="100"  RenderAngle="45" RenderX="10" RenderY="20">
+        <g2d:TransformOperator Width="200" Height="100"  >
 
         </g2d:TransformOperator>
     </Canvas>

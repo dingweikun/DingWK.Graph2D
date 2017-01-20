@@ -3,19 +3,21 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace Graphic2D.Kernel.Controls
 {
     [TemplatePart(Name = "PART_Page", Type = typeof(GraphicVisualPage))]
     [TemplatePart(Name = "PART_HorScrollBar", Type = typeof(ScrollBar))]
     [TemplatePart(Name = "PART_VerScrollBar", Type = typeof(ScrollBar))]
-    public class GraphicVisualCanvas : Control
+    [TemplatePart(Name = "PART_HorPageRuler", Type = typeof(HorPageRuler))]
+    [TemplatePart(Name = "PART_VerPageRuler", Type = typeof(VerPageRuler))]
+    public partial class GraphicVisualCanvas : Control
     {
-
         private PageAdorner _pageAdorner;
         public PageAdorner PageAdorner => _pageAdorner;
 
+        private GraphicVisualPage _page;
+        public GraphicVisualPage Page => _page;
 
 
         static GraphicVisualCanvas()
@@ -23,12 +25,23 @@ namespace Graphic2D.Kernel.Controls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(GraphicVisualCanvas), new FrameworkPropertyMetadata(typeof(GraphicVisualCanvas)));
         }
 
+        public GraphicVisualCanvas()
+        {
+            Loaded += (sender, e) =>
+            {
+                // 初始化滚动条手动刷新一次
+                GraphicVisualPage page = GetTemplateChild("PART_Page") as GraphicVisualPage;
+                SetScrollBars(new PageRoutedEventArgs(null, page));
+            };
+        }
 
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
             GraphicVisualPage page = GetTemplateChild("PART_Page") as GraphicVisualPage;
+            _page = page;           
+
             if (page != null)
             {
                 page.PageSizeChanged += (sender, e) =>
@@ -55,7 +68,6 @@ namespace Graphic2D.Kernel.Controls
                     PageAdorner.InvalidateVisual();
                     e.Handled = true;
                 };
-
             }
 
             AdornerDecorator addr = GetTemplateChild("PART_AdornerDecorator") as AdornerDecorator;
@@ -65,11 +77,8 @@ namespace Graphic2D.Kernel.Controls
                 _pageAdorner.Canvas.Background = Brushes.LightGreen.Clone();
                 _pageAdorner.Canvas.Background.Opacity = 0.3;
                 addr.AdornerLayer.Add(_pageAdorner);
-
-
             }
-
-
+            
         }
 
 

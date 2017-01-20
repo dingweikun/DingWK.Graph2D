@@ -32,16 +32,6 @@ namespace Graphic2D.Kernel.Controls
                 typeof(GraphicVisualPage),
                 new FrameworkPropertyMetadata(new Point(), FrameworkPropertyMetadataOptions.AffectsRender)
                 {
-                    CoerceValueCallback = delegate (DependencyObject d, object baseValue)
-                    {
-                        // 强制保留 2 位小数
-                        // Round up to 2 decimal paleces.
-                        Point offset = (Point)baseValue;
-                        Math.Round(offset.X, 2);
-                        Math.Round(offset.Y, 2);
-                        return offset;
-                    },
-
                     PropertyChangedCallback = delegate (DependencyObject d, DependencyPropertyChangedEventArgs e)
                     {
                         GraphicVisualPage page = d as GraphicVisualPage;
@@ -80,7 +70,13 @@ namespace Graphic2D.Kernel.Controls
                 typeof(GraphicVisualPage),
                 new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.None)
                 {
-                    CoerceValueCallback = CoercePageScaleValueCallback,
+                    CoerceValueCallback = (d,value)=>
+                    {
+                        // 强制页面缩放比例范围 [0.01, 10]。
+                        double scale = (double)value;
+                        return scale < 0.01 ? 0.01 : (scale > 10 ? 10 : scale);
+                    },
+
                     PropertyChangedCallback = PageScaleChangedCallback
                 });
         //
@@ -92,9 +88,17 @@ namespace Graphic2D.Kernel.Controls
             //
             double delt = (double)e.NewValue / (double)e.OldValue;
             GraphicVisualPage page = d as GraphicVisualPage;
-            double offsetX = page.PageOffset.X * delt + page.ActualWidth / 2 * (1 - delt);
-            double offsetY = page.PageOffset.Y * delt + page.ActualHeight / 2 * (1 - delt);
+            double offsetX = page.PageOffset.X * delt + page.ActualWidth / 2.0 * (1.0 - delt);
+            double offsetY = page.PageOffset.Y * delt + page.ActualHeight / 2.0 * (1.0 - delt);
             page.PageOffset = new Point(offsetX, offsetY);
+
+            //double delt = (double)e.NewValue / (double)e.OldValue;
+            //GraphicVisualPage page = d as GraphicVisualPage;
+            //double offsetX = page.PageOffsetX * delt + page.ActualWidth / 2 * (1 - delt);
+            //double offsetY = page.PageOffsetY * delt + page.ActualHeight / 2 * (1 - delt);
+            //page.PageOffsetX = offsetX;
+            //page.PageOffsetY = offsetY;
+
 
             // 更新网格 Update grid
             page.UpdateGridVisual();
@@ -103,17 +107,6 @@ namespace Graphic2D.Kernel.Controls
             // Raise PageScaleChangedEvent
             page.RaiseEvent(new PageRoutedEventArgs(PageScaleChangedEvent, page));
         }
-        //
-        // Coerce Value Callback
-        //
-        private static object CoercePageScaleValueCallback(DependencyObject d, object baseValue)
-        {
-            // 强制页面缩放比例范围 [0.01, 10], 保留2位小数。
-            //
-            double scale = Math.Round((double)baseValue, 2);
-            return scale < 0.01 ? 0.01 : (scale > 10 ? 10 : scale);
-        }
-
         #endregion
 
         #region PageSize
@@ -544,6 +537,8 @@ namespace Graphic2D.Kernel.Controls
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
+
+            // 绘制背景用于响应鼠标事件
             drawingContext.DrawRectangle(Background, null, new Rect(0, 0, ActualWidth, ActualHeight));
         }
 

@@ -24,12 +24,6 @@ namespace Graphic2D.Kernel.Controls
             : base(adornedElement)
         {            
             this.AddVisualChild(_canvas);
-
-            
-
-
-
-
         }
 
 
@@ -39,28 +33,12 @@ namespace Graphic2D.Kernel.Controls
             if (_canvas != null)
             {
                 var page = (AdornedElement as GraphicVisualPage);
-                //_canvas.RenderTransform = new TranslateTransform(page.PageOffsetX, page.PageOffsetY);
-                _canvas.RenderTransform = new TranslateTransform(page.PageOffset.X, page.PageOffset.Y);
                 _canvas.Arrange(new Rect(0, 0, finalSize.Width, finalSize.Height));
+                _canvas.RenderTransform = new TranslateTransform(page.PageOffset.X, page.PageOffset.Y);
 
                 //UpdateOperators();
             }
             return size;
         }
-
-        //protected override void OnRender(DrawingContext drawingContext)
-        //{
-        //    base.OnRender(drawingContext);
-
-        //    drawingContext.DrawRectangle(
-        //        new SolidColorBrush(Colors.LightBlue) { Opacity = 0.3 },
-        //        null,
-        //        new Rect(0, 0, ActualWidth, ActualHeight));
-        //    drawingContext.DrawRectangle(
-        //        null,
-        //        new Pen(Brushes.Red, 2),
-        //        new Rect(0, 0, 200, 400));
-
-        //}
     }
 }

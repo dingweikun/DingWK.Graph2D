@@ -7,7 +7,7 @@ namespace Graphic2D.Kernel.Visuals
     /// <summary>
     /// 可视化的图形, 图形组, 文字的基类
     /// </summary>
-    public abstract class GraphicVisual : DrawingVisual, IVisualInfo, INotifyPropertyChanged, IBoundVisual
+    public abstract class GraphicVisual : DrawingVisual, IVisualInfo, INotifyPropertyChanged
     {
 
         #region Internal field
@@ -83,10 +83,6 @@ namespace Graphic2D.Kernel.Visuals
                 NotifyPropertyChanged(nameof(Stroke));
             }
         }
-
-        public abstract Rect Bound { get; }
-
-        public virtual Transform BoundTransform => Transform;
 
         #endregion
 

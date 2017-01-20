@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 
 using Graphic2D.Kernel.Geom;
 using Graphic2D.Kernel.Controls;
+using Graphic2D.Kernel.ViewModel;
 
 namespace Test
 {
@@ -24,7 +25,8 @@ namespace Test
     public partial class MainWindow : Window
     {
 
-        IBoundVisual b;
+        // IBoundVisual b;
+        VisualEditViewModel model;
 
         public MainWindow()
         {
@@ -33,7 +35,7 @@ namespace Test
             GroupVisual host = new GroupVisual();
 
             // 单一图形
-            Rectangle rect = new Rectangle(new Rect(100, 100, 200, 100), 20, 40);
+            Rectangle rect = new Rectangle(new Rect(100, 100, 200, 100), 0, 0);
             GeomVisual<Rectangle> g1 = new GeomVisual<Rectangle>(rect);
             g1.Angle = 45;
             host.GroupIn(g1);
@@ -63,7 +65,8 @@ namespace Test
              r2 = group.DescendantBounds;
 
 
-            b = g1;
+            //b = g1;
+            model = new VisualEditViewModel();
 
             Loaded += MainWindow_Loaded;
         }
@@ -73,7 +76,13 @@ namespace Test
 
             TransformOperator ops = new TransformOperator();
             canvas.PageAdorner.Canvas.Children.Add(ops);
-            ops.BoundVisual = b;
+            //s.BoundVisual = b;
+        }
+
+        private void canvas_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            double r = e.Delta > 0 ? 10.0/11.0 : 11.0/10.0;
+            canvas.Page.PageScale *= r;
         }
     }
 }

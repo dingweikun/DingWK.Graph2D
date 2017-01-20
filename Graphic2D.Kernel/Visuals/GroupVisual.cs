@@ -47,13 +47,7 @@ namespace Graphic2D.Kernel.Visuals
 
         #endregion
 
-
-        #region IBound interface member
-
-        public override Rect Bound => DescendantBounds;
-
-        #endregion
-
+        
 
         #region Methods
 

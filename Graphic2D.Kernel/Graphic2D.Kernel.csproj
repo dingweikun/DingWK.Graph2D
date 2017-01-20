@@ -50,6 +50,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Func.cs" />
+    <Compile Include="Common\PropertyChangeNotify.cs" />
+    <Compile Include="Controls\GraphicVisualCanva.debug.cs" />
     <Compile Include="Controls\GraphicVisualCanvas.cs" />
     <Compile Include="Controls\GraphicVisualPage\GraphicVisualPage.cs" />
     <Compile Include="Controls\GraphicVisualPage\PageRoutedEventArgs.cs" />
@@ -60,11 +63,13 @@
     <Compile Include="Controls\PageRulers\VerPageRuler.cs" />
     <Compile Include="Controls\PageOperators\TransformOperator.cs" />
     <Compile Include="Controls\VisualPage\VisualPage.cs" />
+    <Compile Include="Converters\DoubleNegative.cs" />
     <Compile Include="Converters\ScrollBarValuesToPageOffset.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\VisualEditViewModel.cs" />
     <Compile Include="Visuals\GeomVisual.cs" />
     <Compile Include="Visuals\GroupVisual.cs" />
     <Compile Include="Visuals\GraphicVisual.cs" />
-    <Compile Include="Visuals\IBoundVisual.cs" />
     <Compile Include="Visuals\IVisualInfo.cs" />
     <Compile Include="Geom\EmptyGeom.cs" />
     <Compile Include="Geom\IGeom.cs" />
@@ -83,6 +88,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Visuals\VisualUnion.cs" />
+    <Compile Include="VisualTransformer.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -12,6 +12,7 @@
                 <ControlTemplate TargetType="{x:Type ctrls:GraphicVisualCanvas}">
                     <ControlTemplate.Resources>
                         <cnvrt:ScrollBarValuesToPageOffset x:Key="ScollValueToOffset"/>
+                        <cnvrt:DoubleNegative x:Key="Negative"/>
                     </ControlTemplate.Resources>
 
                     <Border Background="{TemplateBinding Background}"
@@ -30,13 +31,6 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <ctrls:HorPageRuler x:Name="PART_HorPageRuler" Grid.Row="0" Grid.Column="1"
-                                                OrignPosition="{Binding ElementName=PART_Page,Path=PageOffsetX}"
-                                                ZoomScale="{Binding ElementName=PART_Page,Path=PageScale}"/>
-
-                            <ctrls:VerPageRuler x:Name="PART_VerPageRuler" Grid.Row="1" Grid.Column="0"
-                                                OrignPosition="{Binding ElementName=PART_Page,Path=PageOffsetY}"
-                                                ZoomScale="{Binding ElementName=PART_Page,Path=PageScale}"/>
 
                             <ScrollBar x:Name="PART_HorScrollBar" Orientation="Horizontal" 
                                        Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
@@ -49,13 +43,21 @@
                                     <ctrls:GraphicVisualPage x:Name="PART_Page" VisualHost="{Binding}">
                                         <ctrls:GraphicVisualPage.PageOffset>
                                             <MultiBinding Converter="{StaticResource ScollValueToOffset}" Mode="TwoWay">
-                                                <Binding Path="Value" ElementName="PART_HorScrollBar"/>
-                                                <Binding Path="Value" ElementName="PART_VerScrollBar"/>
+                                                <Binding Path="Value" ElementName="PART_HorScrollBar" Mode="TwoWay"/>
+                                                <Binding Path="Value" ElementName="PART_VerScrollBar" Mode="TwoWay"/>
                                             </MultiBinding>
                                         </ctrls:GraphicVisualPage.PageOffset>
                                     </ctrls:GraphicVisualPage>
                                 </AdornerDecorator>
                             </Border>
+
+                            <ctrls:HorPageRuler x:Name="PART_HorPageRuler" Grid.Row="0" Grid.Column="1"
+                                                ZoomScale="{Binding ElementName=PART_Page,Path=PageScale}"
+                                                OrignPosition="{Binding ElementName=PART_HorScrollBar,Path=Value,Converter={StaticResource Negative}}"/>
+
+                            <ctrls:VerPageRuler x:Name="PART_VerPageRuler" Grid.Row="1" Grid.Column="0"
+                                                ZoomScale="{Binding ElementName=PART_Page,Path=PageScale}" 
+                                                OrignPosition="{Binding ElementName=PART_VerScrollBar,Path=Value,Converter={StaticResource Negative}}"/>
 
                         </Grid>
 

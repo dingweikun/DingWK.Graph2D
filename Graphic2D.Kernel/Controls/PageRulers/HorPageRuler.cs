@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using Graphic2D.Kernel.Common;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
 
@@ -41,8 +42,8 @@ namespace Graphic2D.Kernel.Controls
                 if (i % MinorTickCount == 0)
                 {
                     drawingContext.DrawLine(pixelPen, a, c);
-
-                    FormattedText ft = new FormattedText((StartValue + i * MinorTickSpacingValue).ToString(),
+         
+                    FormattedText ft = new FormattedText(Func.NumberString(StartValue + i * MinorTickSpacingValue),
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         new Typeface("Arial"),

@@ -7,9 +7,6 @@ namespace Graphic2D.Kernel.Controls
 {
     public abstract class PageOperator : Control
     {
-
-
-
         #region Scale
         /// <summary>
         /// 
@@ -36,102 +33,72 @@ namespace Graphic2D.Kernel.Controls
 
                     PropertyChangedCallback = (d, e) =>
                     {
-                       (d as PageOperator).OnScalePropertyChanged();
+                        (d as PageOperator).OnScalePropertyChanged();
                     }
                 });
 
         internal abstract void OnScalePropertyChanged();
         #endregion
 
+        //#region Origin
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public Point Origin
+        //{
+        //    get { return (Point)GetValue(OriginProperty); }
+        //    set { SetValue(OriginProperty, value); }
+        //}
+        ////
+        //// Dependency property definition
+        ////
+        //private static readonly DependencyProperty OriginProperty =
+        //    DependencyProperty.Register(
+        //        nameof(Origin),
+        //        typeof(Point),
+        //        typeof(PageOperator),
+        //        new FrameworkPropertyMetadata(new Point(0, 0), FrameworkPropertyMetadataOptions.AffectsRender)
+        //        {
+        //            PropertyChangedCallback = (d, e) =>
+        //             {
+        //                 (d as PageOperator).UpdateRenderTranform();
+        //             }
+        //        });
+        //#endregion
 
-
-        #region RenderX
-
-        public double RenderX
-        {
-            get { return (double)GetValue(RenderXProperty); }
-            set { SetValue(RenderXProperty, value); }
-        }
-
-        public static readonly DependencyProperty RenderXProperty =
-            DependencyProperty.Register(
-                nameof(RenderX),
-                typeof(double),
-                typeof(PageOperator),
-                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender)
-                {
-                    PropertyChangedCallback = (d, e) =>
-                    {
-                        (d as PageOperator)?.UpdateRenderTranform();
-                    }
-                });
-        #endregion
-
-        #region RenderY
-
-        public double RenderY
-        {
-            get { return (double)GetValue(RenderYProperty); }
-            set { SetValue(RenderYProperty, value); }
-        }
-
-        public static readonly DependencyProperty RenderYProperty =
-            DependencyProperty.Register(
-                nameof(RenderY),
-                typeof(double),
-                typeof(PageOperator),
-                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender)
-                {
-                    PropertyChangedCallback = (d, e) =>
-                    {
-                        (d as PageOperator)?.UpdateRenderTranform();
-                    }
-                });
-        #endregion
-
-        #region RenderScale
-
-        public double RendserScale
-        {
-            get { return (double)GetValue(RendserScaleProperty); }
-            set { SetValue(RendserScaleProperty, value); }
-        }
-
-        public static readonly DependencyProperty RendserScaleProperty =
-            DependencyProperty.Register(nameof(RendserScale), typeof(double), typeof(PageOperator), new PropertyMetadata(1.0));
-
-        #endregion
-
-        #region RenderAngle
-
-        public double RenderAngle
-        {
-            get { return (double)GetValue(RenderAngleProperty); }
-            set { SetValue(RenderAngleProperty, value); }
-        }
-
-        public static readonly DependencyProperty RenderAngleProperty =
-            DependencyProperty.Register(
-                nameof(RenderAngle), 
-                typeof(double), 
-                typeof(PageOperator),
-                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender)
-                {
-                    PropertyChangedCallback = (d, e) =>
-                    {
-                        (d as PageOperator)?.UpdateRenderTranform();
-                    }
-                });
-        #endregion
-
-        protected void UpdateRenderTranform()
-        {
-            TransformGroup tr = new TransformGroup();
-            tr.Children.Add(new RotateTransform(RenderAngle));
-            tr.Children.Add(new TranslateTransform(RenderX, RenderY));
-            RenderTransform = tr;
-        }
-
+        //#region Angle
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public double Angle
+        //{
+        //    get { return (double)GetValue(AngleProperty); }
+        //    set { SetValue(AngleProperty, value); }
+        //}
+        ////
+        //// Dependency property definition
+        ////
+        //private static readonly DependencyProperty AngleProperty =
+        //    DependencyProperty.Register(
+        //        nameof(Angle),
+        //        typeof(double),
+        //        typeof(PageOperator),
+        //        new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender)
+        //        {
+        //            PropertyChangedCallback = (d, e) =>
+        //            {
+        //                (d as PageOperator).UpdateRenderTranform();
+        //            }
+        //        });
+        //#endregion
+        
+        //internal void UpdateRenderTranform()
+        //{
+        //    TransformGroup tr = new TransformGroup();
+        //    tr.Children.Add(new RotateTransform(Angle));
+        //    tr.Children.Add(new TranslateTransform(Origin.X, Origin.Y));
+        //    RenderTransform = tr;
+        //}
 
     }
 }
