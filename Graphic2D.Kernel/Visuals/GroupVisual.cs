@@ -47,7 +47,6 @@ namespace Graphic2D.Kernel.Visuals
 
         #endregion
 
-        
 
         #region Methods
 
@@ -113,13 +112,13 @@ namespace Graphic2D.Kernel.Visuals
             graphic.Angle = graphic.Angle + this.Angle;
         }
                 
-        public void GroupIn(GraphicVisual graphic)
+        public void AddIntoGroup(GraphicVisual graphic)
         {
             GroupTransIn(graphic);
             ((ICollection<GraphicVisual>)this).Add(graphic);
         }
 
-        public GraphicVisual UnGroup(GraphicVisual graphic)
+        public GraphicVisual RemoveFromGroup(GraphicVisual graphic)
         {
             if (Children.Contains(graphic as Visual))
             {
@@ -129,7 +128,7 @@ namespace Graphic2D.Kernel.Visuals
             return graphic;
         }
 
-        public GraphicVisual[] UnGroupAll()
+        public GraphicVisual[] ClearGroup()
         {
             GraphicVisual[] graphics = new GraphicVisual[Count];
 
@@ -160,7 +159,7 @@ namespace Graphic2D.Kernel.Visuals
             }
         }
 
-        public void MoveBack(GraphicVisual graphic)
+        public void MoveBackward(GraphicVisual graphic)
         {
             int index = Children.IndexOf(graphic);
             if (0 <= index && index < Count)

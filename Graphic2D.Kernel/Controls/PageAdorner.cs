@@ -36,6 +36,10 @@ namespace Graphic2D.Kernel.Controls
                 _canvas.Arrange(new Rect(0, 0, finalSize.Width, finalSize.Height));
                 _canvas.RenderTransform = new TranslateTransform(page.PageOffset.X, page.PageOffset.Y);
 
+                foreach(UIElement ele in _canvas.Children)
+                {
+                    (ele as PageOperator).Scale = (AdornedElement as GraphicVisualPage).PageScale;
+                }
                 //UpdateOperators();
             }
             return size;

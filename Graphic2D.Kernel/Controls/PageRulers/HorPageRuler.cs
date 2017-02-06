@@ -43,7 +43,7 @@ namespace Graphic2D.Kernel.Controls
                 {
                     drawingContext.DrawLine(pixelPen, a, c);
          
-                    FormattedText ft = new FormattedText(Func.NumberString(StartValue + i * MinorTickSpacingValue),
+                    FormattedText ft = new FormattedText(Func.FormatZeroString(StartValue + i * MinorTickSpacingValue),
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         new Typeface("Arial"),

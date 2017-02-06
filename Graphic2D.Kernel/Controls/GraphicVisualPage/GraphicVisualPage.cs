@@ -92,14 +92,6 @@ namespace Graphic2D.Kernel.Controls
             double offsetY = page.PageOffset.Y * delt + page.ActualHeight / 2.0 * (1.0 - delt);
             page.PageOffset = new Point(offsetX, offsetY);
 
-            //double delt = (double)e.NewValue / (double)e.OldValue;
-            //GraphicVisualPage page = d as GraphicVisualPage;
-            //double offsetX = page.PageOffsetX * delt + page.ActualWidth / 2 * (1 - delt);
-            //double offsetY = page.PageOffsetY * delt + page.ActualHeight / 2 * (1 - delt);
-            //page.PageOffsetX = offsetX;
-            //page.PageOffsetY = offsetY;
-
-
             // 更新网格 Update grid
             page.UpdateGridVisual();
 
@@ -557,15 +549,15 @@ namespace Graphic2D.Kernel.Controls
             }
         }
 
-        public void SetViewPortCenter(Point point)
-        {
+        //public void SetViewPortCenter(Point point)
+        //{
 
-        }
+        //}
 
-        public void SetViewPortFullPage()
-        {
+        //public void SetViewPortFullPage()
+        //{
 
-        }
+        //}
 
     }
 }

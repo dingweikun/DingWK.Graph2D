@@ -98,8 +98,8 @@
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type Thumb}">
                                         <Ellipse Fill="White" SnapsToDevicePixels="True"
-                             Stroke="DimGray" StrokeThickness="1"
-                             Width="10" Height="10" Margin="-2"/>
+                                                 Stroke="DimGray" StrokeThickness="1"
+                                                 Width="10" Height="10" Margin="-4"/>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
@@ -124,7 +124,7 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
-                        <Grid Background="Aquamarine">
+                        <Grid>
 
                             <Thumb  x:Name="PART_MoveThumb" Style="{StaticResource MoveThumbStyle}"/>
 
@@ -133,7 +133,7 @@
                                   Margin="0,-24,0,0" Stroke="DimGray"/>
 
                             <Thumb x:Name="PART_RotateThumb" Style="{StaticResource RotateThumbStyle}"
-                                   Margin="-1,-25,0,0"
+                                   Margin="0,-25,0,0"
                                    HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
                             <Thumb x:Name="PART_LTThumb" 

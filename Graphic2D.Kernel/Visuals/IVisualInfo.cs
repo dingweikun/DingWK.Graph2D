@@ -11,8 +11,6 @@ namespace Graphic2D.Kernel.Visuals
 
         Point Origin { get; }
 
-        Point Center { get; }
-
         double Angle { get; }
     }
 }

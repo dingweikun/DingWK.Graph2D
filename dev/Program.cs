@@ -11,27 +11,27 @@ namespace dev
         static void Main(string[] args)
         {
             GeomVisual<Rectangle> g1 = new GeomVisual<Rectangle>(
-                new Rectangle(new Rect(100, 100, 200, 100)));
+                new Rectangle(new Rect(100.5, 100.5, 199, 99)));
             g1.Origin = new Point(100, 100);
-            g1.Angle = 45;
+            g1.Angle = 90;
 
             DrawingGroup d = g1.Drawing;
-
             d.Transform = g1.Transform;
 
-            //DrawingGroup c = new DrawingGroup();
-            //c.Children.Add(d);
-            //c.Transform = new RotateTransform(-g1.Angle);
+
+            GeomVisual<Rectangle> g2 = new GeomVisual<Rectangle>(
+                new Rectangle(new Rect(0.5, 0.5, 99, 99)));
+            g2.Origin = new Point(200, 0);
+
+            DrawingGroup c = g2.Drawing;
+            c.Transform = g2.Transform;
 
 
 
-            //GeomVisual<Rectangle> g1 = new GeomVisual<Rectangle>(
-            //    new Rectangle(new Rect(100, 100, 100, 100)));
-            //DrawingGroup d = g1.Drawing;
-
-            //d.Transform = new RotateTransform(45);
-
-
+            DrawingGroup gg = new DrawingGroup();
+            gg.Children.Add(d);
+            gg.Children.Add(c);
+            gg.Transform = new RotateTransform(-90);
 
             Console.WriteLine();
 

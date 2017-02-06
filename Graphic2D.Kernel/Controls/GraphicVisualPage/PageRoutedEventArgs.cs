@@ -40,13 +40,13 @@ namespace Graphic2D.Kernel.Controls
         }
 
 
-        public PageRoutedEventArgs(RoutedEvent routedEvent, VisualPage source)
-            : base(routedEvent, source)
-        {
-            PageScale = source.Scale;
-            PageSize = source.PageSize;
-            PageOffset = new Point(source.OffsetX, source.OffsetY);
-        }
+        //public PageRoutedEventArgs(RoutedEvent routedEvent, VisualPage source)
+        //    : base(routedEvent, source)
+        //{
+        //    PageScale = source.Scale;
+        //    PageSize = source.PageSize;
+        //    PageOffset = new Point(source.OffsetX, source.OffsetY);
+        //}
 
     }
 }

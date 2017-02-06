@@ -13,7 +13,7 @@ namespace Graphic2D.Kernel.Common
             return -1E-10 < value && value < 1E-10;
         }
 
-        public static string NumberString(double value)
+        public static string FormatZeroString(double value)
         {
             return IsZero(value) ? "0" : value.ToString();
         }

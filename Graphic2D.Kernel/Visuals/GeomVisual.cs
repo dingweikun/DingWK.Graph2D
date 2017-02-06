@@ -1,10 +1,9 @@
 ﻿using Graphic2D.Kernel.Geom;
-using System.Windows;
 using System.Windows.Media;
 
 namespace Graphic2D.Kernel.Visuals
 {
-    public class GeomVisual<T> : GraphicVisual
+    public sealed class GeomVisual<T> : GraphicVisual
         where T : IGeom
     {
 
@@ -32,7 +31,6 @@ namespace Graphic2D.Kernel.Visuals
             : base(graphicInfo)
         {
             _geom = goem;
-
             UpdateGraphicInfo();
         }
 
@@ -47,7 +45,7 @@ namespace Graphic2D.Kernel.Visuals
         }
 
         #endregion
-        
+
 
         #region Methods
 
@@ -58,7 +56,6 @@ namespace Graphic2D.Kernel.Visuals
             dc.Close();
         }
 
-        
         // override methods
 
         internal override void UpdateFill() => UpdateVisual();

@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using Graphic2D.Kernel.Geom;
 using Graphic2D.Kernel.Controls;
 using Graphic2D.Kernel.ViewModel;
+using Graphic2D.Kernel.Model;
 
 namespace Test
 {
@@ -26,7 +27,8 @@ namespace Test
     {
 
         // IBoundVisual b;
-        VisualEditViewModel model;
+        //VisualEditViewModel model;
+        VisualSelection model = new VisualSelection();
 
         public MainWindow()
         {
@@ -35,38 +37,45 @@ namespace Test
             GroupVisual host = new GroupVisual();
 
             // 单一图形
-            Rectangle rect = new Rectangle(new Rect(100, 100, 200, 100), 0, 0);
+            Rectangle rect = new Rectangle(new Rect(100, 100, 200, 100), 10, 10);
             GeomVisual<Rectangle> g1 = new GeomVisual<Rectangle>(rect);
-            g1.Angle = 45;
-            host.GroupIn(g1);
+            g1.Angle = 15;
+            g1.Origin = new Point(100, 100);
+            host.AddIntoGroup(g1);
 
 
-            Rect r1 = g1.ContentBounds;
-            Rect r2 = g1.DescendantBounds;
+            //Rect r1 = g1.ContentBounds;
+            //Rect r2 = g1.DescendantBounds;
 
-            r1.Transform(g1.Transform.Value);
+            //r1.Transform(g1.Transform.Value);
 
             // 组合图形
             GroupVisual group = new GroupVisual();
 
             GeomVisual<Rectangle> ga = new GeomVisual<Rectangle>(
                 new Rectangle(new Rect(250, 250, 50, 50), 0, 0));
-            group.GroupIn(ga);
+            group.AddIntoGroup(ga);
             GeomVisual<Rectangle> gb = new GeomVisual<Rectangle>(
                 new Rectangle(new Rect(200, 300, 20, 80), 0, 0));
-            group.GroupIn(gb);
-            host.GroupIn(group);
+            group.AddIntoGroup(gb);
+            host.AddIntoGroup(group);
 
             group.Angle = 45;
 
             canvas.DataContext = host;
 
-             r1 = group.ContentBounds;
-             r2 = group.DescendantBounds;
+            //r1 = group.ContentBounds;
+            //r2 = group.DescendantBounds;
 
 
             //b = g1;
-            model = new VisualEditViewModel();
+            //model = new VisualEditViewModel();
+
+            List<GraphicVisual> list = new List<GraphicVisual>() { g1, group };
+            model.AddIntoSelection(list);
+            model.AddIntoSelection(g1);
+            model.AddIntoSelection(group);
+
 
             Loaded += MainWindow_Loaded;
         }
@@ -75,13 +84,16 @@ namespace Test
         {
 
             TransformOperator ops = new TransformOperator();
+            ops.SelectedVisuals = model;
             canvas.PageAdorner.Canvas.Children.Add(ops);
             //s.BoundVisual = b;
+
+
         }
 
         private void canvas_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            double r = e.Delta > 0 ? 10.0/11.0 : 11.0/10.0;
+            double r = e.Delta > 0 ? 10.0 / 11.0 : 11.0 / 10.0;
             canvas.Page.PageScale *= r;
         }
     }

@@ -13,7 +13,6 @@ namespace Graphic2D.Kernel.Visuals
         #region Internal fields
 
         private double _angle;
-        private Point _center;
         private Point _origin;
         private Brush _fill;
         private Pen _stroke;
@@ -26,7 +25,6 @@ namespace Graphic2D.Kernel.Visuals
         public static VisualInfo Default => new VisualInfo()
         {
             Angle = 0,
-            Center = new Point(0, 0),
             Origin = new Point(0, 0),
             Fill = Brushes.White,
             Stroke = new Pen(Brushes.Black, 1.0)
@@ -66,14 +64,6 @@ namespace Graphic2D.Kernel.Visuals
             get { return _origin; }
             set { _origin = value; }
         }
-
-
-        public Point Center
-        {
-            get { return _center; }
-            set { _center = value; }
-        }
-
 
         /// <summary>
         /// IGraphic 对象的局部坐标系的旋转角度，单位为度。

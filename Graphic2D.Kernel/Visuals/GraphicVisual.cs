@@ -52,16 +52,6 @@ namespace Graphic2D.Kernel.Visuals
             }
         }
 
-        public Point Center
-        {
-            get { return _graphicInfo.Center; }
-            set
-            {
-                _graphicInfo.Center = value;
-                NotifyPropertyChanged(nameof(Center));
-            }
-        }
-
         public Point Origin
         {
             get { return _graphicInfo.Origin; }
@@ -110,13 +100,12 @@ namespace Graphic2D.Kernel.Visuals
         public void Translate(double dx, double dy)
         {
             Vector delt = new Vector(dx, dy);
-            Center += delt;
             Origin += delt;
         }
 
-        public void Rotate(double angle)
+        public void Rotate(double angle, double cx, double cy)
         {
-            Transform trans = new RotateTransform(angle, Center.X, Center.Y);
+            Transform trans = new RotateTransform(angle, cx, cy);
             Origin = trans.Transform(Origin);
             Angle += angle;
         }
@@ -126,8 +115,6 @@ namespace Graphic2D.Kernel.Visuals
         internal abstract void UpdateFill();
         internal abstract void UpdateStroke();
         internal abstract void UpdateGraphicInfo();
-
-        // public abstract void Scale(double rx, double ry, double cx, double cy);
 
         #endregion
 

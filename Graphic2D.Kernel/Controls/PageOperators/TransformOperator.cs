@@ -1,11 +1,8 @@
-﻿using Graphic2D.Kernel.Visuals;
-using System;
-using System.Collections.ObjectModel;
+﻿using Graphic2D.Kernel.Model;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Input;
 
 namespace Graphic2D.Kernel.Controls
 {
@@ -26,14 +23,20 @@ namespace Graphic2D.Kernel.Controls
     {
         private Thumb[] _thumbs;
 
+        public int BarLength => 25;
+
+        private Point msPoint;
+
+        private Point TempOffset { get; set; }
+        private double TempAngle { get; set; }
 
         #region SelectedVisuals
         /// <summary>
         /// 
         /// </summary>
-        public ReadOnlyCollection<GraphicVisual> SelectedVisuals
+        public VisualSelection SelectedVisuals
         {
-            get { return (ReadOnlyCollection<GraphicVisual>)GetValue(SelectedVisualsProperty); }
+            get { return (VisualSelection)GetValue(SelectedVisualsProperty); }
             set { SetValue(SelectedVisualsProperty, value); }
         }
         //
@@ -42,21 +45,10 @@ namespace Graphic2D.Kernel.Controls
         private static readonly DependencyProperty SelectedVisualsProperty =
             DependencyProperty.Register(
                 nameof(SelectedVisuals),
-                typeof(ReadOnlyCollection<GraphicVisual>),
-                typeof(TransformOperator),
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender)
-                {
-                    PropertyChangedCallback = (d, e) =>
-                    {
-                        (d as TransformOperator).SetTransformOperator();
-                    }
-                });
+                typeof(VisualSelection),
+                typeof(TransformCollection),
+                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
         #endregion
-
-
-
-
-
 
 
         internal override void OnScalePropertyChanged()
@@ -67,71 +59,21 @@ namespace Graphic2D.Kernel.Controls
 
         public void SetTransformOperator()
         {
-            //if (SelectedVisuals == null || SelectedVisuals.Count == 0)
-            //{
-            //    Height = Width = 0;
-            //    RenderTransform = null;
-            //}
-            //else
-            //{
-            //    if (SelectedVisuals.Count==1)
-            //    {
-                    
-            //    }
-            //    else
-            //    {
-
-            //    }
-            //}
-
-
-
-            //if (SelectedVisuals != null)
-            //{
-            //    Rect rect = Rect.Empty;
-
-            //    foreach (GraphicVisual gv in SelectedVisuals)
-            //    {
-            //        rect = Rect.Union(rect, gv.DescendantBounds);
-            //    }
-
-            //    Width = rect.Width * Scale;
-            //    Height = rect.Height * Scale;
-
-            //    TransformGroup tr = new TransformGroup();
-            //    tr.Children.Add(new RotateTransform(Angle));
-            //    tr.Children.Add(new TranslateTransform(Origin.X, Origin.Y));
-            //    RenderTransform = tr;
-
-
-            //    //BoundVisual.BoundTransform.Transform(pos);
-            //    //pos.X *= Scale;
-            //    //pos.Y *= Scale;
-
-            //    //var tr = BoundVisual.BoundTransform.CloneCurrentValue() as TransformGroup;
-            //    //tr.Children.Add(new TranslateTransform(
-            //    //    pos.X * Scale - pos.X,
-            //    //    pos.Y * Scale - pos.Y
-            //    //    ));
-
-            //    //this.RenderTransform = tr;
-            //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            if (SelectedVisuals == null)
+            {
+                Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                Rect bounds = SelectedVisuals.Bounds;
+                Height = bounds.Height * Scale;
+                Width = bounds.Width * Scale;
+                TransformGroup tr = new TransformGroup();
+                tr.Children.Add(new TranslateTransform(bounds.X * Scale, bounds.Y * Scale));
+                tr.Children.Add(new RotateTransform(SelectedVisuals.RefAngle));
+                RenderTransform = tr;
+                Visibility = Visibility.Visible;
+            }
         }
 
 
@@ -181,44 +123,63 @@ namespace Graphic2D.Kernel.Controls
 
         private void Thumb_DragDelta(object sender, DragDeltaEventArgs e)
         {
-            //var thumb = e.OriginalSource as Thumb;
-            //if (thumb != null)
-            //{
-            //    if (thumb == _thumbs[8])
-            //    {
-            //        this.RenderX += e.HorizontalChange;
-            //        this.RenderY += e.VerticalChange;
-            //    }
-            //    else if (thumb == _thumbs[9])
-            //    {
-            //        Vector vc = new Vector(Width / 2, Height / 2);
-            //        Vector vn = new Vector(Width / 2, -25);
-            //        Vector va = vn - vc;
+            var thumb = e.OriginalSource as Thumb;
+            if (thumb != null)
+            {
+                if (thumb == _thumbs[8])
+                {
+                    msPoint.X += e.HorizontalChange;
+                    msPoint.Y += e.VerticalChange;
+                    //this.RenderX += e.HorizontalChange;
+                    //this.RenderY += e.VerticalChange;
+                    var tr = this.RenderTransform as TransformGroup;
+                    tr.Children.Add(new TranslateTransform(e.HorizontalChange, e.VerticalChange));
+                    RenderTransform = tr;
+                }
+                else if (thumb == _thumbs[9])
+                {
+                    //Vector vc = new Vector(Width / 2, Height / 2);
+                    //Vector vn = new Vector(Width / 2, -25);
+                    //Vector va = vn - vc;
 
-            //        Point pd = new Point(e.HorizontalChange, e.VerticalChange);
-            //        this.RenderTransform.Inverse.Transform(pd);
-            //        Vector vb = new Vector(pd.X, pd.Y);
+                    //Point pd = new Point(e.HorizontalChange, e.VerticalChange);
+                    //this.RenderTransform.Inverse.Transform(pd);
+                    //Vector vb = new Vector(pd.X, pd.Y);
 
 
-            //        double dd = Math.Acos((vb * va) / va.Length / vb.Length);
-            //        if (vb.Y < 0) dd = -dd;
+                    //double dd = Math.Acos((vb * va) / va.Length / vb.Length);
+                    //if (vb.Y < 0) dd = -dd;
 
-            //        this.RenderAngle += dd;
+                    //this.RenderAngle += dd;
 
 
-            //    }
-            //    else
-            //    {
-            //    }
-            //}
+                }
+                else
+                {
+                }
+            }
             e.Handled = true;
         }
 
         private void Thumb_DragStarted(object sender, DragStartedEventArgs e)
         {
-            //throw new NotImplementedException();
+            var thumb = e.OriginalSource as Thumb;
+            if (thumb != null)
+            {
+                msPoint = new Point(0, 0);
+
+                if (thumb == _thumbs[8])
+                {
+
+
+
+
+                }
+
+            }
             e.Handled = true;
         }
+
 
     }
 }

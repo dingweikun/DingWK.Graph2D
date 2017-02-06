@@ -29,7 +29,7 @@ namespace Graphic2D.Kernel.Controls
         {
             Loaded += (sender, e) =>
             {
-                // 初始化滚动条手动刷新一次
+                // 手动刷新一次, 初始化滚动条位置
                 GraphicVisualPage page = GetTemplateChild("PART_Page") as GraphicVisualPage;
                 SetScrollBars(new PageRoutedEventArgs(null, page));
             };
@@ -74,8 +74,8 @@ namespace Graphic2D.Kernel.Controls
             if (addr != null)
             {
                 _pageAdorner = new PageAdorner(page);
-                _pageAdorner.Canvas.Background = Brushes.LightGreen.Clone();
-                _pageAdorner.Canvas.Background.Opacity = 0.3;
+                //_pageAdorner.Canvas.Background = Brushes.LightGreen.Clone();
+                //_pageAdorner.Canvas.Background.Opacity = 0.3;
                 addr.AdornerLayer.Add(_pageAdorner);
             }
             
