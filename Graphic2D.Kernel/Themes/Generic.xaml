@@ -76,7 +76,6 @@
 
                     <!--Thumb Style-->
                     <ControlTemplate.Resources>
-
                         <Style x:Key="MoveThumbStyle" TargetType="{x:Type Thumb}">
                             <!--<Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>-->
                             <Setter Property="SnapsToDevicePixels" Value="true"/>
@@ -133,49 +132,41 @@
                                   Margin="0,-24,0,0" Stroke="DimGray"/>
 
                             <Thumb x:Name="PART_RotateThumb" Style="{StaticResource RotateThumbStyle}"
-                                   Margin="0,-25,0,0"
+                                   Margin="0,-24,0,0"
                                    HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
                             <Thumb x:Name="PART_LTThumb" 
                                    Style="{StaticResource ResizeThumbStyle}"
-                                   Cursor="SizeNWSE"
                                    HorizontalAlignment="Left"                         
                                    VerticalAlignment="Top" />
                             <Thumb x:Name="PART_CTThumb" 
                                    Style="{StaticResource ResizeThumbStyle}"
-                                   Cursor="SizeNS"
                                    HorizontalAlignment="Center"             
                                    VerticalAlignment="Top" />
                             <Thumb x:Name="PART_RTThumb" 
                                    Style="{StaticResource ResizeThumbStyle}"
-                                   Cursor="SizeNESW"
                                    HorizontalAlignment="Right"                
                                    VerticalAlignment="Top" />
 
                             <Thumb x:Name="PART_LCThumb" 
                                    Style="{StaticResource ResizeThumbStyle}"
-                                   Cursor="SizeWE"
                                    HorizontalAlignment="Left"                         
                                    VerticalAlignment="Center" />
                             <Thumb x:Name="PART_RCThumb" 
                                    Style="{StaticResource ResizeThumbStyle}"
-                                   Cursor="SizeWE"
                                    HorizontalAlignment="Right"             
                                    VerticalAlignment="Center" />
 
                             <Thumb x:Name="PART_LBThumb" 
                                    Style="{StaticResource ResizeThumbStyle}"
-                                   Cursor="SizeNESW"
                                    HorizontalAlignment="Left"                
                                    VerticalAlignment="Bottom" />
                             <Thumb x:Name="PART_CBThumb" 
                                    Style="{StaticResource ResizeThumbStyle}"
-                                   Cursor="SizeNS"
                                    HorizontalAlignment="Center"                
                                    VerticalAlignment="Bottom" />
                             <Thumb x:Name="PART_RBThumb" 
                                    Style="{StaticResource ResizeThumbStyle}"
-                                   Cursor="SizeNWSE"
                                    HorizontalAlignment="Right"                
                                    VerticalAlignment="Bottom" />
                         </Grid>

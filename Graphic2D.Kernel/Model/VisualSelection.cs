@@ -26,8 +26,17 @@ namespace Graphic2D.Kernel.Model
 
         public DrawingGroup SelectionDrawing { get; private set; }
 
-        public Rect Bounds => SelectionDrawing.Bounds;
-
+        public Rect RegionRect
+        {
+            get
+            {
+                Transform tr = SelectionDrawing.Transform;
+                SelectionDrawing.Transform = Transform.Identity;
+                Rect region = SelectionDrawing.Bounds;
+                SelectionDrawing.Transform = tr;
+                return region;
+            }
+        }
 
         #region Constructor
 

@@ -274,7 +274,7 @@ namespace Graphic2D.Kernel.Controls
                 });
         #endregion
 
-        #region VisualHost 
+        #region VisualHost
         /// <summary>
         /// 
         /// </summary>
@@ -521,7 +521,6 @@ namespace Graphic2D.Kernel.Controls
                 TransformGroup trans = new TransformGroup();
                 trans.Children.Add(new ScaleTransform(PageScale, PageScale));
                 trans.Children.Add(new TranslateTransform(PageOffset.X, PageOffset.Y));
-
                 VisualHost.Transform = trans;
             }
         }

@@ -13,8 +13,8 @@ namespace Graphic2D.Kernel.Controls
     [TemplatePart(Name = "PART_VerPageRuler", Type = typeof(VerPageRuler))]
     public partial class GraphicVisualCanvas : Control
     {
-        private PageAdorner _pageAdorner;
-        public PageAdorner PageAdorner => _pageAdorner;
+        private PageOperatorAdorner _operatorAdorner;
+        public PageOperatorAdorner OperatorAdorner => _operatorAdorner;
 
         private GraphicVisualPage _page;
         public GraphicVisualPage Page => _page;
@@ -30,10 +30,10 @@ namespace Graphic2D.Kernel.Controls
             Loaded += (sender, e) =>
             {
                 // 手动刷新一次, 初始化滚动条位置
-                GraphicVisualPage page = GetTemplateChild("PART_Page") as GraphicVisualPage;
-                SetScrollBars(new PageRoutedEventArgs(null, page));
+                SetScrollBars(new PageRoutedEventArgs(null, Page));
             };
         }
+
 
         public override void OnApplyTemplate()
         {
@@ -65,7 +65,7 @@ namespace Graphic2D.Kernel.Controls
                 page.PageOffsetChanged += (sender, e) =>
                 {
                     // 强制刷新
-                    PageAdorner.InvalidateVisual();
+                    OperatorAdorner.InvalidateVisual();
                     e.Handled = true;
                 };
             }
@@ -73,10 +73,10 @@ namespace Graphic2D.Kernel.Controls
             AdornerDecorator addr = GetTemplateChild("PART_AdornerDecorator") as AdornerDecorator;
             if (addr != null)
             {
-                _pageAdorner = new PageAdorner(page);
+                _operatorAdorner = new PageOperatorAdorner(page);
                 //_pageAdorner.Canvas.Background = Brushes.LightGreen.Clone();
                 //_pageAdorner.Canvas.Background.Opacity = 0.3;
-                addr.AdornerLayer.Add(_pageAdorner);
+                addr.AdornerLayer.Add(_operatorAdorner);
             }
             
         }

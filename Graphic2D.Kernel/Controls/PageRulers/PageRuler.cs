@@ -124,7 +124,6 @@ namespace Graphic2D.Kernel.Controls
             SnapsToDevicePixels = true;
         }
 
-
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);

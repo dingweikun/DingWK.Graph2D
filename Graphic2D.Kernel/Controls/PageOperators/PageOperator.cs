@@ -37,7 +37,11 @@ namespace Graphic2D.Kernel.Controls
                     }
                 });
 
+
+        // abstract method
+
         internal abstract void OnScalePropertyChanged();
+
         #endregion
 
         //#region Origin

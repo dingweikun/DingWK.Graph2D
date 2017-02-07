@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace Graphic2D.Kernel.Controls
 {
-    public class PageAdorner : Adorner
+    public class PageOperatorAdorner : Adorner
     {
         #region Members related to graphic rendering support in WPF  
 
@@ -20,7 +20,7 @@ namespace Graphic2D.Kernel.Controls
         #endregion
 
 
-        public PageAdorner(UIElement adornedElement)
+        public PageOperatorAdorner(UIElement adornedElement)
             : base(adornedElement)
         {            
             this.AddVisualChild(_canvas);

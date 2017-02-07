@@ -37,9 +37,10 @@ namespace Test
             GroupVisual host = new GroupVisual();
 
             // 单一图形
-            Rectangle rect = new Rectangle(new Rect(100, 100, 200, 100), 10, 10);
+            Rectangle rect = new Rectangle(new Rect(0, 0, 200, 200), 10, 10);
             GeomVisual<Rectangle> g1 = new GeomVisual<Rectangle>(rect);
-            g1.Angle = 15;
+            g1.Fill = Brushes.Blue.CloneCurrentValue();
+            g1.Angle = 45;
             g1.Origin = new Point(100, 100);
             host.AddIntoGroup(g1);
 
@@ -72,7 +73,7 @@ namespace Test
             //model = new VisualEditViewModel();
 
             List<GraphicVisual> list = new List<GraphicVisual>() { g1, group };
-            model.AddIntoSelection(list);
+            //model.AddIntoSelection(list);
             model.AddIntoSelection(g1);
             model.AddIntoSelection(group);
 
@@ -85,8 +86,7 @@ namespace Test
 
             TransformOperator ops = new TransformOperator();
             ops.SelectedVisuals = model;
-            canvas.PageAdorner.Canvas.Children.Add(ops);
-            //s.BoundVisual = b;
+            canvas.OperatorAdorner.Canvas.Children.Add(ops);
 
 
         }
