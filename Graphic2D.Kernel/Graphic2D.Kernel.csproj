@@ -51,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Func.cs" />
-    <Compile Include="Common\PropertyChangeNotify.cs" />
+    <Compile Include="Common\PropertyChangedNotify.cs" />
     <Compile Include="Controls\GraphicVisualCanva.debug.cs" />
     <Compile Include="Controls\GraphicVisualCanvas.cs" />
     <Compile Include="Controls\GraphicVisualPage\GraphicVisualPage.cs" />
@@ -64,6 +64,7 @@
     <Compile Include="Controls\PageOperators\TransformOperator.cs" />
     <Compile Include="Converters\DoubleNegative.cs" />
     <Compile Include="Converters\ScrollBarValuesToPageOffset.cs" />
+    <Compile Include="Model\VisualSelection.Operations.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="Visuals\GeomVisual.cs" />
     <Compile Include="Visuals\GroupVisual.cs" />
@@ -72,7 +73,7 @@
     <Compile Include="Geom\EmptyGeom.cs" />
     <Compile Include="Geom\IGeom.cs" />
     <Compile Include="Geom\Rectangle.cs" />
-    <Compile Include="Visuals\VisualHelper.cs" />
+    <Compile Include="Visuals\GraphicVisualHelper.cs" />
     <Compile Include="Visuals\VisualInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

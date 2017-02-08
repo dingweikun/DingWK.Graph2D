@@ -3,6 +3,10 @@ using System.Windows.Media;
 
 namespace Graphic2D.Kernel.Visuals
 {
+    public interface IGeomVisual<out T> where T : IGeom
+    {
+    }
+
     public sealed class GeomVisual<T> : GraphicVisual
         where T : IGeom
     {

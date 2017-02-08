@@ -6,8 +6,10 @@ using System.Windows.Media;
 
 namespace Graphic2D.Kernel.Model
 {
-    public sealed class VisualSelection : IList<GraphicVisual>
+    public sealed partial class VisualSelection : IList<GraphicVisual>
     {
+        #region Fields & Properties
+
         private readonly List<GraphicVisual> _visuals;
 
         private double _refAngle;
@@ -26,17 +28,8 @@ namespace Graphic2D.Kernel.Model
 
         public DrawingGroup SelectionDrawing { get; private set; }
 
-        public Rect RegionRect
-        {
-            get
-            {
-                Transform tr = SelectionDrawing.Transform;
-                SelectionDrawing.Transform = Transform.Identity;
-                Rect region = SelectionDrawing.Bounds;
-                SelectionDrawing.Transform = tr;
-                return region;
-            }
-        }
+        #endregion
+
 
         #region Constructor
 
@@ -84,7 +77,30 @@ namespace Graphic2D.Kernel.Model
         #endregion
 
 
-        #region Methods
+        #region Private Methods 
+
+        private void UpdateSelection()
+        {
+            RefAngle = Count == 0 ? 0 : (Count == 1 ? _visuals[0].Angle : RefAngle);
+            SelectionDrawing = GetSelectionDrawing();
+        }
+
+        private DrawingGroup GetSelectionDrawing()
+        {
+            DrawingGroup drawingGroup = new DrawingGroup();
+            foreach (GraphicVisual gv in _visuals)
+            {
+                var drawing = GraphicVisualHelper.GetGraphicVisualDrawing(gv);
+                drawing.Transform = gv.Transform;
+                drawingGroup.Children.Add(drawing);
+            }
+            return drawingGroup;
+        }
+
+        #endregion
+
+
+        #region Seleciton Methods
 
         public void AddIntoSelection(GraphicVisual gv)
         {
@@ -120,25 +136,8 @@ namespace Graphic2D.Kernel.Model
             UpdateSelection();
         }
 
-        public DrawingGroup GetSelectionDrawing()
-        {
-            DrawingGroup drawingGroup = new DrawingGroup();
-            foreach (GraphicVisual gv in _visuals)
-            {
-                var drawing = VisualHelper.GetGraphicVisualDrawing(gv);
-                drawing.Transform = gv.Transform;
-                drawingGroup.Children.Add(drawing);
-            }
-            drawingGroup.Transform = new RotateTransform(-RefAngle);
-            return drawingGroup;
-        }
-
-        public void UpdateSelection()
-        {
-            RefAngle = Count == 0 ? 0 : (Count == 1 ? _visuals[0].Angle : RefAngle);
-            SelectionDrawing = GetSelectionDrawing();
-        }
-
         #endregion
+
+
     }
 }

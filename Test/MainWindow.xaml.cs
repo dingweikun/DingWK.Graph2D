@@ -28,7 +28,7 @@ namespace Test
 
         // IBoundVisual b;
         //VisualEditViewModel model;
-        VisualSelection model = new VisualSelection();
+        VisualSelection model;// = new VisualSelection();
 
         public MainWindow()
         {
@@ -37,7 +37,7 @@ namespace Test
             GroupVisual host = new GroupVisual();
 
             // 单一图形
-            Rectangle rect = new Rectangle(new Rect(0, 0, 200, 200), 10, 10);
+            Rectangle rect = new Rectangle(new Rect(0, 0, 100, 200), 10, 10);
             GeomVisual<Rectangle> g1 = new GeomVisual<Rectangle>(rect);
             g1.Fill = Brushes.Blue.CloneCurrentValue();
             g1.Angle = 45;
@@ -61,7 +61,7 @@ namespace Test
             group.AddIntoGroup(gb);
             host.AddIntoGroup(group);
 
-            group.Angle = 45;
+            group.Angle = 30;
 
             canvas.DataContext = host;
 
@@ -72,10 +72,12 @@ namespace Test
             //b = g1;
             //model = new VisualEditViewModel();
 
+            model = canvas.VisualSelection;
+
             List<GraphicVisual> list = new List<GraphicVisual>() { g1, group };
-            //model.AddIntoSelection(list);
-            model.AddIntoSelection(g1);
-            model.AddIntoSelection(group);
+            model.AddIntoSelection(list);
+            //model.AddIntoSelection(g1);
+            //model.AddIntoSelection(group);
 
 
             Loaded += MainWindow_Loaded;

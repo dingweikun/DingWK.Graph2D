@@ -70,7 +70,7 @@ namespace Graphic2D.Kernel.Controls
                 typeof(GraphicVisualPage),
                 new FrameworkPropertyMetadata(1.0, FrameworkPropertyMetadataOptions.None)
                 {
-                    CoerceValueCallback = (d,value)=>
+                    CoerceValueCallback = (d, value) =>
                     {
                         // 强制页面缩放比例范围 [0.01, 10]。
                         double scale = (double)value;
@@ -267,10 +267,10 @@ namespace Graphic2D.Kernel.Controls
                 typeof(GraphicVisualPage),
                 new FrameworkPropertyMetadata(Brushes.Transparent.CloneCurrentValue(), FrameworkPropertyMetadataOptions.AffectsRender)
                 {
-                    CoerceValueCallback=(d,value)=>
-                    {
-                        return value != null ? value : Brushes.Transparent.CloneCurrentValue();
-                    }
+                    CoerceValueCallback = (d, value) =>
+                      {
+                          return value != null ? value : Brushes.Transparent.CloneCurrentValue();
+                      }
                 });
         #endregion
 
@@ -548,15 +548,23 @@ namespace Graphic2D.Kernel.Controls
             }
         }
 
-        //public void SetViewPortCenter(Point point)
-        //{
 
+
+
+        //public void SetViewPort(Rect viewport)
+        //{
+        //    if (RenderSize.Height > 0 && RenderSize.Width > 0)
+        //    {
+        //        //double rx = viewport.Width / RenderSize.Width;
+        //        //double ry = viewport.Height / RenderSize.Height;
+        //        //PageScale = Math.Max(rx, ry);
+                
+        //        double dx = (viewport.X + viewport.Width / 2) * PageScale - RenderSize.Width / 2;
+        //        double dy = (viewport.Y + viewport.Height / 2) *PageScale - RenderSize.Height / 2;
+        //        PageOffset = new Point(dx, dy);                
+        //    }
         //}
 
-        //public void SetViewPortFullPage()
-        //{
-
-        //}
 
     }
 }

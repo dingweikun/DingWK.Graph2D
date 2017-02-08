@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using System;
+using Graphic2D.Kernel.Common;
 
 namespace Graphic2D.Kernel.Controls
 {
@@ -23,8 +25,11 @@ namespace Graphic2D.Kernel.Controls
         private Thumb[] _thumbs;
 
         private double BarLength { get; set; }
-        private double AngleEx { get; set; }
+        //private double AngleEx { get; set; }
+        private Rect RegionRect { get; set; }
+        private Rect BoundsRect { get; set; }
         private DrawingGroup Watermark { get; set; }
+        private Vector MouseDelta { get; set; }
         private Pen AccentPen { get; set; }
         public Color AccentColor
         {
@@ -78,10 +83,16 @@ namespace Graphic2D.Kernel.Controls
                 nameof(SelectedVisuals),
                 typeof(VisualSelection),
                 typeof(TransformCollection),
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender));
+                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender)
+                {
+                    PropertyChangedCallback = (d, e) =>
+                    {
+                        (d as TransformOperator).SetTransformOperator();
+                    }
+                });
         #endregion
 
-        
+
         static TransformOperator()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(TransformOperator), new FrameworkPropertyMetadata(typeof(TransformOperator)));
@@ -125,7 +136,7 @@ namespace Graphic2D.Kernel.Controls
                 GetTemplateChild("PART_RotateThumb") as Thumb  // 9
             };
 
-            BarLength = -_thumbs[9].Margin.Top;
+            BarLength = _thumbs[9].Margin.Top;
         }
 
         internal override void OnScalePropertyChanged()
@@ -133,20 +144,24 @@ namespace Graphic2D.Kernel.Controls
             SetTransformOperator();
         }
 
-        
         public void SetTransformOperator()
         {
             if (SelectedVisuals != null)
             {
-                Rect bounds = SelectedVisuals.SelectionDrawing.Bounds;
-                Height = bounds.Height * Scale;
-                Width = bounds.Width * Scale;
+                Watermark = SelectedVisuals.SelectionDrawing.CloneCurrentValue();
+                Watermark.Transform = new RotateTransform(-SelectedVisuals.RefAngle);
+                Watermark.Opacity = 0.5;
+                RegionRect = Watermark.Bounds;
+                Height = RegionRect.Height * Scale;
+                Width = RegionRect.Width * Scale;
                 TransformGroup tr = new TransformGroup();
-                tr.Children.Add(new TranslateTransform(bounds.X * Scale, bounds.Y * Scale));
+                tr.Children.Add(new TranslateTransform(RegionRect.X * Scale, RegionRect.Y * Scale));
                 tr.Children.Add(new RotateTransform(SelectedVisuals.RefAngle));
                 RenderTransform = tr;
             }
         }
+
+
 
 
         private void Thumb_DragDelta(object sender, DragDeltaEventArgs e)
@@ -154,9 +169,21 @@ namespace Graphic2D.Kernel.Controls
             var thumb = e.OriginalSource as Thumb;
             if (thumb != null)
             {
-                MoveOffset = new Point(e.HorizontalChange, e.VerticalChange);
+                if (thumb == _thumbs[8])
+                {
+                    MoveOffset = new Point(e.HorizontalChange, e.VerticalChange);
+                }
+                else if (thumb == _thumbs[9])
+                {
 
-               
+                    Point cp = new Point(Width / 2, Height / 2);
+                    Point rp = new Point(Width / 2, BarLength);
+                    double l = Height / 2 - BarLength;
+                    double s = e.HorizontalChange;
+                    double delta = Math.Atan2(e.HorizontalChange, Height / 2 - BarLength) / Math.PI * 180;
+                    SelectedVisuals.Rotate(delta);
+                    SetTransformOperator();
+                }
             }
             e.Handled = true;
         }
@@ -170,71 +197,71 @@ namespace Graphic2D.Kernel.Controls
 
                 if (thumb == _thumbs[8])
                 {
+                    BoundsRect = SelectedVisuals.SelectionDrawing.Bounds;
                     AccentPen.Thickness = 1 / Scale;
-                    Watermark = SelectedVisuals?.SelectionDrawing;
-
                 }
                 else if (thumb == _thumbs[9])
                 {
-                    Watermark = SelectedVisuals?.SelectionDrawing;
+
                 }
-
-
             }
             e.Handled = true;
         }
 
         private void Thumb_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            //MessageBox.Show($"x={MoveOffset.X},y={MoveOffset.Y}");
+
+            var thumb = e.OriginalSource as Thumb;
+            if (thumb == _thumbs[8])
+            {
+                Vector delta = Func.Rotate(-SelectedVisuals.RefAngle, MoveOffset.X / Scale, MoveOffset.Y / Scale);
+                SelectedVisuals.Move(delta);
+                SetTransformOperator();
+            }
+
+
+
             MoveOffset = new Point(0, 0);
+            BoundsRect = Rect.Empty;
             AccentPen.Thickness = 0;
-            Watermark = null;
+
+
             e.Handled = true;
         }
+
+
 
 
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
 
-            Rect regionRect = SelectedVisuals.RegionRect;
+            if (!BoundsRect.IsEmpty)
+            {
+                // 绘制图形边界矩形
+
+                TransformGroup tx = new TransformGroup();
+                tx.Children.Add(new ScaleTransform(Scale, Scale));
+                tx.Children.Add(RenderTransform.Inverse as Transform);
+                tx.Children.Add(new TranslateTransform(MoveOffset.X, MoveOffset.Y));
+
+                drawingContext.PushTransform(tx);
+                drawingContext.DrawRectangle(null, AccentPen, BoundsRect);
+                drawingContext.Pop();
 
 
-            Transform vs = this.RenderTransform.Inverse as Transform;
-            TransformGroup tx = new TransformGroup();
-            tx.Children.Add(vs);
+                // 绘制图形水印
 
-            drawingContext.PushTransform(tx);
-            drawingContext.PushTransform(new ScaleTransform(Scale, Scale));
-            drawingContext.PushTransform(new TranslateTransform(MoveOffset.X, MoveOffset.Y));
-            drawingContext.DrawRectangle(Brushes.Yellow, AccentPen, regionRect);
-            drawingContext.Pop();
-            drawingContext.Pop();
-            drawingContext.Pop();
+                Rect bounds = SelectedVisuals.SelectionDrawing.Bounds;
+                TransformGroup tr = new TransformGroup();
+                tr.Children.Add(new TranslateTransform(-RegionRect.X, -RegionRect.Y));
+                tr.Children.Add(new ScaleTransform(Scale, Scale));
+                tr.Children.Add(new TranslateTransform(MoveOffset.X, MoveOffset.Y));
 
-
-
-
-
-
-
-
-            Rect bounds = SelectedVisuals.SelectionDrawing.Bounds;
-            TransformGroup tr = new TransformGroup();
-            tr.Children.Add(new TranslateTransform(-bounds.X, -bounds.Y));
-            tr.Children.Add(new ScaleTransform(Scale, Scale));
-            tr.Children.Add(new TranslateTransform(MoveOffset.X, MoveOffset.Y));
-
-
-            drawingContext.PushTransform(tr);
-            drawingContext.DrawRectangle(null, AccentPen, regionRect);
-
-            drawingContext.PushOpacity(0.5);
-            drawingContext.DrawDrawing(Watermark);
-            drawingContext.Pop();
-
-            drawingContext.Pop();
+                drawingContext.PushTransform(tr);
+                drawingContext.DrawDrawing(Watermark);
+                drawingContext.Pop();
+            }
 
         }
 

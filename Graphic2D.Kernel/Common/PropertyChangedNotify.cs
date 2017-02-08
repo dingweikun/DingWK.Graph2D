@@ -2,7 +2,7 @@
 
 namespace Graphic2D.Kernel.Common
 {
-    public class PropertyChangeNotify : INotifyPropertyChanged
+    public class PropertyChangedNotify : INotifyPropertyChanged
     {
         #region INotifyPropertyChanged interface implementation
 

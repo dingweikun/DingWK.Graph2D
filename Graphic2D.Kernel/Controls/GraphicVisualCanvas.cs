@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Graphic2D.Kernel.Model;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
@@ -13,11 +14,14 @@ namespace Graphic2D.Kernel.Controls
     [TemplatePart(Name = "PART_VerPageRuler", Type = typeof(VerPageRuler))]
     public partial class GraphicVisualCanvas : Control
     {
-        private PageOperatorAdorner _operatorAdorner;
+        private PageOperatorAdorner _operatorAdorner = null;
         public PageOperatorAdorner OperatorAdorner => _operatorAdorner;
 
-        private GraphicVisualPage _page;
+        private GraphicVisualPage _page = null;
         public GraphicVisualPage Page => _page;
+
+        private VisualSelection _viusalSelection = new VisualSelection();
+        public VisualSelection VisualSelection => _viusalSelection;
 
 
         static GraphicVisualCanvas()
@@ -29,8 +33,20 @@ namespace Graphic2D.Kernel.Controls
         {
             Loaded += (sender, e) =>
             {
-                // 手动刷新一次, 初始化滚动条位置
-                SetScrollBars(new PageRoutedEventArgs(null, Page));
+                
+
+
+
+
+
+
+
+
+                // 手动刷新一次, 初始化滚动条位置，
+                //Page.RaiseEvent(new PageRoutedEventArgs(GraphicVisualPage.PageScaleChangedEvent, Page));
+                // SetScrollBars(new PageRoutedEventArgs(null, Page));
+                Page.PageScale = 1.1;
+                //Page.SetViewPort(new Rect(Page.PageSize));
             };
         }
 
@@ -74,11 +90,13 @@ namespace Graphic2D.Kernel.Controls
             if (addr != null)
             {
                 _operatorAdorner = new PageOperatorAdorner(page);
+                _operatorAdorner.DataContext = this;
                 //_pageAdorner.Canvas.Background = Brushes.LightGreen.Clone();
                 //_pageAdorner.Canvas.Background.Opacity = 0.3;
                 addr.AdornerLayer.Add(_operatorAdorner);
             }
-            
+
+
         }
 
 

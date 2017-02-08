@@ -97,18 +97,18 @@ namespace Graphic2D.Kernel.Visuals
             Transform = tr;
         }
 
-        public void Translate(double dx, double dy)
-        {
-            Vector delt = new Vector(dx, dy);
-            Origin += delt;
-        }
+        //public void Translate(double dx, double dy)
+        //{
+        //    Vector delt = new Vector(dx, dy);
+        //    Origin += delt;
+        //}
 
-        public void Rotate(double angle, double cx, double cy)
-        {
-            Transform trans = new RotateTransform(angle, cx, cy);
-            Origin = trans.Transform(Origin);
-            Angle += angle;
-        }
+        //public void Rotate(double angle, double cx, double cy)
+        //{
+        //    Transform trans = new RotateTransform(angle, cx, cy);
+        //    Origin = trans.Transform(Origin);
+        //    Angle += angle;
+        //}
 
         // abstract methods
 
