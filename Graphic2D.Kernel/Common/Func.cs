@@ -22,7 +22,7 @@ namespace Graphic2D.Kernel.Common
             return IsZero(value, precision) ? "0" : value.ToString();
         }
 
-        public static Vector Rotate(double angle, double dx, double dy)
+        public static Vector VectorRotate(double angle, double dx, double dy)
         {
             double cos = Math.Cos(angle / 180 * Math.PI);
             double sin = Math.Sin(angle / 180 * Math.PI);

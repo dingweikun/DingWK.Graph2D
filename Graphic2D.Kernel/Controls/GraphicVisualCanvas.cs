@@ -33,18 +33,14 @@ namespace Graphic2D.Kernel.Controls
         {
             Loaded += (sender, e) =>
             {
-                
-
-
-
-
-
+                Page.GridSize = 10;
 
 
 
                 // 手动刷新一次, 初始化滚动条位置，
                 //Page.RaiseEvent(new PageRoutedEventArgs(GraphicVisualPage.PageScaleChangedEvent, Page));
                 // SetScrollBars(new PageRoutedEventArgs(null, Page));
+                //Page.PageScale = 1.1;
                 Page.PageScale = 1.1;
                 //Page.SetViewPort(new Rect(Page.PageSize));
             };

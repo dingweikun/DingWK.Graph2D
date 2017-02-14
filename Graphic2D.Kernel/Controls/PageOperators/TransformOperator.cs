@@ -22,10 +22,11 @@ namespace Graphic2D.Kernel.Controls
     [TemplatePart(Name = "PART_RBThumb", Type = typeof(Thumb))]
     public class TransformOperator : PageOperator
     {
+        private const double MinLen = 0.0001;
+
         private Thumb[] _thumbs;
 
         private double BarLength { get; set; }
-        //private double AngleEx { get; set; }
         private Rect RegionRect { get; set; }
         private Rect BoundsRect { get; set; }
         private DrawingGroup Watermark { get; set; }
@@ -152,6 +153,8 @@ namespace Graphic2D.Kernel.Controls
                 Watermark.Transform = new RotateTransform(-SelectedVisuals.RefAngle);
                 Watermark.Opacity = 0.5;
                 RegionRect = Watermark.Bounds;
+                RegionRect = new Rect(RegionRect.X + 0.5, RegionRect.Y + 0.5, RegionRect.Width - 1, RegionRect.Height - 1);
+
                 Height = RegionRect.Height * Scale;
                 Width = RegionRect.Width * Scale;
                 TransformGroup tr = new TransformGroup();
@@ -163,27 +166,65 @@ namespace Graphic2D.Kernel.Controls
 
 
 
-
         private void Thumb_DragDelta(object sender, DragDeltaEventArgs e)
         {
             var thumb = e.OriginalSource as Thumb;
-            if (thumb != null)
+            if (thumb == _thumbs[8])
             {
-                if (thumb == _thumbs[8])
-                {
-                    MoveOffset = new Point(e.HorizontalChange, e.VerticalChange);
-                }
-                else if (thumb == _thumbs[9])
-                {
+                MoveOffset = new Point(e.HorizontalChange, e.VerticalChange);
+            }
+            else if (thumb == _thumbs[9])
+            {
 
-                    Point cp = new Point(Width / 2, Height / 2);
-                    Point rp = new Point(Width / 2, BarLength);
-                    double l = Height / 2 - BarLength;
-                    double s = e.HorizontalChange;
-                    double delta = Math.Atan2(e.HorizontalChange, Height / 2 - BarLength) / Math.PI * 180;
-                    SelectedVisuals.Rotate(delta);
-                    SetTransformOperator();
+                Point cp = new Point(Width / 2, Height / 2);
+                Point rp = new Point(Width / 2, BarLength);
+                double l = Height / 2 - BarLength;
+                double s = e.HorizontalChange;
+                double delta = Math.Atan2(e.HorizontalChange, Height / 2 - BarLength) / Math.PI * 180;
+                SelectedVisuals.Rotate(delta);
+                SetTransformOperator();
+            }
+            else
+            {
+                FrameworkElement element = thumb as FrameworkElement;
+
+                Point refer = RegionRect.Location;
+                double dx, dy;
+
+                switch (element.HorizontalAlignment)
+                {
+                    case HorizontalAlignment.Left:
+                        dx = -e.HorizontalChange;
+                        refer.X += RegionRect.Width;
+                        break;
+                    case HorizontalAlignment.Right:
+                        dx = e.HorizontalChange;
+                        break;
+                    default:
+                        dx = 0;
+                        break;
                 }
+                switch (element.VerticalAlignment)
+                {
+                    case VerticalAlignment.Top:
+                        dy = -e.VerticalChange;
+                        refer.Y += RegionRect.Height;
+                        break;
+                    case VerticalAlignment.Bottom:
+                        dy = e.VerticalChange;
+                        break;
+                    default:
+                        dy = 0;
+                        break;
+                }
+
+                refer = Watermark.Transform.Inverse.Transform(refer);
+
+                double factorX = Width + dx <= 0 ? 0: dx / Width;
+                double factorY = Height + dy <= 0 ?0 : dy / Height;
+
+                SelectedVisuals.Resize(factorX, factorY, refer);
+                SetTransformOperator();
             }
             e.Handled = true;
         }
@@ -191,40 +232,28 @@ namespace Graphic2D.Kernel.Controls
         private void Thumb_DragStarted(object sender, DragStartedEventArgs e)
         {
             var thumb = e.OriginalSource as Thumb;
-            if (thumb != null)
+            if (thumb == _thumbs[8])
             {
                 MoveOffset = new Point(0, 0);
-
-                if (thumb == _thumbs[8])
-                {
-                    BoundsRect = SelectedVisuals.SelectionDrawing.Bounds;
-                    AccentPen.Thickness = 1 / Scale;
-                }
-                else if (thumb == _thumbs[9])
-                {
-
-                }
+                BoundsRect = SelectedVisuals.SelectionDrawing.Bounds;
+                AccentPen.Thickness = 1 / Scale;
             }
             e.Handled = true;
         }
 
         private void Thumb_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-
             var thumb = e.OriginalSource as Thumb;
             if (thumb == _thumbs[8])
             {
-                Vector delta = Func.Rotate(-SelectedVisuals.RefAngle, MoveOffset.X / Scale, MoveOffset.Y / Scale);
+                Vector delta = Func.VectorRotate(-SelectedVisuals.RefAngle, MoveOffset.X / Scale, MoveOffset.Y / Scale);
                 SelectedVisuals.Move(delta);
                 SetTransformOperator();
             }
 
-
-
             MoveOffset = new Point(0, 0);
             BoundsRect = Rect.Empty;
             AccentPen.Thickness = 0;
-
 
             e.Handled = true;
         }

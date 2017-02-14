@@ -3,19 +3,13 @@ using System.Windows.Media;
 
 namespace Graphic2D.Kernel.Visuals
 {
-    public interface IGeomVisual<out T> where T : IGeom
+    public sealed class GeomVisual : GraphicVisual
     {
-    }
-
-    public sealed class GeomVisual<T> : GraphicVisual
-        where T : IGeom
-    {
-
         #region Field & property
 
-        private T _geom;
+        private IGeom _geom;
 
-        public T Geom
+        public IGeom Geom
         {
             get { return _geom; }
             set
@@ -31,23 +25,17 @@ namespace Graphic2D.Kernel.Visuals
 
         #region Constructors
 
-        public GeomVisual(T goem, VisualInfo graphicInfo)
+        public GeomVisual(IGeom goem, VisualInfo graphicInfo)
             : base(graphicInfo)
         {
             _geom = goem;
             UpdateGraphicInfo();
         }
 
-        public GeomVisual(T goem)
+        public GeomVisual(IGeom goem)
             : this(goem, VisualInfo.Default)
         {
         }
-
-        public GeomVisual(GeomVisual<T> graphicGeom)
-            : this(graphicGeom.Geom, graphicGeom.GraphicInfo)
-        {
-        }
-
         #endregion
 
 
@@ -75,4 +63,5 @@ namespace Graphic2D.Kernel.Visuals
         #endregion
 
     }
+
 }

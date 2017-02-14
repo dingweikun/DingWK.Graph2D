@@ -64,6 +64,7 @@
     <Compile Include="Controls\PageOperators\TransformOperator.cs" />
     <Compile Include="Converters\DoubleNegative.cs" />
     <Compile Include="Converters\ScrollBarValuesToPageOffset.cs" />
+    <Compile Include="Geom\GeomHelper.cs" />
     <Compile Include="Model\VisualSelection.Operations.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="Visuals\GeomVisual.cs" />

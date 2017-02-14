@@ -26,6 +26,14 @@ namespace Graphic2D.Kernel.Model
             }
         }
 
+        private Rect _refRect;
+
+        public Rect RefRect
+        {
+            get { return _refRect; }
+            private set { _refRect = value; }
+        }
+
         public DrawingGroup SelectionDrawing { get; private set; }
 
         #endregion
@@ -81,7 +89,24 @@ namespace Graphic2D.Kernel.Model
 
         private void UpdateSelection()
         {
-            RefAngle = Count == 0 ? 0 : (Count == 1 ? _visuals[0].Angle : RefAngle);
+            // RefAngle = Count == 0 ? 0 : (Count == 1 ? _visuals[0].Angle : RefAngle);
+
+            switch (Count)
+            {
+                case 0:
+                    RefAngle = 0;
+                    RefRect = Rect.Empty;
+                    break;
+                case 1:
+                    RefAngle = _visuals[0].Angle;
+                    RefRect = 
+                    break;
+                default:
+                    RefAngle = RefAngle;
+                    RefRect = RefRect;
+                    break;
+            }
+
             SelectionDrawing = GetSelectionDrawing();
         }
 

@@ -1,7 +1,6 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:Graphic2D.Kernel"
     xmlns:cnvrt="clr-namespace:Graphic2D.Kernel.Converters"
     xmlns:ctrls="clr-namespace:Graphic2D.Kernel.Controls">
 
@@ -75,9 +74,10 @@
                 <ControlTemplate TargetType="{x:Type ctrls:TransformOperator}">
 
                     <!--Thumb Style-->
+                    
                     <ControlTemplate.Resources>
                         <Style x:Key="MoveThumbStyle" TargetType="{x:Type Thumb}">
-                            <!--<Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>-->
+                            <Setter Property="Stylus.IsPressAndHoldEnabled" Value="False"/>
                             <Setter Property="SnapsToDevicePixels" Value="true"/>
                             <Setter Property="Cursor" Value="SizeAll"/>
                             <Setter Property="Template">
@@ -112,7 +112,7 @@
                                     <ControlTemplate TargetType="{x:Type Thumb}">
                                         <Rectangle Fill="White" SnapsToDevicePixels="True"
                                                    Stroke="DimGray" StrokeThickness="1"
-                                                   Width="7" Height="7" Margin="-4"/>
+                                                   Width="8" Height="8" Margin="-4"/>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
@@ -127,9 +127,9 @@
 
                             <Thumb  x:Name="PART_MoveThumb" Style="{StaticResource MoveThumbStyle}"/>
 
-                            <Line StrokeThickness="1" X1="0" Y1="0" X2="0" Y2="25"
+                            <Line StrokeThickness="1" X1="0" Y1="0" X2="0" Y2="30"
                                   HorizontalAlignment="Center" VerticalAlignment="Top"
-                                  Margin="0,-24,0,0" Stroke="DimGray"/>
+                                  Margin="0,-29,0,0" Stroke="DimGray"/>
 
                             <Thumb x:Name="PART_RotateThumb" Style="{StaticResource RotateThumbStyle}"
                                    Margin="0,-24,0,0"

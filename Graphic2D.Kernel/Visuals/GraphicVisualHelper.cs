@@ -1,5 +1,8 @@
-﻿using System.Windows;
+﻿using Graphic2D.Kernel.Common;
+using Graphic2D.Kernel.Geom;
+using System.Windows;
 using System.Windows.Media;
+using System;
 
 namespace Graphic2D.Kernel.Visuals
 {
@@ -45,19 +48,60 @@ namespace Graphic2D.Kernel.Visuals
             graphicVisual.Angle += angle;
         }
 
-        public static void ScaleGraphicVisual(GraphicVisual graphicVisual, double Herfactor, double Verfactor, Point refer)
-        {
-            GroupVisual gv = graphicVisual as GroupVisual;
-            if (gv != null)
-            {
+        //public static void ScaleGraphicVisual(GraphicVisual graphicVisual, Vector scale,  Point refer)
+        //{
+        //    if (graphicVisual is GroupVisual)
+        //    {
+        //        throw new NotImplementedException();
+        //    }
+        //    else if (graphicVisual is GeomVisual)
+        //    { 
+        //        Transform tr = new ScaleTransform(scale.X, scale.Y, refer.X, refer.Y);
+        //        graphicVisual.Origin = tr.Transform(graphicVisual.Origin);
+        //        Vector locScales = Func.VectorRotate(graphicVisual.Angle, scale.X, scale.Y);
 
-            }
-            else
+        //        GeomVisual gv = graphicVisual as GeomVisual;
+        //        IGeom geom = gv.Geom;
+        //        GeomHelper.ScaleGeom(ref geom, locScales.X, locScales.Y);
+        //        gv.Geom = geom;
+        //    }
+        //}
+
+        public static void ScaleGraphicVisual(GraphicVisual graphicVisual, double scaleX, double scaleY, Point refer)
+        {
+            //ScaleTransform tr = new ScaleTransform(scaleX, scaleY, refer.X, refer.Y);
+            //graphicVisual.Origin = tr.Transform(graphicVisual.Origin);
+
+            if (graphicVisual is GroupVisual)
             {
-                Transform tr = new ScaleTransform(Herfactor, Verfactor, refer.X, refer.Y);
-                graphicVisual.Origin = tr.Transform(graphicVisual.Origin);
-                
+                throw new NotImplementedException();
             }
+            else if (graphicVisual is GeomVisual)
+            {
+                GeomVisual gv = graphicVisual as GeomVisual;
+                IGeom geom = gv.Geom;
+                GeomHelper.ScaleGeom(ref geom, scaleX, scaleY, refer);
+                gv.Geom = geom;
+            }
+
+
         }
+
+        //public static void ScaleGraphicVisual(GraphicVisual graphicVisual, double scaleX, double scaleY)
+        //{
+        //    if (graphicVisual is GroupVisual)
+        //    {
+        //        throw new NotImplementedException();
+        //    }
+        //    else if (graphicVisual is GeomVisual)
+        //    {
+        //        GeomVisual gv = graphicVisual as GeomVisual;
+        //        IGeom geom = gv.Geom;
+        //        GeomHelper.ScaleGeom(ref geom, scaleX, scaleY);
+        //        gv.Geom = geom;
+        //    }
+        //}
+
+
     }
 }

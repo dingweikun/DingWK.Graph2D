@@ -37,12 +37,22 @@ namespace Test
             GroupVisual host = new GroupVisual();
 
             // 单一图形
-            Rectangle rect = new Rectangle(new Rect(0, 0, 100, 200), 10, 10);
-            GeomVisual<Rectangle> g1 = new GeomVisual<Rectangle>(rect);
+            Rectangle rect = new Rectangle(new Rect(20, 20, 40, 40), 0, 0);
+            GeomVisual g1 = new GeomVisual(rect);
             g1.Fill = Brushes.Blue.CloneCurrentValue();
             g1.Angle = 45;
-            g1.Origin = new Point(100, 100);
+            g1.Origin = new Point(30, 30);
             host.AddIntoGroup(g1);
+
+            Rectangle rrr = new Rectangle(new Rect(50, 50, 40, 40), 0, 0);
+            GeomVisual g2 = new GeomVisual(rrr);
+            //g2.Fill = Brushes.Blue.CloneCurrentValue();
+            g2.Angle = 0;
+            g2.Origin = new Point(50, 50);
+            host.AddIntoGroup(g2);
+
+
+
 
 
             //Rect r1 = g1.ContentBounds;
@@ -53,10 +63,10 @@ namespace Test
             // 组合图形
             GroupVisual group = new GroupVisual();
 
-            GeomVisual<Rectangle> ga = new GeomVisual<Rectangle>(
+            GeomVisual ga = new GeomVisual(
                 new Rectangle(new Rect(250, 250, 50, 50), 0, 0));
             group.AddIntoGroup(ga);
-            GeomVisual<Rectangle> gb = new GeomVisual<Rectangle>(
+            GeomVisual gb = new GeomVisual(
                 new Rectangle(new Rect(200, 300, 20, 80), 0, 0));
             group.AddIntoGroup(gb);
             host.AddIntoGroup(group);
@@ -74,9 +84,10 @@ namespace Test
 
             model = canvas.VisualSelection;
 
-            List<GraphicVisual> list = new List<GraphicVisual>() { g1, group };
+            List<GraphicVisual> list = new List<GraphicVisual>() { g1, g2 };
             model.AddIntoSelection(list);
-            //model.AddIntoSelection(g1);
+            model.AddIntoSelection(g1);
+            model.AddIntoSelection(g2);
             //model.AddIntoSelection(group);
 
 

@@ -35,12 +35,12 @@ namespace dev
 
             //Console.WriteLine();
 
-            GraphicVisual gv = new GeomVisual<Rectangle>(
-                new Rectangle(new Rect(0.5, 0.5, 99, 99)));
+            double n = -45;
+            double x = n / 0;
+            double z = 0;
+            double c = x * 4;
 
-            GeomVisual<IGeom> cc = gv as GeomVisual<IGeom>;
-
-
+            bool b = double.IsInfinity(x);
         }
     }
 }
