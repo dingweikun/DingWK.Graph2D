@@ -80,7 +80,8 @@ namespace Graphic2D.Kernel.Visuals
             {
                 GeomVisual gv = graphicVisual as GeomVisual;
                 IGeom geom = gv.Geom;
-                GeomHelper.ScaleGeom(ref geom, scaleX, scaleY, refer);
+                Point localRefer = gv.Transform.Inverse.Transform(refer);
+                GeomHelper.ScaleGeom(ref geom, scaleX, scaleY, localRefer);
                 gv.Geom = geom;
             }
 
@@ -100,6 +101,29 @@ namespace Graphic2D.Kernel.Visuals
         //        GeomHelper.ScaleGeom(ref geom, scaleX, scaleY);
         //        gv.Geom = geom;
         //    }
+        //}
+
+
+
+
+        //public static void ScaleGraphicVisual(GraphicVisual graphicVisual, double scaleX, double scaleY)
+        //{
+        //    //ScaleTransform tr = new ScaleTransform(scaleX, scaleY, refer.X, refer.Y);
+        //    //graphicVisual.Origin = tr.Transform(graphicVisual.Origin);
+
+        //    if (graphicVisual is GroupVisual)
+        //    {
+        //        throw new NotImplementedException();
+        //    }
+        //    else if (graphicVisual is GeomVisual)
+        //    {
+        //        GeomVisual gv = graphicVisual as GeomVisual;
+        //        IGeom geom = gv.Geom;
+        //        GeomHelper.ScaleGeom(ref geom, scaleX, scaleY, new Point(0, 0));
+        //        gv.Geom = geom;
+        //    }
+
+
         //}
 
 

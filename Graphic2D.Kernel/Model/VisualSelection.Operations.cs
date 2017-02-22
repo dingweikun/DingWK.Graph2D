@@ -22,19 +22,31 @@ namespace Graphic2D.Kernel.Model
             {
                 GraphicVisualHelper.MoveGraphicVisual(gv, delta);
             }
+
+            // 移动 RefRect
+            delta = (Vector)(new RotateTransform(-RefAngle).Transform((Point)delta));
+            RefRect = new Rect(RefRect.Location + delta, RefRect.Size);
+
             UpdateSelection();
         }
 
         public void Rotate(double delta)
         {
-            Rect rect = SelectionDrawing.Bounds;
-            Point center = new Point(rect.X + rect.Width / 2, rect.Y + rect.Height / 2);
+            Point center = new Point(RefRect.X + RefRect.Width / 2, RefRect.Y + RefRect.Height / 2);
+            center = new RotateTransform(RefAngle).Transform(center);
+
             double angle = Math.Round(delta, 2);
             foreach (GraphicVisual gv in this)
             {
                 GraphicVisualHelper.RotateGraphicVisual(gv, angle, center);
             }
+
+            Point loc = new RotateTransform(RefAngle).Transform(RefRect.Location);
+            loc = new RotateTransform(angle, center.X, center.Y).Transform(loc);
             RefAngle += angle;
+            loc = new RotateTransform(-RefAngle).Transform(loc);
+            RefRect = new Rect(loc, RefRect.Size);
+
             UpdateSelection();
         }
 
@@ -49,13 +61,23 @@ namespace Graphic2D.Kernel.Model
                 double fx = cos2 * factorX + sin2 * factorY;
                 double fy = sin2 * factorX + cos2 * factorY;
 
-                //ScaleTransform tr = new ScaleTransform(1 + factorX, 1 + factorY, refer.X, refer.Y);
-                //gv.Origin = tr.Transform(gv.Origin);
 
+                //Point origin = new RotateTransform(RefAngle).Transform(gv.Origin);
+                //origin = new ScaleTransform(1 + factorX, 1 + factorY, refer.X, refer.Y).Transform(origin);
+                //gv.Origin = new RotateTransform(-RefAngle).Transform(origin);
+
+
+                //Point localRefer = gv.Transform.Inverse.Transform(refer);
                 Point localRefer = gv.Transform.Inverse.Transform(refer);
-                GraphicVisualHelper.ScaleGraphicVisual(gv, 1 + fx, 1 + fy, localRefer);
+                Point outRefer = new RotateTransform(RefAngle).Transform(refer);
+
+                GraphicVisualHelper.ScaleGraphicVisual(gv, 1 + fx, 1 + fy, outRefer);
                 //GraphicVisualHelper.ScaleGraphicVisual(gv, 1 + fx, 1 + fy);
             }
+
+            Point loc = new ScaleTransform(1 + factorX, 1 + factorY, refer.X, refer.Y).Transform(RefRect.Location);
+            RefRect = new Rect(loc.X, loc.Y, RefRect.Width * (1 + factorX), RefRect.Height * (1 + factorY));
+
             UpdateSelection();
         }
 

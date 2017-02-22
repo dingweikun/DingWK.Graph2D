@@ -40,7 +40,7 @@ namespace Test
             Rectangle rect = new Rectangle(new Rect(20, 20, 40, 40), 0, 0);
             GeomVisual g1 = new GeomVisual(rect);
             g1.Fill = Brushes.Blue.CloneCurrentValue();
-            g1.Angle = 45;
+            g1.Angle = 20;
             g1.Origin = new Point(30, 30);
             host.AddIntoGroup(g1);
 
@@ -87,7 +87,7 @@ namespace Test
             List<GraphicVisual> list = new List<GraphicVisual>() { g1, g2 };
             model.AddIntoSelection(list);
             model.AddIntoSelection(g1);
-            model.AddIntoSelection(g2);
+            //model.AddIntoSelection(g2);
             //model.AddIntoSelection(group);
 
 

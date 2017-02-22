@@ -87,6 +87,14 @@ namespace Graphic2D.Kernel.Model
 
         #region Private Methods 
 
+        private void SetRefRect()
+        {
+            var drawing = GetSelectionDrawing();
+            drawing.Transform = new RotateTransform(-RefAngle);
+            RefRect = drawing.Bounds;
+            RefRect = new Rect(RefRect.X + 0.5, RefRect.Y + 0.5, RefRect.Width - 1, RefRect.Height - 1);
+        }
+
         private void UpdateSelection()
         {
             // RefAngle = Count == 0 ? 0 : (Count == 1 ? _visuals[0].Angle : RefAngle);
@@ -95,19 +103,18 @@ namespace Graphic2D.Kernel.Model
             {
                 case 0:
                     RefAngle = 0;
-                    RefRect = Rect.Empty;
+                    //RefRect = Rect.Empty;
                     break;
                 case 1:
                     RefAngle = _visuals[0].Angle;
-                    RefRect = 
                     break;
                 default:
                     RefAngle = RefAngle;
-                    RefRect = RefRect;
+                    //RefRect = RefRect;
                     break;
             }
-
             SelectionDrawing = GetSelectionDrawing();
+
         }
 
         private DrawingGroup GetSelectionDrawing()
@@ -135,6 +142,7 @@ namespace Graphic2D.Kernel.Model
             }
 
             UpdateSelection();
+            SetRefRect();
         }
 
         public void AddIntoSelection(List<GraphicVisual> gvs)
@@ -147,18 +155,22 @@ namespace Graphic2D.Kernel.Model
                 }
             }
             UpdateSelection();
+            SetRefRect();
         }
 
         public void RemoveFromSelection(GraphicVisual gv)
         {
             _visuals.Remove(gv);
             UpdateSelection();
+            SetRefRect();
+
         }
 
         public void ClearSelection()
         {
             _visuals.Clear();
             UpdateSelection();
+            SetRefRect();
         }
 
         #endregion

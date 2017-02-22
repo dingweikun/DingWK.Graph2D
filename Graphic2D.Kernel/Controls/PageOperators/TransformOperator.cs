@@ -22,12 +22,9 @@ namespace Graphic2D.Kernel.Controls
     [TemplatePart(Name = "PART_RBThumb", Type = typeof(Thumb))]
     public class TransformOperator : PageOperator
     {
-        private const double MinLen = 0.0001;
-
         private Thumb[] _thumbs;
 
         private double BarLength { get; set; }
-        private Rect RegionRect { get; set; }
         private Rect BoundsRect { get; set; }
         private DrawingGroup Watermark { get; set; }
         private Vector MouseDelta { get; set; }
@@ -152,15 +149,16 @@ namespace Graphic2D.Kernel.Controls
                 Watermark = SelectedVisuals.SelectionDrawing.CloneCurrentValue();
                 Watermark.Transform = new RotateTransform(-SelectedVisuals.RefAngle);
                 Watermark.Opacity = 0.5;
-                RegionRect = Watermark.Bounds;
-                RegionRect = new Rect(RegionRect.X + 0.5, RegionRect.Y + 0.5, RegionRect.Width - 1, RegionRect.Height - 1);
 
-                Height = RegionRect.Height * Scale;
-                Width = RegionRect.Width * Scale;
-                TransformGroup tr = new TransformGroup();
-                tr.Children.Add(new TranslateTransform(RegionRect.X * Scale, RegionRect.Y * Scale));
-                tr.Children.Add(new RotateTransform(SelectedVisuals.RefAngle));
-                RenderTransform = tr;
+                //if (!SelectedVisuals.RefRect.IsEmpty)
+                //{
+                Height = SelectedVisuals.RefRect.Height * Scale;
+                    Width = SelectedVisuals.RefRect.Width * Scale;
+                    TransformGroup tr = new TransformGroup();
+                    tr.Children.Add(new TranslateTransform(SelectedVisuals.RefRect.X * Scale, SelectedVisuals.RefRect.Y * Scale));
+                    tr.Children.Add(new RotateTransform(SelectedVisuals.RefAngle));
+                    RenderTransform = tr;
+                //}
             }
         }
 
@@ -188,14 +186,17 @@ namespace Graphic2D.Kernel.Controls
             {
                 FrameworkElement element = thumb as FrameworkElement;
 
-                Point refer = RegionRect.Location;
+                Point refer = SelectedVisuals.RefRect.Location;
+                //Point refer = RegionRect.Location;
+
                 double dx, dy;
 
                 switch (element.HorizontalAlignment)
                 {
                     case HorizontalAlignment.Left:
                         dx = -e.HorizontalChange;
-                        refer.X += RegionRect.Width;
+                        //refer.X += RegionRect.Width;
+                        refer.X += SelectedVisuals.RefRect.Width;
                         break;
                     case HorizontalAlignment.Right:
                         dx = e.HorizontalChange;
@@ -208,7 +209,8 @@ namespace Graphic2D.Kernel.Controls
                 {
                     case VerticalAlignment.Top:
                         dy = -e.VerticalChange;
-                        refer.Y += RegionRect.Height;
+                        //refer.Y += RegionRect.Height;
+                        refer.Y += SelectedVisuals.RefRect.Height;
                         break;
                     case VerticalAlignment.Bottom:
                         dy = e.VerticalChange;
@@ -218,10 +220,13 @@ namespace Graphic2D.Kernel.Controls
                         break;
                 }
 
-                refer = Watermark.Transform.Inverse.Transform(refer);
+                //refer = Watermark.Transform.Inverse.Transform(refer);
+                //refer = new RotateTransform(SelectedVisuals.RefAngle).Transform(refer);
 
-                double factorX = Width + dx <= 0 ? 0: dx / Width;
-                double factorY = Height + dy <= 0 ?0 : dy / Height;
+                double factorX = Width + dx <= 0 ? 0 : dx / Width;
+                double factorY = Height + dy <= 0 ? 0 : dy / Height;
+
+                //factorX = 1;
 
                 SelectedVisuals.Resize(factorX, factorY, refer);
                 SetTransformOperator();
@@ -259,8 +264,6 @@ namespace Graphic2D.Kernel.Controls
         }
 
 
-
-
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
@@ -278,12 +281,10 @@ namespace Graphic2D.Kernel.Controls
                 drawingContext.DrawRectangle(null, AccentPen, BoundsRect);
                 drawingContext.Pop();
 
-
                 // 绘制图形水印
 
-                Rect bounds = SelectedVisuals.SelectionDrawing.Bounds;
                 TransformGroup tr = new TransformGroup();
-                tr.Children.Add(new TranslateTransform(-RegionRect.X, -RegionRect.Y));
+                tr.Children.Add(new TranslateTransform(-SelectedVisuals.RefRect.X, -SelectedVisuals.RefRect.Y));
                 tr.Children.Add(new ScaleTransform(Scale, Scale));
                 tr.Children.Add(new TranslateTransform(MoveOffset.X, MoveOffset.Y));
 
