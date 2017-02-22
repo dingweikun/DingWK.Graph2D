@@ -10,6 +10,6 @@
     <Grid>
         <!--<g2d:HorPageRuler TickColor="Purple" TickTextColor="Purple"/>
         <g2d:VerPageRuler TickColor="Purple" TickTextColor="Purple"/>-->
-        <g2d:GraphicVisualCanvas/>
+        <g2d:GraphicVisualCanvas x:Name="canvas" MouseWheel="canvas_MouseWheel"/>
     </Grid>
 </Window>

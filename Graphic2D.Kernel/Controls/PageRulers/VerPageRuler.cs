@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using Graphic2D.Kernel.Common;
+using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
 
@@ -41,7 +43,8 @@ namespace Graphic2D.Kernel.Controls
                 {
                     drawingContext.DrawLine(pixelPen, a, c);
 
-                    FormattedText ft = new FormattedText((StartValue + i * MinorTickSpacingValue).ToString(),
+                    FormattedText ft = new FormattedText(
+                        Math.Round(StartValue + i * MinorTickSpacingValue, 4).ToString(),
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         new Typeface("Arial"),
@@ -66,12 +69,12 @@ namespace Graphic2D.Kernel.Controls
 
             drawingContext.PushGuidelineSet(
                 new GuidelineSet(
-                    new double[] { ActualWidth-1  - pixelPen.Thickness / 2 },
+                    new double[] { ActualWidth - 1 - pixelPen.Thickness / 2 },
                     new double[] { 0 - pixelPen.Thickness / 2, ActualHeight - pixelPen.Thickness / 2 }));
 
             drawingContext.DrawLine(pixelPen, new Point(0, 0), new Point(ActualWidth, 0));
             drawingContext.DrawLine(pixelPen, new Point(0, ActualHeight), new Point(ActualWidth, ActualHeight));
-            drawingContext.DrawLine(pixelPen, new Point(ActualWidth-1 , 0), new Point(ActualWidth-1, ActualHeight));
+            drawingContext.DrawLine(pixelPen, new Point(ActualWidth - 1, 0), new Point(ActualWidth - 1, ActualHeight));
             drawingContext.Pop();
 
         }

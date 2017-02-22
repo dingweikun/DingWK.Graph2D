@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System.Windows;
+using System.Windows.Media;
 
 namespace Graphic2D.Kernel.Geom
 {
@@ -19,5 +20,15 @@ namespace Graphic2D.Kernel.Geom
         /// Geometry drawing method.
         /// </summary>
         void DrawGeom(DrawingContext dc, Brush fill, Pen stroke);
+
+
+        Point[] ToPoints();
+
+
+        void SetByPoints(Point[] pots);
+
     }
+
+
+    
 }

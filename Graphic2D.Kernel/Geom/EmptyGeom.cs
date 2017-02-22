@@ -1,4 +1,6 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Windows;
+using System.Windows.Media;
 
 namespace Graphic2D.Kernel.Geom
 {
@@ -18,5 +20,13 @@ namespace Graphic2D.Kernel.Geom
         {
         }
 
+        public void SetByPoints(Point[] pots)
+        {
+        }
+
+        public Point[] ToPoints()
+        {
+            return null;
+        }
     }
 }

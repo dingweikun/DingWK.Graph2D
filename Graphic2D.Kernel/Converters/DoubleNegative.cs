@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 namespace Graphic2D.Kernel.Converters
 {
-    public class PageOffsetToScrollBarValue : IValueConverter
+    public class DoubleNegative : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -16,4 +17,5 @@ namespace Graphic2D.Kernel.Converters
             return -(double)value;
         }
     }
+
 }

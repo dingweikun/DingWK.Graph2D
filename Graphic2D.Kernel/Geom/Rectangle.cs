@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 
 namespace Graphic2D.Kernel.Geom
@@ -140,6 +141,23 @@ namespace Graphic2D.Kernel.Geom
             dc.DrawRoundedRectangle(fill, stroke, Rect, RadiusX, RadiusX);
         }
 
+
+        public Point[] ToPoints()
+        {
+            return new Point[]
+            {
+                _rect.Location,
+                new Point(_rect.X+_rect.Width,_rect.Y+_rect.Height)
+            };
+        }
+
+        public void SetByPoints(Point[] pots)
+        {
+            _rect.Location = pots[0];
+            _rect.Size = (Size)(pots[1] - pots[0]);
+        }
+
         #endregion
+
     }
 }

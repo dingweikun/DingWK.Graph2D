@@ -1,0 +1,27 @@
+﻿<Window x:Class="TestPage.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestPage"
+        xmlns:g2d="clr-namespace:Graphic2D.Kernel.Controls;assembly=Graphic2D.Kernel"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Border ClipToBounds="True">
+            <g2d:GraphicVisualPage x:Name="Page" GridSize="2" PageSize="400,200" ShowGrid="False"
+                                   MouseDown="Page_MouseDown"/>
+        </Border>
+        <StackPanel Grid.Row="1">
+
+            <Slider Value="{Binding ElementName=Page, Path=PageScale,Mode=TwoWay}" />
+            <CheckBox IsChecked="{Binding ElementName=Page,Path=ShowGrid}">显示网格</CheckBox>
+        </StackPanel>
+
+    </Grid>
+</Window>

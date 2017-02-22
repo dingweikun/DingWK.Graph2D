@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,6 +42,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -53,6 +55,14 @@
     <ProjectReference Include="..\Graphic2D.Kernel\Graphic2D.Kernel.csproj">
       <Project>{e39f0dbb-a7cc-464a-a7f0-939a2c7266cb}</Project>
       <Name>Graphic2D.Kernel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestPage\TestPage.csproj">
+      <Project>{2d43d6d2-a351-4da1-afab-1da8e108c273}</Project>
+      <Name>TestPage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Test\Test.csproj">
+      <Project>{183b8a66-cdd6-408f-ad57-bca52df5ef52}</Project>
+      <Name>Test</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

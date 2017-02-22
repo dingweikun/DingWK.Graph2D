@@ -35,8 +35,18 @@ namespace Graphic2D.Kernel.Controls
             PageScale = source.PageScale;
             PageSize = source.PageSize;
             RenderSize = source.RenderSize;
-            PageOffset = new Point(source.PageOffsetX, source.PageOffsetY);
+            //PageOffset = new Point(source.PageOffsetX, source.PageOffsetY);            
+            PageOffset = source.PageOffset;
         }
+
+
+        //public PageRoutedEventArgs(RoutedEvent routedEvent, VisualPage source)
+        //    : base(routedEvent, source)
+        //{
+        //    PageScale = source.Scale;
+        //    PageSize = source.PageSize;
+        //    PageOffset = new Point(source.OffsetX, source.OffsetY);
+        //}
 
     }
 }
