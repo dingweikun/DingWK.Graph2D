@@ -1,2 +1,2 @@
 # WPFGraphic2D
-A Simple WPF 2D Graphic Drawing Software
+A Simple WPF 2D Graph Drawing Software
