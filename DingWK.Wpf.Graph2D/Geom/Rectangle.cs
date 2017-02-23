@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace DingWK.Wpf.Graph2D.Geometries
+namespace DingWK.Wpf.Graph2D.Geom
 {
     /// <summary>
     /// Rounded rectangle.
@@ -89,7 +89,7 @@ namespace DingWK.Wpf.Graph2D.Geometries
 
         // override methods
 
-        public override void Draw(Brush fill, Pen stroke, DrawingContext drawingContext)
+        public override void Draw(DrawingContext drawingContext, Brush fill, Pen stroke)
         {
             drawingContext?.DrawRoundedRectangle(fill, stroke, _rect, _radiusX, _radiusY);
         }

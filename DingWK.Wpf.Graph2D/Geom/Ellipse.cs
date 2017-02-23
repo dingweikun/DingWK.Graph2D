@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace DingWK.Wpf.Graph2D.Geometries
+namespace DingWK.Wpf.Graph2D.Geom
 {
     public class Ellipse : Geometry
     {
@@ -84,7 +84,7 @@ namespace DingWK.Wpf.Graph2D.Geometries
 
         // override metheds
 
-        public override void Draw(Brush fill, Pen stroke, DrawingContext drawingContext)
+        public override void Draw(DrawingContext drawingContext, Brush fill, Pen stroke)
         {
             drawingContext?.DrawEllipse(fill, stroke, _center, _radiusX, _radiusY);
         }

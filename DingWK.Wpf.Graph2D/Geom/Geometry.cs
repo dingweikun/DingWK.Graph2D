@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace DingWK.Wpf.Graph2D.Geometries
+namespace DingWK.Wpf.Graph2D.Geom
 {
     /// <summary>
     /// Abstract class representing geometry.
@@ -13,7 +13,7 @@ namespace DingWK.Wpf.Graph2D.Geometries
         /// <summary>
         /// Draw Geometry.
         /// </summary>
-        public abstract void Draw(Brush fill, Pen stroke, DrawingContext drawingContext);
+        public abstract void Draw(DrawingContext drawingContext, Brush fill, Pen stroke);
 
 
         /// <summary>
