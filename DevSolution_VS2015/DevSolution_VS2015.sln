@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DingWK.Graphic2D", "DingWK.Graphic2D\DingWK.Graphic2D.csproj", "{D329FD7F-8E1A-44BF-809D-A23AC6897E52}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DingWK.Graphic2D.Wpf", "DingWK.Graphic2D.Wpf\DingWK.Graphic2D.Wpf.csproj", "{A1F21D7F-64BF-4897-B2C2-09948C9C5C71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dev", "dev\dev.csproj", "{3BEA439D-6912-4C74-AA66-2531E5A30DE3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{D329FD7F-8E1A-44BF-809D-A23AC6897E52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D329FD7F-8E1A-44BF-809D-A23AC6897E52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D329FD7F-8E1A-44BF-809D-A23AC6897E52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1F21D7F-64BF-4897-B2C2-09948C9C5C71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1F21D7F-64BF-4897-B2C2-09948C9C5C71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1F21D7F-64BF-4897-B2C2-09948C9C5C71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1F21D7F-64BF-4897-B2C2-09948C9C5C71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BEA439D-6912-4C74-AA66-2531E5A30DE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BEA439D-6912-4C74-AA66-2531E5A30DE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BEA439D-6912-4C74-AA66-2531E5A30DE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BEA439D-6912-4C74-AA66-2531E5A30DE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,8 +6,13 @@ namespace DingWK.Graphic2D.Geom
     /// <summary>
     /// Abstract class representing geometries.
     /// </summary>
-    public abstract class Geomerty
+    public abstract class Geometry
     {
+        /// <summary>
+        /// Get a clone instance of geometry object.
+        /// </summary>
+        public abstract Geometry Clone();
+
 
         /// <summary>
         /// Get a point collection which representing the geometry information.
@@ -21,12 +26,6 @@ namespace DingWK.Graphic2D.Geom
         /// <param name="points">point collection indicating the geometry information.</param>
         /// <returns>whether setting operation is a success.</returns>
         public abstract bool SetGeometryByPoints(IList<Point> points);
-
-
-        /// <summary>
-        /// Get a clone instance of geometry object.
-        /// </summary>
-        public abstract Geomerty Clone();
 
     }
 }
