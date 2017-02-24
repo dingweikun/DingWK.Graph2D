@@ -1,2 +1,2 @@
-# WPFGraphic2D
-A Simple WPF 2D Graph Drawing Software
+# DingWK.Graphic2D
+A Simple 2D Graph Drawing Software
