@@ -1,23 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Media;
 
-namespace DingWK.Wpf.Graph2D.Geom
+namespace DingWK.Graphic2D.Geom
 {
     /// <summary>
-    /// Abstract class representing geometry.
+    /// Abstract class representing geometries.
     /// </summary>
-    public abstract class Geometry
+    public abstract class Geomerty
     {
 
         /// <summary>
-        /// Draw Geometry.
-        /// </summary>
-        public abstract void Draw(DrawingContext drawingContext, Brush fill, Pen stroke);
-
-
-        /// <summary>
-        /// Get a point collection which indicates the geometry information.
+        /// Get a point collection which representing the geometry information.
         /// </summary>
         public abstract List<Point> GetGeometryPoints();
 
@@ -28,6 +21,12 @@ namespace DingWK.Wpf.Graph2D.Geom
         /// <param name="points">point collection indicating the geometry information.</param>
         /// <returns>whether setting operation is a success.</returns>
         public abstract bool SetGeometryByPoints(IList<Point> points);
+
+
+        /// <summary>
+        /// Get a clone instance of geometry object.
+        /// </summary>
+        public abstract Geomerty Clone();
 
     }
 }
