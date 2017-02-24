@@ -1,2 +1,2 @@
 # DingWK.Graphic2D
-A Simple 2D Graph Drawing Software
+Basic 2D Graphic Library
