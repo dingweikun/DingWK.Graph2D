@@ -11,8 +11,17 @@ namespace DingWK.Wpf.Graph2D.Visuals
 
         private VisualInfo _visualInfo;
 
-        public VisualInfo VisualInfo => _visualInfo;
-        
+        public VisualInfo VisualInfo
+        {
+            get { return _visualInfo; }
+            set
+            {
+                _visualInfo = value;
+                UpdateVisualInfo();
+                OnPropertyChanged(nameof(VisualInfo));
+            }
+        }
+
         public double Angle
         {
             get { return _visualInfo.Angle; }

@@ -23,10 +23,10 @@ namespace DingWK.Wpf.Graph2D.Visuals
         #endregion
 
 
-        #region Constructors
+        #region constructors
 
-        public GeomVisual(Geom.Geometry goem, VisualInfo graphicInfo)
-            : base(graphicInfo)
+        public GeomVisual(Geom.Geometry goem, VisualInfo info)
+            : base(info)
         {
             _geometry = goem;
             UpdateVisualInfo();

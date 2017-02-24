@@ -51,7 +51,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Visuals\GeomVisual.cs" />
     <Compile Include="Visuals\GraphicVisual.cs" />
+    <Compile Include="Visuals\GroupVisual.cs" />
     <Compile Include="Visuals\IVisualInfo.cs" />
+    <Compile Include="Visuals\VisualHelper.cs" />
     <Compile Include="Visuals\VisualInfo.cs" />
   </ItemGroup>
   <ItemGroup>
