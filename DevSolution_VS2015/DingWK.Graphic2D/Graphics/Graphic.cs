@@ -1,11 +1,15 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 
 namespace DingWK.Graphic2D.Graphics
 {
     public abstract class Graphic : IGraphic
     {
-        #region feilds & properties
+
+        #region fields & properties
+
+        public Guid ID { get; private set; }
 
         double _angle;
         public double Angle
@@ -33,6 +37,11 @@ namespace DingWK.Graphic2D.Graphics
 
         #endregion
 
+
+        protected Graphic()
+        {
+            ID = Guid.NewGuid();
+        } 
 
     }
 }

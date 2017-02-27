@@ -40,8 +40,12 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\PropertyChangedNotifier.cs" />
+    <Compile Include="GeomVisual.cs" />
+    <Compile Include="GeomVisualRenderHelper.cs" />
     <Compile Include="GraphicVisual.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

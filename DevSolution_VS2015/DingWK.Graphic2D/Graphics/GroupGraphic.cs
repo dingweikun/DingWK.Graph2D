@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 namespace DingWK.Graphic2D.Graphics
 {
+    /*****************************************************************
+     
     public sealed class GroupGraphic : Graphic, IList<Graphic>
     {
 
@@ -75,8 +77,9 @@ namespace DingWK.Graphic2D.Graphics
         bool ICollection<Graphic>.IsReadOnly => ((ICollection<Graphic>)_children).IsReadOnly;
 
         #endregion
-        
-    }
 
+        //*******************************************************************************************/
 
 }
+
+

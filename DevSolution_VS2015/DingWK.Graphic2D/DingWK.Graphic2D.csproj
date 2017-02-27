@@ -47,7 +47,6 @@
     <Compile Include="Geom\Rectangle.cs" />
     <Compile Include="Graphics\GeomGraphic.cs" />
     <Compile Include="Graphics\Graphic.cs" />
-    <Compile Include="Graphics\GroupGraphic.cs" />
     <Compile Include="Graphics\IGraphic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
