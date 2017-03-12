@@ -1,45 +1,9 @@
 ﻿using DingWK.Graphic2D.Graphics;
+using DingWK.Graphic2D.Wpf.Helper;
 using System.Windows.Media;
 
 namespace DingWK.Graphic2D.Wpf
 {
-    //public sealed class GeomVisual : GraphicVisual
-    //{
-
-
-
-    //    public GeomVisual(GeomGraphic geomGraphicg)
-    //    {
-
-    //    }
-
-
-    //    protected override void UpdateFill()
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-
-    //    protected override void UpdateStroke()
-    //    {
-    //        throw new NotImplementedException();
-    //    }
-
-    //    public void UpdateVisualRender()
-    //    {
-    //        using (DrawingContext dc = Visual.RenderOpen())
-    //        {
-    //            GeomRenderHelper.Render(dc, (Graphic as GeomGraphic).Geometry, Fill, Stroke);
-    //        }
-    //    }
-    //}
-
-    //public interface IGeomVisual<in T>
-    //    where T : Geom.Geometry
-    //{
-    //    GeomVisual<T> GeomVisual { get; }
-
-    //}
-
     public sealed class GeomVisual<T> : GraphicVisual
         where T : Geom.Geometry
     {

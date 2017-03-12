@@ -43,11 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Geom\Ellipse.cs" />
-    <Compile Include="Geom\Geometry.cs" />
+    <Compile Include="Geom\IGeometry.cs" />
     <Compile Include="Geom\Rectangle.cs" />
     <Compile Include="Graphics\GeomGraphic.cs" />
     <Compile Include="Graphics\Graphic.cs" />
-    <Compile Include="Graphics\IGraphic.cs" />
+    <Compile Include="Graphics\GroupGraphic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace dev
 {
@@ -123,6 +124,21 @@ namespace dev
             gv.GeomGraph.geom.Do();
 
             gv.Done();
+
+
+
+            TransformGroup t1 = new TransformGroup();
+            t1.Children.Add(new RotateTransform(45));
+            t1.Children.Add(new TranslateTransform(100, 100));
+
+            var x = t1.Inverse;
+
+            string s = x.GetType().ToString();
+            string v=t1.Value.GetType().ToString();
+
+            TransformGroup t2 = new TransformGroup();
+            t2.Children.Add(new TranslateTransform(-100, -100));
+            t2.Children.Add(new RotateTransform(-45));
 
         }
     }

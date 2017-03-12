@@ -44,9 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\PropertyChangedNotifier.cs" />
-    <Compile Include="GeomVisual.cs" />
-    <Compile Include="GeomVisualRenderHelper.cs" />
-    <Compile Include="GraphicVisual.cs" />
+    <Compile Include="VisualModel\GraphicVisual.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

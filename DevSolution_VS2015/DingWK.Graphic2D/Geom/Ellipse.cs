@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace DingWK.Graphic2D.Geom
 {
-    public class Ellipse : Geometry
+    public class Ellipse : IGeometry
     {
 
         #region fields & properties
@@ -82,13 +82,13 @@ namespace DingWK.Graphic2D.Geom
         #endregion
 
 
-        // override metheds
+        #region IGeometry implementation
 
-        public override Geometry Clone() => new Ellipse(_center, _radiusX, _radiusY);
+        public IGeometry Clone() => new Ellipse(_center, _radiusX, _radiusY);
 
-        public override List<Point> GetGeometryPoints() => new List<Point>() { _center, new Point(_radiusX, _radiusY) };
+        public List<Point> GetGeometryPoints() => new List<Point>() { _center, new Point(_radiusX, _radiusY) };
 
-        public override bool SetGeometryByPoints(IList<Point> points)
+        public bool SetGeometryByPoints(IList<Point> points)
         {
             if (points?.Count >= 2)
             {
@@ -101,5 +101,6 @@ namespace DingWK.Graphic2D.Geom
                 return false;
         }
 
+        #endregion
     }
 }

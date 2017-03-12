@@ -6,7 +6,7 @@ namespace DingWK.Graphic2D.Geom
     /// <summary>
     /// Rounded rectangle.
     /// </summary>
-    public class Rectangle : Geometry
+    public class Rectangle : IGeometry
     {
 
         #region fields & prperties
@@ -87,13 +87,13 @@ namespace DingWK.Graphic2D.Geom
         #endregion
 
 
-        // override methods
+        #region IGeometry implementation
 
-        public override Geometry Clone() => new Rectangle(_rect, _radiusX, _radiusY);
+        public IGeometry Clone() => new Rectangle(_rect, _radiusX, _radiusY);
 
-        public override List<Point> GetGeometryPoints() => new List<Point>() { _rect.TopLeft, _rect.BottomRight };
+        public List<Point> GetGeometryPoints() => new List<Point>() { _rect.TopLeft, _rect.BottomRight };
 
-        public override bool SetGeometryByPoints(IList<Point> points)
+        public bool SetGeometryByPoints(IList<Point> points)
         {
             if (points?.Count >= 2)
             {
@@ -104,6 +104,7 @@ namespace DingWK.Graphic2D.Geom
                 return false;
         }
 
+        #endregion
 
     }
 }

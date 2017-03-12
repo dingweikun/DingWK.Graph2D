@@ -4,36 +4,45 @@ using System.Windows.Media;
 
 namespace DingWK.Graphic2D.Graphics
 {
+
+
+    public interface IGraphic
+    {
+        Guid ID { get; }
+
+        Point Origin { get; set; }
+
+        double Angle { get; set; }
+
+        Brush Fill { get; set; }
+
+        Pen Stroke { get; set; }
+
+    }
+
+
+
+
     public abstract class Graphic : IGraphic
     {
 
         #region fields & properties
 
-        public Guid ID { get; private set; }
+        private double _angle;
 
-        double _angle;
         public double Angle
         {
             get { return _angle; }
             set { _angle = value % 360; }
         }
 
-        Brush _fill;
-        public Brush Fill
-        {
-            get { return _fill; }
-            set { _fill = value != null ? value.CloneCurrentValue() : null; }
-        }
+        public Brush Fill { get; set; }
 
-
-        Pen _stroke;
-        public Pen Stroke
-        {
-            get { return _stroke; }
-            set { _stroke = value != null ? value.CloneCurrentValue() : null; }
-        }
+        public Guid ID { get; private set; }
 
         public Point Origin { get; set; }
+
+        public Pen Stroke { get; set; }
 
         #endregion
 
@@ -41,7 +50,7 @@ namespace DingWK.Graphic2D.Graphics
         protected Graphic()
         {
             ID = Guid.NewGuid();
-        } 
+        }
 
     }
 }
