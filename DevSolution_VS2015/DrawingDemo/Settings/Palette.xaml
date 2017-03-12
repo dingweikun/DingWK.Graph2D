@@ -7,34 +7,60 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignCaptionTextBlock}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="4"/>
+            </Style>
+            <Style x:Key="icon_palette" TargetType="Path">
+                <Setter Property="Data" 
+                        Value="M17.5,12A1.5,1.5 0 0,1 16,10.5A1.5,1.5 0 0,1 17.5,9A1.5,1.5 0 0,1 19,10.5A1.5,
+                        1.5 0 0,1 17.5,12M14.5,8A1.5,1.5 0 0,1 13,6.5A1.5,1.5 0 0,1 14.5,5A1.5,1.5 0 0,1 16,
+                        6.5A1.5,1.5 0 0,1 14.5,8M9.5,8A1.5,1.5 0 0,1 8,6.5A1.5,1.5 0 0,1 9.5,5A1.5,1.5 0 0,
+                        1 11,6.5A1.5,1.5 0 0,1 9.5,8M6.5,12A1.5,1.5 0 0,1 5,10.5A1.5,1.5 0 0,1 6.5,9A1.5,
+                        1.5 0 0,1 8,10.5A1.5,1.5 0 0,1 6.5,12M12,3A9,9 0 0,0 3,12A9,9 0 0,0 12,21A1.5,1.5 0 0,
+                        0 13.5,19.5C13.5,19.11 13.35,18.76 13.11,18.5C12.88,18.23 12.73,17.88 12.73,17.5A1.5,
+                        1.5 0 0,1 14.23,16H16A5,5 0 0,0 21,11C21,6.58 16.97,3 12,3Z" />
+            </Style>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
-            <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
-        <Border Background="{DynamicResource PrimaryHueMidBrush}" Grid.ColumnSpan="3">
-            <TextBlock Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">Primary</TextBlock>
+        <Border Background="{DynamicResource PrimaryHueMidBrush}" Grid.Column="0">
+            <StackPanel Orientation="Horizontal" >
+                <Viewbox Width="13" Height="13"  Margin="4">
+                    <Path Style="{StaticResource icon_palette}" Fill="{DynamicResource PrimaryHueMidForegroundBrush}" />
+                </Viewbox>
+                <TextBlock Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">Primary</TextBlock>
+            </StackPanel>
         </Border>
         <Border Background="{DynamicResource PrimaryHueLightBrush}"
-                Grid.Row="1">
-            <!--<TextBlock Foreground="{DynamicResource PrimaryHueLightForegroundBrush}">Light</TextBlock>-->
+                Grid.Column="1">
+            <TextBlock Foreground="{DynamicResource PrimaryHueLightForegroundBrush}">Light</TextBlock>
         </Border>
         <Border Background="{DynamicResource PrimaryHueMidBrush}"
-                Grid.Row="1" Grid.Column="1">
-            <!--<TextBlock Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">Mid</TextBlock>-->
+                Grid.Column="2">
+            <TextBlock Foreground="{DynamicResource PrimaryHueMidForegroundBrush}">Mid</TextBlock>
         </Border>
         <Border Background="{DynamicResource PrimaryHueDarkBrush}"
-                Grid.Row="1" Grid.Column="2">
-            <!--<TextBlock Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">Dark</TextBlock>-->
+                Grid.Column="3">
+            <TextBlock Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}">Dark</TextBlock>
         </Border>
         <Border Background="{DynamicResource SecondaryAccentBrush}"
-                Grid.Row="2" Grid.ColumnSpan="3">
-            <TextBlock Foreground="{DynamicResource SecondaryAccentForegroundBrush}">Accent</TextBlock>
+                Grid.Row="1" Grid.ColumnSpan="4">
+            <StackPanel Orientation="Horizontal" >
+                <Viewbox Width="13" Height="13" Margin="4">
+                    <Path Style="{StaticResource icon_palette}" Fill="{DynamicResource SecondaryAccentForegroundBrush}" />
+                </Viewbox>
+                <TextBlock Foreground="{DynamicResource SecondaryAccentForegroundBrush}">Accent</TextBlock>
+            </StackPanel>
         </Border>
     </Grid>
 </UserControl>

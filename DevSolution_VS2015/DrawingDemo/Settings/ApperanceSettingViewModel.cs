@@ -12,20 +12,20 @@ namespace DrawingDemo.Settings
     {
         public ApperanceHelper Apperance => ApperanceHelper.Singleton;
 
-        public IEnumerable<Swatch> PrimarySwatches { get; }
-        public IEnumerable<Swatch> AccentSwatches { get; }
+        public IEnumerable<Swatch> PrimarySwatches => Apperance.PrimarySwatches;
+        public IEnumerable<Swatch> AccentSwatches => Apperance.AccentSwatches;
 
         public ApperanceSettingViewModel()
         {
-            PrimarySwatches = new SwatchesProvider().Swatches;
-            AccentSwatches = new List<Swatch>();
-            foreach (Swatch s in PrimarySwatches)
-            {
-                if (s.IsAccented)
-                {
-                    ((List<Swatch>)AccentSwatches).Add(s);
-                }
-            }
+            //PrimarySwatches = new SwatchesProvider().Swatches;
+            //AccentSwatches = new List<Swatch>();
+            //foreach (Swatch s in PrimarySwatches)
+            //{
+            //    if (s.IsAccented)
+            //    {
+            //        ((List<Swatch>)AccentSwatches).Add(s);
+            //    }
+            //}
         }
 
     }

@@ -1,0 +1,38 @@
+﻿<mahapps:Flyout x:Class="DrawingDemo.MainFlyout"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+            xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
+            xmlns:local="clr-namespace:DrawingDemo">
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
+                VerticalAlignment="Top" 
+                Margin="0 -40 0 0">
+            <materialDesign:PackIcon Kind="ArrowRight" Width="28" Height="28"/>
+        </Button>
+
+
+        <TabControl Grid.Column="1" Margin="0 -45 0 0">
+
+            <TabItem Header="Start" Style="{StaticResource MetroTabItem }">
+                <Grid/>
+            </TabItem>
+
+            <TabItem Header="文件"  Style="{StaticResource MetroTabItem }">
+                <Grid />
+            </TabItem>
+
+            <TabItem Header="配置"  Style="{StaticResource MetroTabItem }">
+                <Grid />
+            </TabItem>
+
+        </TabControl>
+
+    </Grid>
+</mahapps:Flyout>

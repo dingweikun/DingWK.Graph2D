@@ -10,6 +10,11 @@ namespace DrawingDemo
         public MainWindow()
         {
             InitializeComponent();
+
+            Loaded += (sender, e) => Common.ConfigureHelper.Singleton.LoadConfiguration();
+            Closing += (sender, e) => Common.ConfigureHelper.Singleton.SaveConfiguration();
+
         }
+
     }
 }

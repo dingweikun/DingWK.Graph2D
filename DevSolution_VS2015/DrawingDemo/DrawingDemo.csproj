@@ -52,6 +52,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.4.3\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -75,9 +76,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\ConfigureHelper.cs" />
     <Compile Include="Common\ObservableObject.cs" />
     <Compile Include="Common\ApperanceHelper.cs" />
     <Compile Include="Common\RelayCommand.cs" />
+    <Compile Include="MainFlyout.xaml.cs">
+      <DependentUpon>MainFlyout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings\ApperanceSetting.xaml.cs">
       <DependentUpon>ApperanceSetting.xaml</DependentUpon>
     </Compile>
@@ -85,7 +90,11 @@
     <Compile Include="Settings\Palette.xaml.cs">
       <DependentUpon>Palette.xaml</DependentUpon>
     </Compile>
-    <Page Include="MainFrameControl.xaml">
+    <Page Include="MainFlyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainFrame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -97,8 +106,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainFrameControl.xaml.cs">
-      <DependentUpon>MainFrameControl.xaml</DependentUpon>
+    <Compile Include="MainFrame.xaml.cs">
+      <DependentUpon>MainFrame.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

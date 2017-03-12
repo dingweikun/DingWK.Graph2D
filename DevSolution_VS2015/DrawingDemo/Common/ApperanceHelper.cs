@@ -47,8 +47,20 @@ namespace DrawingDemo.Common
             }
         }
 
+        public IEnumerable<Swatch> PrimarySwatches { get; }
+        public IEnumerable<Swatch> AccentSwatches { get; }
+
         private ApperanceHelper()
         {
+            PrimarySwatches = new SwatchesProvider().Swatches;
+            AccentSwatches = new List<Swatch>();
+            foreach (Swatch s in PrimarySwatches)
+            {
+                if (s.IsAccented)
+                {
+                    ((List<Swatch>)AccentSwatches).Add(s);
+                }
+            }
         }
 
     }

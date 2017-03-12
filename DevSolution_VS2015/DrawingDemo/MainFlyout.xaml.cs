@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,18 +17,13 @@ using System.Windows.Shapes;
 namespace DrawingDemo
 {
     /// <summary>
-    /// MainFrameControl.xaml 的交互逻辑
+    /// MainFlyout.xaml 的交互逻辑
     /// </summary>
-    public partial class MainFrameControl : UserControl
+    public partial class MainFlyout : Flyout
     {
-        public MainFrameControl()
+        public MainFlyout()
         {
             InitializeComponent();
-        }
-
-        private void MainToggleButton_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

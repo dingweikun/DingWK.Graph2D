@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="DrawingDemo.MainFrameControl"
+﻿<UserControl x:Class="DrawingDemo.MainFrame"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -112,7 +112,7 @@
             <Grid>
                 <Button x:Name="MainToggleButton" Margin=" 12 0 0 0" HorizontalAlignment="Left"
                         Style="{StaticResource MaterialDesignToolForegroundButton}"
-                        Click="MainToggleButton_Click">
+                        Command="{Binding OpenMainFlyout}">
                     <materialDesign:PackIcon Width="32" Height="24" Kind="Menu"/>
                 </Button>
 
