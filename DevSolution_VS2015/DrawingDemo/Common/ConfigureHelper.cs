@@ -79,8 +79,8 @@ namespace DrawingDemo.Common
     {
         public ApperanceSection()
         {
-            PrimarySwatchName = @"yellow";
-            AccentSwatchName = @"green";
+            PrimarySwatchName = @"blue";
+            AccentSwatchName = @"amber";
             IsDarkTheme = false;
         }
 

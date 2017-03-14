@@ -17,15 +17,6 @@ namespace DrawingDemo.Settings
 
         public ApperanceSettingViewModel()
         {
-            //PrimarySwatches = new SwatchesProvider().Swatches;
-            //AccentSwatches = new List<Swatch>();
-            //foreach (Swatch s in PrimarySwatches)
-            //{
-            //    if (s.IsAccented)
-            //    {
-            //        ((List<Swatch>)AccentSwatches).Add(s);
-            //    }
-            //}
         }
 
     }

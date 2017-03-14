@@ -90,6 +90,12 @@
     <Compile Include="Settings\Palette.xaml.cs">
       <DependentUpon>Palette.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings\Setting.xaml.cs">
+      <DependentUpon>Setting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TestControl.xaml.cs">
+      <DependentUpon>TestControl.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainFlyout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -118,6 +124,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings\Palette.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\Setting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TestControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

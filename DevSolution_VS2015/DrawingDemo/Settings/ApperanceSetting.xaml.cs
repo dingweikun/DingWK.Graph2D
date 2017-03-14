@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DrawingDemo.Common;
+using MaterialDesignColors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +25,19 @@ namespace DrawingDemo.Settings
         public ApperanceSetting()
         {
             InitializeComponent();
-            this.DataContext = new ApperanceSettingViewModel();
+
+             Loaded += ApperanceSetting_Loaded;
+        }
+
+        private void ApperanceSetting_Loaded(object sender, RoutedEventArgs e)
+        {
+            // 绑定 ViewModel
+            DataContext = new ApperanceSettingViewModel();
+
+            // 初始化页面控件状态
+            PrimaryListBox.SelectedValue = ApperanceHelper.Singleton.CurrentPrimary;
+            AccentListBox.SelectedValue = ApperanceHelper.Singleton.CurrentAccent;
+            ThemeToggleButton.IsChecked = ApperanceHelper.Singleton.IsDarkTheme;
         }
     }
 }

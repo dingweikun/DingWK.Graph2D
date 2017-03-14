@@ -37,9 +37,9 @@
                    FontWeight="Bold"
                    Style="{StaticResource MaterialDesignSubheadingTextBlock}"/>
 
-        <StackPanel Orientation="Horizontal" Margin="0 10 0 0" Grid.Row="3">
+        <StackPanel Orientation="Horizontal" Margin="0 10" Grid.Row="3">
             <TextBlock VerticalAlignment="Center">Light</TextBlock>
-            <ToggleButton Margin="8 0 16 0" IsChecked="{Binding Path=Apperance.IsDarkTheme}"/>
+            <ToggleButton x:Name="ThemeToggleButton"  Margin="8 0 16 0" IsChecked="{Binding Path=Apperance.IsDarkTheme}"/>
             <TextBlock VerticalAlignment="Center">Dark</TextBlock>
         </StackPanel>
 
@@ -47,7 +47,8 @@
                    FontWeight="Bold"
                    Style="{StaticResource MaterialDesignSubheadingTextBlock}"/>
 
-        <ListBox Margin="0 10 0 0" Grid.Row="5" 
+        <ListBox x:Name="PrimaryListBox"
+                 Margin="0 10 0 0" Grid.Row="5" 
                  FocusVisualStyle="{x:Null}" 
                  SelectedItem="{Binding Apperance.CurrentPrimary, Mode=TwoWay}"
                  ItemsSource="{Binding PrimarySwatches}">
@@ -88,7 +89,8 @@
                    FontWeight="Bold"
                    Style="{StaticResource MaterialDesignSubheadingTextBlock}"/>
 
-        <ListBox Margin="0 10 0 0" Grid.Row="7"
+        <ListBox x:Name="AccentListBox"
+                 Margin="0 10 0 0" Grid.Row="7"
                  FocusVisualStyle="{x:Null}" 
                  SelectedItem="{Binding Apperance.CurrentAccent, Mode=TwoWay}"
                  ItemsSource="{Binding AccentSwatches}">

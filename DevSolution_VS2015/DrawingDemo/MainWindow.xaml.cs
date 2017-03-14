@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using System.Windows.Input;
 
 namespace DrawingDemo
 {
@@ -13,7 +14,15 @@ namespace DrawingDemo
 
             Loaded += (sender, e) => Common.ConfigureHelper.Singleton.LoadConfiguration();
             Closing += (sender, e) => Common.ConfigureHelper.Singleton.SaveConfiguration();
+        }
 
+
+        public ICommand OpenMainFlyoutCommand =>
+            new Common.RelayCommand(o => OpenMainFlyout((bool)o));
+
+        private void OpenMainFlyout(bool isOpen)
+        {
+            MainFlyout.IsOpen = isOpen;
         }
 
     }

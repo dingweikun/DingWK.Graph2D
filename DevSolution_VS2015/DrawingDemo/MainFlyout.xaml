@@ -3,36 +3,155 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
             xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
+            xmlns:settings="clr-namespace:DrawingDemo.Settings"
             xmlns:local="clr-namespace:DrawingDemo">
-    <Grid >
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="60"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+    
+    <mahapps:Flyout.Resources>
+        <Style x:Key="TabItemStyle" TargetType="{x:Type TabItem}">
+            <Setter Property="Foreground" Value="{DynamicResource BlackBrush}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource AccentColorBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="mahapps:ControlsHelper.HeaderFontSize" Value="{DynamicResource TabItemFontSize}"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="MinHeight" Value="5"/>
+            <Setter Property="MinWidth" Value="5"/>
+            <Setter Property="Padding" Value="6,2"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" HorizontalAlignment="Stretch" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition x:Name="PART_ContentLeftCol" Width="Auto"/>
+                                    <ColumnDefinition x:Name="PART_ContentRightCol" Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition x:Name="PART_ContentTopRow" Height="Auto"/>
+                                    <RowDefinition x:Name="PART_ContentBottomRow" Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <mahapps:ContentControlEx x:Name="ContentSite" 
+                                                          Margin="2 0"
+                                                          ContentCharacterCasing="{Binding (mahapps:ControlsHelper.ContentCharacterCasing), RelativeSource={RelativeSource TemplatedParent}}"
+                                                          ContentTemplate="{TemplateBinding HeaderTemplate}" 
+                                                          Content="{TemplateBinding Header}" Grid.Column="0" 
+                                                          ContentStringFormat="{TemplateBinding HeaderStringFormat}" 
+                                                          Foreground="{TemplateBinding Foreground}" 
+                                                          FontWeight="{TemplateBinding mahapps:ControlsHelper.HeaderFontWeight}" 
+                                                          FontStyle="{TemplateBinding FontStyle}"
+                                                          FontStretch="{TemplateBinding mahapps:ControlsHelper.HeaderFontStretch}" 
+                                                          FontSize="{TemplateBinding mahapps:ControlsHelper.HeaderFontSize}" 
+                                                          FontFamily="Microsoft Yahei UI Light"
+                                                          Padding="{TemplateBinding Padding}" Grid.Row="0" 
+                                                          RecognizesAccessKey="True" 
+                                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                <Rectangle x:Name="Underline" Grid.Column="0" HorizontalAlignment="Stretch" Height="2" Margin="0,1,0,0" Grid.Row="1" Width="Auto">
+                                    <Rectangle.Visibility>
+                                        <Binding Path="(mahapps:TabControlHelper.IsUnderlined)" RelativeSource="{RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type TabControl}}">
+                                            <Binding.Converter>
+                                                <BooleanToVisibilityConverter/>
+                                            </Binding.Converter>
+                                        </Binding>
+                                    </Rectangle.Visibility>
+                                </Rectangle>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="TabStripPlacement" Value="Left">
+                                <Setter Property="Width" TargetName="PART_ContentLeftCol" Value="*"/>
+                                <Setter Property="Width" TargetName="PART_ContentRightCol" Value="Auto"/>
+                                <Setter Property="Height" TargetName="PART_ContentTopRow" Value="*"/>
+                                <Setter Property="Height" TargetName="PART_ContentBottomRow" Value="Auto"/>
+                                <Setter Property="Grid.Column" TargetName="ContentSite" Value="0"/>
+                                <Setter Property="Grid.Row" TargetName="ContentSite" Value="0"/>
+                                <Setter Property="Grid.Column" TargetName="Underline" Value="1"/>
+                                <Setter Property="Grid.Row" TargetName="Underline" Value="0"/>
+                                <Setter Property="Height" TargetName="Underline" Value="Auto"/>
+                                <Setter Property="Margin" TargetName="Underline" Value="1,0,0,0"/>
+                                <Setter Property="Width" TargetName="Underline" Value="2"/>
+                            </Trigger>
+                            <Trigger Property="TabStripPlacement" Value="Top">
+                                <Setter Property="Width" TargetName="PART_ContentLeftCol" Value="*"/>
+                                <Setter Property="Width" TargetName="PART_ContentRightCol" Value="Auto"/>
+                                <Setter Property="Height" TargetName="PART_ContentTopRow" Value="*"/>
+                                <Setter Property="Height" TargetName="PART_ContentBottomRow" Value="Auto"/>
+                                <Setter Property="Grid.Column" TargetName="ContentSite" Value="0"/>
+                                <Setter Property="Grid.Row" TargetName="ContentSite" Value="0"/>
+                                <Setter Property="Grid.Column" TargetName="Underline" Value="0"/>
+                                <Setter Property="Grid.Row" TargetName="Underline" Value="1"/>
+                                <Setter Property="Height" TargetName="Underline" Value="2"/>
+                                <Setter Property="Margin" TargetName="Underline" Value="0,1,0,0"/>
+                                <Setter Property="Width" TargetName="Underline" Value="Auto"/>
+                            </Trigger>
+                            <Trigger Property="TabStripPlacement" Value="Right">
+                                <Setter Property="Width" TargetName="PART_ContentLeftCol" Value="Auto"/>
+                                <Setter Property="Width" TargetName="PART_ContentRightCol" Value="*"/>
+                                <Setter Property="Height" TargetName="PART_ContentTopRow" Value="*"/>
+                                <Setter Property="Height" TargetName="PART_ContentBottomRow" Value="Auto"/>
+                                <Setter Property="Grid.Column" TargetName="ContentSite" Value="1"/>
+                                <Setter Property="Grid.Row" TargetName="ContentSite" Value="0"/>
+                                <Setter Property="Grid.Column" TargetName="Underline" Value="0"/>
+                                <Setter Property="Grid.Row" TargetName="Underline" Value="0"/>
+                                <Setter Property="Height" TargetName="Underline" Value="Auto"/>
+                                <Setter Property="Margin" TargetName="Underline" Value="0,0,1,0"/>
+                                <Setter Property="Width" TargetName="Underline" Value="2"/>
+                            </Trigger>
+                            <Trigger Property="TabStripPlacement" Value="Bottom">
+                                <Setter Property="Width" TargetName="PART_ContentLeftCol" Value="*"/>
+                                <Setter Property="Width" TargetName="PART_ContentRightCol" Value="Auto"/>
+                                <Setter Property="Height" TargetName="PART_ContentTopRow" Value="Auto"/>
+                                <Setter Property="Height" TargetName="PART_ContentBottomRow" Value="*"/>
+                                <Setter Property="Grid.Column" TargetName="ContentSite" Value="0"/>
+                                <Setter Property="Grid.Row" TargetName="ContentSite" Value="1"/>
+                                <Setter Property="Grid.Column" TargetName="Underline" Value="0"/>
+                                <Setter Property="Grid.Row" TargetName="Underline" Value="0"/>
+                                <Setter Property="Height" TargetName="Underline" Value="2"/>
+                                <Setter Property="Margin" TargetName="Underline" Value="0,0,0,1"/>
+                                <Setter Property="Width" TargetName="Underline" Value="Auto"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Foreground" TargetName="ContentSite" Value="{DynamicResource PrimaryHueMidBrush}"/>
+                                <Setter Property="Fill" TargetName="Underline" Value="{DynamicResource PrimaryHueMidBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter Property="Foreground" TargetName="ContentSite" Value="{DynamicResource GrayNormalBrush}"/>
+                                <Setter Property="Fill" TargetName="Underline" Value="{DynamicResource GrayNormalBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" SourceName="ContentSite" Value="True">
+                                <Setter Property="Foreground" TargetName="ContentSite" Value="{DynamicResource GrayHoverBrush}"/>
+                                <Setter Property="Fill" TargetName="Underline" Value="{DynamicResource GrayHoverBrush}"/>
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" SourceName="ContentSite" Value="True"/>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Foreground" TargetName="ContentSite" Value="{DynamicResource PrimaryHueLightBrush}"/>
+                                <Setter Property="Fill" TargetName="Underline" Value="{DynamicResource PrimaryHueLightBrush}"/>
+                            </MultiTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </mahapps:Flyout.Resources>
 
-        <Button Style="{StaticResource MaterialDesignFlatButton}"
-                Foreground="{DynamicResource PrimaryHueMidForegroundBrush}"
-                VerticalAlignment="Top" 
-                Margin="0 -40 0 0">
-            <materialDesign:PackIcon Kind="ArrowRight" Width="28" Height="28"/>
-        </Button>
+
+    <TabControl Margin="56 0 0 0"  ItemContainerStyle="{StaticResource TabItemStyle}">
+        
+        <TabItem Header="welcome"/>
+        <TabItem Header="files"/>
+        <TabItem Header="settings">
+            <settings:Setting/>
+        </TabItem>
+
+    </TabControl>
 
 
-        <TabControl Grid.Column="1" Margin="0 -45 0 0">
 
-            <TabItem Header="Start" Style="{StaticResource MetroTabItem }">
-                <Grid/>
-            </TabItem>
 
-            <TabItem Header="文件"  Style="{StaticResource MetroTabItem }">
-                <Grid />
-            </TabItem>
-
-            <TabItem Header="配置"  Style="{StaticResource MetroTabItem }">
-                <Grid />
-            </TabItem>
-
-        </TabControl>
-
-    </Grid>
 </mahapps:Flyout>
