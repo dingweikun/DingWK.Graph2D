@@ -1,0 +1,32 @@
+﻿<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:gh="clr-namespace:DingWK.Graphic2D.Controls;assembly=DingWK.Graphic2D"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+
+    <DockPanel>
+        <!--<Canvas>
+            <gh:PageGrid x:Name="grid" Height="200" Width="400"/>
+        </Canvas>-->
+        <DockPanel DockPanel.Dock="Top">
+            <TextBlock>Width</TextBlock>
+            <TextBox  Text="{Binding ElementName=cc, Path=PageWidth, Mode=TwoWay}" />
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Top">
+            <TextBlock>Height</TextBlock>
+            <TextBox  Text="{Binding ElementName=cc, Path=PageHeight, Mode=TwoWay}" />
+        </DockPanel>
+
+        <Slider Value="{Binding ElementName=cc, Path=PageScale, Mode=TwoWay}" DockPanel.Dock="Top"/>
+        <TextBox Text="{Binding ElementName=cc, Path=GridSize, Mode=TwoWay}" DockPanel.Dock="Top"/>
+        <Button Click="Button_Click" DockPanel.Dock="Top">Set Color</Button>
+        <TextBox Text="{Binding ElementName=cc, Path=PageOffset, Mode=TwoWay}" DockPanel.Dock="Top"/>
+        <gh:GraphicVisualCanvas  x:Name="cc" VerticalAlignment="Stretch" PageHeight="100" PageWidth="400"
+                                 DockPanel.Dock="Top"/>
+    </DockPanel>
+
+</Window>
