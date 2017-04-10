@@ -2,7 +2,7 @@
 
 namespace DingWK.Graphic2D.Graphic
 {
-    public struct PlaceInfo : IPlaceInfo
+    public struct Placement : IPlacement
     {
         private Point _origin;
         private double _angle;

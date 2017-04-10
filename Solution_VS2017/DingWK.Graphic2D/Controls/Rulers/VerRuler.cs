@@ -17,15 +17,19 @@ namespace DingWK.Graphic2D.Controls.Rulers
             base.OnRender(drawingContext);
 
             // 刻度线宽宽度 1 个像素
+            // Set tick thickness 1 pixel.
 
             Matrix mtx = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice;
             double dpiFactor = 1 / mtx.M11;
             Pen pixelPen = new Pen(TickColor, 1 * dpiFactor);
 
             // 绘制背景
+            // Draw ruler background.
+
             drawingContext.DrawRectangle(BackColor, null, new Rect(RenderSize));
 
             // 绘制标尺
+            // Draw ruler ticks.
 
             Point a = new Point(ActualWidth, Start);
             Point b = new Point(ActualWidth - 4, Start);  // 短刻度

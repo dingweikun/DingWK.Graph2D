@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>DingWK.Graphic2D</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>DingWeikun</authors>
+    <owners>DingWeikun</owners>
+    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/dingweikun/DingWK.Graphic2D</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A wpf 2D graphic library</description>
+    <releaseNotes>First release</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>wpf</tags>
+  </metadata>
+</package>

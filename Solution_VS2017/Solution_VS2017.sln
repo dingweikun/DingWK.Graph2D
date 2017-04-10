@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DingWK.Graphic2D", "DingWK.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp1", "WpfApp1\WpfApp1.csproj", "{B74ADE3C-18EF-4118-A3FC-C90215F22A85}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{09CDA780-4F18-45C7-83C7-7731592D3C0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp2", "WpfApp2\WpfApp2.csproj", "{AC574841-072B-4273-96BD-34A1E8C1A45B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{B74ADE3C-18EF-4118-A3FC-C90215F22A85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B74ADE3C-18EF-4118-A3FC-C90215F22A85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B74ADE3C-18EF-4118-A3FC-C90215F22A85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09CDA780-4F18-45C7-83C7-7731592D3C0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09CDA780-4F18-45C7-83C7-7731592D3C0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09CDA780-4F18-45C7-83C7-7731592D3C0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09CDA780-4F18-45C7-83C7-7731592D3C0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC574841-072B-4273-96BD-34A1E8C1A45B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC574841-072B-4273-96BD-34A1E8C1A45B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC574841-072B-4273-96BD-34A1E8C1A45B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC574841-072B-4273-96BD-34A1E8C1A45B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

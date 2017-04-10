@@ -16,6 +16,7 @@ namespace DingWK.Graphic2D.Controls.Rulers
         #region OrignPosition 
         /// <summary>
         /// 标尺0刻度位置
+        /// Zero value tick position
         /// </summary>
         public double OrignPosition
         {
@@ -37,6 +38,7 @@ namespace DingWK.Graphic2D.Controls.Rulers
         #region TickColor 
         /// <summary>
         /// 标尺刻度颜色
+        /// Ruler tick color
         /// </summary>
         public Brush TickColor
         {
@@ -44,7 +46,7 @@ namespace DingWK.Graphic2D.Controls.Rulers
             set { SetValue(TickColorProperty, value); }
         }
         //
-        // 依赖定义
+        // Dependency property definition
         //
         public static readonly DependencyProperty TickColorProperty =
             DependencyProperty.Register(
@@ -58,6 +60,7 @@ namespace DingWK.Graphic2D.Controls.Rulers
         #region TickTextColor 
         /// <summary>
         /// 标尺刻度文字颜色
+        /// Ruler tick text color
         /// </summary>
         public Brush TickTextColor
         {
@@ -65,7 +68,7 @@ namespace DingWK.Graphic2D.Controls.Rulers
             set { SetValue(TickTextColorProperty, value); }
         }
         //
-        // 依赖定义
+        // Dependency property definition
         //
         public static readonly DependencyProperty TickTextColorProperty =
             DependencyProperty.Register(
@@ -78,7 +81,8 @@ namespace DingWK.Graphic2D.Controls.Rulers
 
         #region BackColor
         /// <summary>
-        /// 
+        /// 标尺背景色
+        /// Ruler background color
         /// </summary>
         public Brush BackColor
         {
@@ -100,6 +104,7 @@ namespace DingWK.Graphic2D.Controls.Rulers
         #region ZoomScale 
         /// <summary>
         /// 标尺缩放比例
+        /// Zoom scale of ruler
         /// </summary>
         public double ZoomScale
         {
@@ -107,7 +112,7 @@ namespace DingWK.Graphic2D.Controls.Rulers
             set { SetValue(ZoomScaleProperty, value); }
         }
         //
-        // 依赖定义
+        // Dependency property definition
         //
         public static readonly DependencyProperty ZoomScaleProperty =
             DependencyProperty.Register(
@@ -121,6 +126,7 @@ namespace DingWK.Graphic2D.Controls.Rulers
         #region DesignTickSpacing
         /// <summary>
         /// 标尺大刻度设计间距，该值为标尺大刻度的设计期望间距，实际间距是根据该值计算获得。
+        /// Designed tick spacing is a expected value, on which to base the actual tick spacing value calculation. 
         /// </summary>
         public double DesignTickSpacing
         {
@@ -128,7 +134,7 @@ namespace DingWK.Graphic2D.Controls.Rulers
             set { SetValue(DesignTickSpacingProperty, value); }
         }
         //
-        // 依赖定义
+        // Dependency property definition
         //
         public static readonly DependencyProperty DesignTickSpacingProperty =
             DependencyProperty.Register(
@@ -151,6 +157,7 @@ namespace DingWK.Graphic2D.Controls.Rulers
 
             //
             // 计算标尺动态刻度 小刻度 MinorTickSpacing 大刻度 TickSpacing
+            // Dynamicly calculate ruler tick spaceing values. TickSpacing = MinorTickSpacing x 5
             //
 
             double designTickSpacingValue = DesignTickSpacing / ZoomScale;
@@ -174,6 +181,7 @@ namespace DingWK.Graphic2D.Controls.Rulers
 
             //
             // 计算标尺刻度绘制起始位置
+            // Calculate the position in which start drawing ruler tick.
             //
             Start = OrignPosition <= 0 ?
                 OrignPosition - (int)(OrignPosition / (tickSpacingValue * ZoomScale)) * tickSpacingValue * ZoomScale :

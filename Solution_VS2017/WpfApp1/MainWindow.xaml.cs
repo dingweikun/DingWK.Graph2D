@@ -22,20 +22,14 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
+        private FrameworkElement ele = new FrameworkElement();
+
         public MainWindow()
         {
             InitializeComponent();
 
-
-            Loaded += MainWindow_Loaded;
-
         }
 
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            //cc.PageGrid.Height = 500;
-            //cc.PageGrid.Width = 100;
-        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -49,6 +43,15 @@ namespace WpfApp1
             GeomGraphicVisual visual = new GeomGraphicVisual(rect);
 
             this.cc.GraphicVisualHost.Visuals.Add(visual);
+
+            cc.SetCanvasFitFullPage();
+
+            ele = new System.Windows.Shapes.Ellipse()
+            {
+                Height = 50,
+                Width = 50, Fill = Brushes.Yellow
+
+            };
         }
     }
 }

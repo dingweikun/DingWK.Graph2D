@@ -30,10 +30,10 @@ namespace DingWK.Graphic2D.Graphic
         #endregion
 
 
-        public GeomGraphicVisual(IGeometry geometry, PlaceInfo info = default(PlaceInfo))
+        public GeomGraphicVisual(IGeometry geometry, Placement info = default(Placement))
         {
             Geometry = geometry ?? throw new ArgumentNullException(nameof(geometry));
-            PlaceInfo = info;
+            Placement = info;
         }
 
 
@@ -54,7 +54,7 @@ namespace DingWK.Graphic2D.Graphic
 
     public sealed class GeomGraphicVisual<T> : GeomGraphicVisual where T : IGeometry
     {
-        public GeomGraphicVisual(T geometry, PlaceInfo info = default(PlaceInfo))
+        public GeomGraphicVisual(T geometry, Placement info = default(Placement))
             : base(geometry, info)
         {
         }

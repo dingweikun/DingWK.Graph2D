@@ -11,20 +11,20 @@ namespace DingWK.Graphic2D.Graphic
 
         
 
-        #region PlaceInfo property
+        #region Placement property
 
-        public IPlaceInfo PlaceInfo
+        public IPlacement Placement
         {
-            get { return (IPlaceInfo)GetValue(PlaceInfoProperty); }
-            set { SetValue(PlaceInfoProperty, value); }
+            get { return (IPlacement)GetValue(PlacementProperty); }
+            set { SetValue(PlacementProperty, value); }
         }
 
-        public static readonly DependencyProperty PlaceInfoProperty =
+        public static readonly DependencyProperty PlacementProperty =
             DependencyProperty.Register(
-                nameof(PlaceInfo),
-                typeof(IPlaceInfo),
+                nameof(Placement),
+                typeof(IPlacement),
                 typeof(GraphicVisual),
-                new FrameworkPropertyMetadata(default(PlaceInfo), FrameworkPropertyMetadataOptions.AffectsRender)
+                new FrameworkPropertyMetadata(default(Placement), FrameworkPropertyMetadataOptions.AffectsRender)
                 {
                     PropertyChangedCallback = (d, e) => (d as GraphicVisual).UpdateVisualTransform()
                 });
@@ -82,8 +82,8 @@ namespace DingWK.Graphic2D.Graphic
         public void UpdateVisualTransform()
         {
             TransformGroup trans = new TransformGroup();
-            trans.Children.Add(new RotateTransform(PlaceInfo.Angle));
-            trans.Children.Add(new TranslateTransform(PlaceInfo.Origin.X, PlaceInfo.Origin.Y));
+            trans.Children.Add(new RotateTransform(Placement.Angle));
+            trans.Children.Add(new TranslateTransform(Placement.Origin.X, Placement.Origin.Y));
             this.Transform = trans;
         }
 

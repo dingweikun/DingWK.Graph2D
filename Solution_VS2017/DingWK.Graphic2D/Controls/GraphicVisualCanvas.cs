@@ -1,39 +1,69 @@
-﻿using DingWK.Graphic2D.Graphic;
+﻿using DingWK.Graphic2D.Controls.Adorners;
+using DingWK.Graphic2D.Controls.Rulers;
+using DingWK.Graphic2D.Converters;
+using DingWK.Graphic2D.Graphic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace DingWK.Graphic2D.Controls
 {
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    [TemplatePart(Name = "PART_Canvas", Type = typeof(Canvas))]
+    [TemplatePart(Name = "PART_PageGrid", Type = typeof(PageGrid))]
+    [TemplatePart(Name = "PART_HorRuler", Type = typeof(HorRuler))]
+    [TemplatePart(Name = "PART_VerRuler", Type = typeof(VerRuler))]
+    [TemplatePart(Name = "PART_HorScrollBar", Type = typeof(ScrollBar))]
+    [TemplatePart(Name = "PART_VerScrollBar", Type = typeof(ScrollBar))]
+    [TemplatePart(Name = "PART_AdornerDecorator", Type = typeof(AdornerDecorator))]
+    [TemplatePart(Name = "PART_GraphicVisualHost", Type = typeof(GraphicVisualHost))]
     public class GraphicVisualCanvas : Control
     {
+
+        struct CanvasState
+        {
+            public const int StandBy = 0;
+            public const int Selecting = 1;
+        }
+
+
+        #region fields & properties
+
+        internal const double MaxPageScale = 100;
+        internal const double MinPageScale = 0.01;
+        internal const double MaxPageSize = 10000;
+        internal const double MinPageSize = 100;
+        internal const double Delta = 2;
+
+
+        public int State { get; protected set; } = CanvasState.StandBy;
+
+        private RectSelectorAdorner _rectSelector = null;
+        public RectSelectorAdorner RectSelector => _rectSelector;
 
         private Canvas _canvas = null;
         private PageGrid _pageGrid = null;
         private ScrollBar _horScrollBar = null;
         private ScrollBar _verScrollBar = null;
+        private AdornerDecorator _adornerDecorator = null;
+        private GraphicVisualHost _graphicVisualHost = null;
+
+        public PageGrid PageGrid => _pageGrid;
+        public AdornerDecorator AdornerDecorator => _adornerDecorator;
+        public GraphicVisualHost GraphicVisualHost => _graphicVisualHost;
+
+        #endregion
 
 
-
-        static GraphicVisualCanvas()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(GraphicVisualCanvas), new FrameworkPropertyMetadata(typeof(GraphicVisualCanvas)));
-        }
-
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-
-            _canvas = GetTemplateChild("PART_Canvas") as Canvas;
-            _pageGrid = GetTemplateChild("PART_PageGrid") as PageGrid;
-            _horScrollBar = GetTemplateChild("PART_HorScrollBar") as ScrollBar;
-            _verScrollBar = GetTemplateChild("PART_VerScrollBar") as ScrollBar;
-
-        }
-
+        #region Dependency properties
 
 
         #region PageWidth
@@ -53,7 +83,19 @@ namespace DingWK.Graphic2D.Controls
                 nameof(PageWidth),
                 typeof(double),
                 typeof(GraphicVisualCanvas),
-                new PropertyMetadata(0.0));
+                new PropertyMetadata(0.0)
+                {
+                    CoerceValueCallback = (d, baseValue) =>
+                    {
+                        double width = (double)baseValue;
+                        return width < MinPageSize ? MinPageSize : (width > MaxPageSize ? MaxPageSize : width);
+                    },
+
+                    PropertyChangedCallback = (d, e) =>
+                    {
+                        (d as GraphicVisualCanvas).SetCanvasFitPageWidth();
+                    }
+                });
         #endregion
 
 
@@ -74,7 +116,19 @@ namespace DingWK.Graphic2D.Controls
                 nameof(PageHeight),
                 typeof(double),
                 typeof(GraphicVisualCanvas),
-                new PropertyMetadata(0.0));
+                new PropertyMetadata(0.0)
+                {
+                    CoerceValueCallback = (d, baseValue) =>
+                    {
+                        double height = (double)baseValue;
+                        return height < MinPageSize ? MinPageSize : (height > MaxPageSize ? MaxPageSize : height);
+                    },
+
+                    PropertyChangedCallback = (d, e) =>
+                    {
+                        (d as GraphicVisualCanvas).SetCanvasFitPageHeight();
+                    }
+                });
         #endregion
 
 
@@ -94,16 +148,22 @@ namespace DingWK.Graphic2D.Controls
             DependencyProperty.Register(
                 nameof(PageScale),
                 typeof(double),
-                typeof(GraphicVisualCanvas), 
+                typeof(GraphicVisualCanvas),
                 new PropertyMetadata(1.0)
                 {
+                    CoerceValueCallback = (d, baseValue) =>
+                    {
+                        double scale = (double)baseValue;
+                        return scale < MinPageScale ? MinPageScale : (scale > MaxPageScale ? MaxPageScale : scale);
+                    },
+
                     PropertyChangedCallback = (d, e) =>
                     {
                         GraphicVisualCanvas gvc = d as GraphicVisualCanvas;
-                        double delta = (double)e.OldValue - (double)e.NewValue;
-                        gvc.AdjustOffset(
-                            delta * gvc._canvas.RenderSize.Width,
-                            delta * gvc._canvas.RenderSize.Height);
+                        double factor = (double)e.NewValue / (double)e.OldValue;
+                        gvc.PageOffsetX = factor * gvc.PageOffsetX + (1 - factor) * gvc._canvas.RenderSize.Width / 2;
+                        gvc.PageOffsetY = factor * gvc.PageOffsetY + (1 - factor) * gvc._canvas.RenderSize.Height / 2;
+                        gvc.UpdateScrollBars();
                     }
                 });
         #endregion
@@ -130,40 +190,6 @@ namespace DingWK.Graphic2D.Controls
         #endregion
 
 
-        //#region PageOffset
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public Point PageOffset
-        //{
-        //    get { return (Point)GetValue(PageOffsetProperty); }
-        //    set { SetValue(PageOffsetProperty, value); }
-        //}
-        ////
-        //// Dependency property definition
-        ////
-        //public static readonly DependencyProperty PageOffsetProperty =
-        //    DependencyProperty.Register(
-        //        nameof(PageOffset),
-        //        typeof(Point),
-        //        typeof(GraphicVisualCanvas),
-        //        new PropertyMetadata(new Point())
-        //        {
-        //            PropertyChangedCallback = (d, e) =>
-        //            {
-        //                GraphicVisualCanvas gvc = d as GraphicVisualCanvas;
-
-        //                // set host transform
-        //                TransformGroup trx = new TransformGroup();
-        //                trx.Children.Add(new ScaleTransform(gvc.PageScale, gvc.PageScale));
-        //                trx.Children.Add(new TranslateTransform(gvc.PageOffset.X, gvc.PageOffset.Y));
-        //                gvc.GraphicVisualHost.RenderTransform = trx;
-
-        //            }
-        //        });
-        //#endregion
-
-
         #region PageOffsetX
         /// <summary>
         /// 
@@ -183,11 +209,7 @@ namespace DingWK.Graphic2D.Controls
                 typeof(GraphicVisualCanvas),
                 new FrameworkPropertyMetadata(0.0)
                 {
-                    PropertyChangedCallback = (d, e) =>
-                    {
-                        (d as GraphicVisualCanvas).SetContentTransform();
-                    }
-
+                    PropertyChangedCallback = (d, e) => (d as GraphicVisualCanvas).SetContentTransform()
                 });
         #endregion
 
@@ -265,38 +287,111 @@ namespace DingWK.Graphic2D.Controls
         #endregion
 
 
-        #region GraphicVisualHost
-
-        private GraphicVisualHost _graphicVisualHost = null;
-
+        #region GridVisible
         /// <summary>
         /// 
         /// </summary>
-        public GraphicVisualHost GraphicVisualHost
+        public bool GridVisible
         {
-            get
-            {
-                if (_graphicVisualHost == null)
-                {
-                    _graphicVisualHost = base.GetTemplateChild("PART_GraphicVisualHost") as GraphicVisualHost;
-                }
-                return _graphicVisualHost;
-            }
+            get { return (bool)GetValue(GridVisibleProperty); }
+            set { SetValue(GridVisibleProperty, value); }
         }
+        //
+        // Dependency property definition
+        //
+        public static readonly DependencyProperty GridVisibleProperty =
+            DependencyProperty.Register(
+                nameof(GridVisible),
+                typeof(bool),
+                typeof(GraphicVisualCanvas),
+                new FrameworkPropertyMetadata(true));
+        #endregion
+        
+
+        #region Operator
+        /// <summary>
+        /// 
+        /// </summary>
+        public FrameworkElement Operator
+        {
+            get { return (FrameworkElement)GetValue(OperatorProperty); }
+            set { SetValue(OperatorProperty, value); }
+        }
+        //
+        // Dependency property definition
+        //
+        public static readonly DependencyProperty OperatorProperty =
+            DependencyProperty.Register(
+                nameof(Operator),
+                typeof(FrameworkElement),
+                typeof(GraphicVisualCanvas),
+                new FrameworkPropertyMetadata(null)
+                {
+                    PropertyChangedCallback = (d, e) =>
+                    {
+                        GraphicVisualCanvas gvc = d as GraphicVisualCanvas;
+                        if (e.OldValue != null)
+                            gvc._canvas.Children.Remove((FrameworkElement)e.OldValue);
+                        if (e.NewValue != null)
+                            gvc._canvas.Children.Add((FrameworkElement)e.NewValue);
+                    }
+                });
+        #endregion
+
+
         #endregion
 
 
 
-
-
-
-
-        private void AdjustOffset(double widthChange, double heightChange)
+        static GraphicVisualCanvas()
         {
-            PageOffsetX += widthChange / 2;
-            PageOffsetY += heightChange / 2;
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(GraphicVisualCanvas), new FrameworkPropertyMetadata(typeof(GraphicVisualCanvas)));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            _canvas = GetTemplateChild("PART_Canvas") as Canvas;
+            _pageGrid = GetTemplateChild("PART_PageGrid") as PageGrid;
+            _horScrollBar = GetTemplateChild("PART_HorScrollBar") as ScrollBar;
+            _verScrollBar = GetTemplateChild("PART_VerScrollBar") as ScrollBar;
+            _adornerDecorator = GetTemplateChild("PART_AdornerDecorator") as AdornerDecorator;
+            _graphicVisualHost = GetTemplateChild("PART_GraphicVisualHost") as GraphicVisualHost;
+            
+
+            _rectSelector = new RectSelectorAdorner(_canvas);
+            _rectSelector.SetBinding(
+                RectSelectorAdorner.ColorProperty,
+                new Binding("GridColor")
+                {
+                    Source = this,
+                    Mode = BindingMode.OneWay,
+                    Converter = new SolidColorBrushToColorConverter(),
+                });
+            _adornerDecorator.AdornerLayer.Add(_rectSelector);
+
+            SetInternalCanvasMouseOperation();
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            base.OnRenderSizeChanged(sizeInfo);
+            PageOffsetX += (sizeInfo.NewSize.Width - sizeInfo.PreviousSize.Width) / 2;
+            PageOffsetY += (sizeInfo.NewSize.Height - sizeInfo.PreviousSize.Height) / 2;
+            UpdateScrollBars();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         private void UpdateScrollBars()
         {
             if (_canvas == null) return;
@@ -320,7 +415,9 @@ namespace DingWK.Graphic2D.Controls
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
         private void SetContentTransform()
         {
             // set grid translate
@@ -333,5 +430,114 @@ namespace DingWK.Graphic2D.Controls
             GraphicVisualHost.RenderTransform = trx;
         }
 
+
+
+        #region Viewport operations
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void SetCanvasFitPageWidth()
+        {
+            if (_canvas != null)
+            {
+                PageScale = (_canvas.RenderSize.Width - Delta) / PageWidth;
+                PageOffsetX = 0;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void SetCanvasFitPageHeight()
+        {
+            if (_canvas != null)
+            {
+                PageScale = (_canvas.RenderSize.Height - Delta) / PageHeight;
+                PageOffsetY = 0;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void SetCanvasFitFullPage()
+        {
+            if (_canvas != null)
+            {
+                if (_canvas.RenderSize.Width * PageHeight < _canvas.RenderSize.Height * PageWidth)
+                {
+                    PageScale = (_canvas.RenderSize.Width - Delta) / PageWidth;
+                    PageOffsetX = 0;
+                    PageOffsetY = (_canvas.RenderSize.Height - PageScale * PageHeight) / 2;
+                }
+                else
+                {
+                    PageScale = (_canvas.RenderSize.Height - Delta) / PageHeight;
+                    PageOffsetX = (_canvas.RenderSize.Width - PageScale * PageWidth) / 2;
+                    PageOffsetY = 0;
+                }
+            }
+        }
+
+        #endregion
+
+
+        #region Internal canvas mouse operations
+
+        private void SetInternalCanvasMouseOperation()
+        {
+            _canvas.MouseUp += _canvas_MouseUp;
+            _canvas.MouseDown += _canvas_MouseDown;
+            _canvas.LostMouseCapture += InternalCanvas_LostMouseCapture;
+            _canvas.MouseLeftButtonDown += InternalCanvas_MouseLeftButtonDown;
+            _canvas.MouseMove += InternalCanvas_MouseMove;
+
+        }
+
+        protected virtual void _canvas_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            _canvas.CaptureMouse();
+        }
+
+        protected virtual void _canvas_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (_canvas.IsMouseCaptured)
+                _canvas.ReleaseMouseCapture();
+        }
+
+        protected virtual void InternalCanvas_LostMouseCapture(object sender, MouseEventArgs e)
+        {
+            if (State == CanvasState.Selecting)
+            {
+                _rectSelector.Visibility = Visibility.Collapsed;
+                State = CanvasState.StandBy;
+            }
+        }
+
+        protected virtual void InternalCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (State == CanvasState.StandBy)
+            {
+                State = CanvasState.Selecting;
+                _rectSelector.Start = e.GetPosition(_canvas);
+                _rectSelector.End = _rectSelector.Start;
+                _rectSelector.Visibility = Visibility.Visible;
+            }
+        }
+
+        protected virtual void InternalCanvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (State == CanvasState.Selecting && e.LeftButton == MouseButtonState.Pressed)
+            {
+                _rectSelector.End = e.GetPosition(_canvas);
+            }
+
+        }
+
+        #endregion
+
+
     }
+
 }

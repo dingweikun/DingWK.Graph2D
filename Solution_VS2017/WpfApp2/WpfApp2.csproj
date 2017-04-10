@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3BA3AD9A-3D15-4B9C-9A77-FC1D6115A6E4}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>DingWK.Graphic2D</RootNamespace>
-    <AssemblyName>DingWK.Graphic2D</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <ProjectGuid>{AC574841-072B-4273-96BD-34A1E8C1A45B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>WpfApp2</RootNamespace>
+    <AssemblyName>WpfApp2</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,9 +33,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -54,25 +50,24 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\Adorners\RectSelectorAdorner.cs" />
-    <Compile Include="Controls\GraphicVisualCanvas.cs" />
-    <Compile Include="Controls\PageGrid.cs" />
-    <Compile Include="Controls\Rulers\HorRuler.cs" />
-    <Compile Include="Controls\Rulers\Ruler.cs" />
-    <Compile Include="Controls\Rulers\VerRuler.cs" />
-    <Compile Include="Converters\DoubleNegativeConverter.cs" />
-    <Compile Include="Converters\SolidColorBrushToColorConverter.cs" />
-    <Compile Include="Geometry\Ellipse.cs" />
-    <Compile Include="Geometry\IGeometry.cs" />
-    <Compile Include="Geometry\Line.cs" />
-    <Compile Include="Geometry\Rectangle.cs" />
-    <Compile Include="Graphic\GeomGraphicVisual.cs" />
-    <Compile Include="Graphic\GraphicVisual.cs" />
-    <Compile Include="Graphic\GraphicVisualHost.cs" />
-    <Compile Include="Graphic\GroupGraphicVisual.cs" />
-    <Compile Include="Graphic\IGraphicVisual.cs" />
-    <Compile Include="Graphic\IPlacement.cs" />
-    <Compile Include="Graphic\Placement.cs" />
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -96,13 +91,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controls\Operators\" />
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

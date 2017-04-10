@@ -15,28 +15,28 @@ namespace DingWK.Graphic2D.Graphic
 
         #region Group operation methods
 
-        private IPlaceInfo InGroupTransform(IPlaceInfo info)
+        private IPlacement InGroupTransform(IPlacement place)
         {
-            return new PlaceInfo()
+            return new Placement()
             {
-                Origin = this.Transform.Transform(info.Origin),
-                Angle = info.Angle - this.PlaceInfo.Angle
+                Origin = this.Transform.Transform(place.Origin),
+                Angle = place.Angle - this.Placement.Angle
             };
         }
 
-        private IPlaceInfo OutGroupTransform(IPlaceInfo info)
+        private IPlacement OutGroupTransform(IPlacement place)
         {
-            return new PlaceInfo()
+            return new Placement()
             {
-                Origin = this.Transform.Inverse.Transform(info.Origin),
-                Angle = info.Angle + this.PlaceInfo.Angle
+                Origin = this.Transform.Inverse.Transform(place.Origin),
+                Angle = place.Angle + this.Placement.Angle
             };
         }
 
         public void AddIntoGroup(GraphicVisual gv)
         {
             ((ICollection<GraphicVisual>)this).Add(gv);
-            gv.PlaceInfo = InGroupTransform(gv.PlaceInfo);
+            gv.Placement = InGroupTransform(gv.Placement);
         }
 
         public void AddIntoGroup(ICollection<GraphicVisual> gvCollection)
@@ -49,7 +49,7 @@ namespace DingWK.Graphic2D.Graphic
         {
             if (this.Count <= 1)
                 return null;
-            gv.PlaceInfo = OutGroupTransform(gv.PlaceInfo);
+            gv.Placement = OutGroupTransform(gv.Placement);
             ((ICollection<GraphicVisual>)this).Remove(gv);
             return gv;
         }

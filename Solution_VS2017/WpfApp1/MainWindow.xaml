@@ -25,8 +25,14 @@
         <TextBox Text="{Binding ElementName=cc, Path=GridSize, Mode=TwoWay}" DockPanel.Dock="Top"/>
         <Button Click="Button_Click" DockPanel.Dock="Top">Set Color</Button>
         <TextBox Text="{Binding ElementName=cc, Path=PageOffset, Mode=TwoWay}" DockPanel.Dock="Top"/>
+        <ScrollBar Background="Yellow" Foreground="{x:Null}" Orientation="Horizontal" DockPanel.Dock="Bottom" BorderBrush="#FFF11616" SnapsToDevicePixels="True"/>
+        
         <gh:GraphicVisualCanvas  x:Name="cc" VerticalAlignment="Stretch" PageHeight="100" PageWidth="400"
-                                 DockPanel.Dock="Top"/>
+                                 DockPanel.Dock="Top"
+                                 BorderThickness="0"
+                                 Margin="10"
+                                 Foreground="Purple"
+                                 GridColor="Purple"/>
     </DockPanel>
 
 </Window>

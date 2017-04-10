@@ -2,7 +2,7 @@
 
 namespace DingWK.Graphic2D.Graphic
 {
-    public interface IPlaceInfo
+    public interface IPlacement
     {
         Point Origin { get; }
 

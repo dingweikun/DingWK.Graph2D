@@ -29,36 +29,6 @@ namespace DingWK.Graphic2D.Controls
         #endregion
 
 
-        #region Offset
-        /// <summary>
-        /// 
-        /// </summary>
-        public Point Offset
-        {
-            get { return (Point)GetValue(OffsetProperty); }
-            set { SetValue(OffsetProperty, value); }
-        }
-        //
-        // Dependency property definition
-        //
-        public static readonly DependencyProperty OffsetProperty =
-            DependencyProperty.Register(
-                nameof(Offset),
-                typeof(Point),
-                typeof(PageGrid),
-                new FrameworkPropertyMetadata(new Point(), FrameworkPropertyMetadataOptions.AffectsRender)
-                {
-                    PropertyChangedCallback = (d, e) =>
-                    {
-                        PageGrid pageGird = d as PageGrid;
-                        pageGird.RenderTransform = new TranslateTransform(pageGird.Offset.X, pageGird.Offset.Y);
-                    }
-                });
-        #endregion
-
-
-
-
         #region GridSize
         /// <summary>
         /// 
@@ -77,6 +47,27 @@ namespace DingWK.Graphic2D.Controls
                 typeof(int),
                 typeof(PageGrid),
                 new FrameworkPropertyMetadata(10, FrameworkPropertyMetadataOptions.AffectsRender));
+        #endregion
+
+
+        #region ShowGrid
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool ShowGrid
+        {
+            get { return (bool)GetValue(ShowGridProperty); }
+            set { SetValue(ShowGridProperty, value); }
+        }
+        //
+        // Dependency property definition
+        //
+        public static readonly DependencyProperty ShowGridProperty =
+            DependencyProperty.Register(
+                nameof(ShowGrid),
+                typeof(bool),
+                typeof(PageGrid),
+                new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender));
         #endregion
 
 
@@ -157,8 +148,18 @@ namespace DingWK.Graphic2D.Controls
             LineGeometry lgy = new LineGeometry(new Point(0, 0), new Point(xlen, 0));
             if (lgx.CanFreeze) lgx.Freeze();
             if (lgy.CanFreeze) lgy.Freeze();
+            
+            GuidelineSet guidelines = new GuidelineSet();
+            guidelines.GuidelinesX.Add(-delt);
+            guidelines.GuidelinesX.Add(xlen - delt);
+            guidelines.GuidelinesY.Add(-delt);
+            guidelines.GuidelinesY.Add(ylen - delt);
 
-            drawingContext.DrawRectangle(PageBrush, null, new Rect(0, 0, xlen, ylen));
+            drawingContext.PushGuidelineSet(guidelines);
+            drawingContext.DrawRectangle(PageBrush, majorPen, new Rect(0, 0, xlen, ylen));
+            drawingContext.Pop();
+
+            if (!ShowGrid) return;
 
             for (double x = 0; x <= Width; x += GridSize)
             {

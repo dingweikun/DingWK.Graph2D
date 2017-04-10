@@ -14,8 +14,6 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ctrls:GraphicVisualCanvas}">
                     <ControlTemplate.Resources>
-                        <!--<cnvrt:ScrollBarValuesToPageOffset x:Key="ScollValueToOffset"/>
-                        <cnvrt:PageOffsetToHorScrollBarValue x:Key="OffsetToHorScollValue"/>-->
                         <cnvrt:DoubleNegativeConverter x:Key="DoubleNegativeConverter"/>
                     </ControlTemplate.Resources>
 
@@ -36,39 +34,37 @@
                                 <ColumnDefinition Width ="auto"/>
                             </Grid.ColumnDefinitions>
 
+                            <Border Grid.Row="1" Grid.Column="1" ClipToBounds="True">
+                                <AdornerDecorator x:Name="PART_AdornerDecorator">
+                                    <Canvas x:Name="PART_Canvas" Grid.Row="1" Grid.Column="1" Background="Transparent">
 
-                            <Canvas x:Name="PART_Canvas" Grid.Row="1" Grid.Column="1" ClipToBounds="True">
-
-                                <ctrls:PageGrid x:Name="PART_PageGrid" 
+                                        <ctrls:PageGrid x:Name="PART_PageGrid" 
                                                 Scale="{TemplateBinding PageScale}"
                                                 Width="{TemplateBinding PageWidth}"
                                                 Height="{TemplateBinding PageHeight}"
                                                 GridSize="{TemplateBinding GridSize}"
                                                 GridBrush="{TemplateBinding GridColor}"
-                                                PageBrush="{TemplateBinding PageColor}">
-                                    <!--<ctrls:PageGrid.Offset>
-                                        <MultiBinding Converter="{StaticResource ScollValueToOffset}" Mode="TwoWay">
-                                            <Binding Path="Value" ElementName="PART_HorScrollBar" Mode="TwoWay"/>
-                                            <Binding Path="Value" ElementName="PART_VerScrollBar" Mode="TwoWay"/>
-                                        </MultiBinding>
-                                    </ctrls:PageGrid.Offset>-->
-                                </ctrls:PageGrid>
+                                                PageBrush="{TemplateBinding PageColor}"
+                                                ShowGrid="{TemplateBinding GridVisible}"/>
 
+                                        <graph:GraphicVisualHost x:Name="PART_GraphicVisualHost"/>
 
-                                <graph:GraphicVisualHost x:Name="PART_GraphicVisualHost"/>
+                                    </Canvas>
+                                </AdornerDecorator>
+                            </Border>
 
-                            </Canvas>
 
                             <ScrollBar x:Name="PART_HorScrollBar" Grid.Row="2" Grid.Column="1" Orientation="Horizontal"
                                        Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=PageOffsetX, Converter={StaticResource DoubleNegativeConverter}}"/>
-                            <ScrollBar x:Name="PART_VerScrollBar" Grid.Row="1" Grid.Column="2" Orientation="Vertical"/>
-
+                            <ScrollBar x:Name="PART_VerScrollBar" Grid.Row="1" Grid.Column="2" Orientation="Vertical"
+                                       Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=PageOffsetY, Converter={StaticResource DoubleNegativeConverter}}"/>
 
                             <ruler:HorRuler x:Name="PART_HorRuler"  Grid.Row="0" Grid.Column="1" Margin="0 0 0 2"
+                                            ZoomScale="{TemplateBinding PageScale}" OrignPosition="{TemplateBinding PageOffsetX}"
                                             TickColor="{TemplateBinding GridColor}" TickTextColor="{TemplateBinding GridColor}" BackColor="{TemplateBinding Background}"/>
-                            <ruler:VerRuler x:Name="PART_VerRuler"  Grid.Row="1" Grid.Column="0" Margin="0 0 1 0"
+                            <ruler:VerRuler x:Name="PART_VerRuler"  Grid.Row="1" Grid.Column="0" Margin="0 0 2 0"
+                                            ZoomScale="{TemplateBinding PageScale}" OrignPosition="{TemplateBinding PageOffsetY}"
                                             TickColor="{TemplateBinding GridColor}" TickTextColor="{TemplateBinding GridColor}" BackColor="{TemplateBinding Background}"/>
-
 
                         </Grid>
 
